@@ -13,10 +13,13 @@ import newsSection from "../../assets/news_section.jpg";
 import metroMap from "../../assets/metro_map.jpg";
 
 import "./HomePage.scss";
+import { useInView } from "react-intersection-observer";
+import CountUp from "react-countup";
 const { Content } = Layout;
 const { Title, Paragraph, Text } = Typography;
 
 const HomePage: React.FC = () => {
+  const [ref, inView] = useInView({ threshold: 0.2, triggerOnce: false });
   const newsData = [
     {
       title: "Tuyến Metro số 1 chính thức vận hành thương mại",
@@ -95,7 +98,7 @@ const HomePage: React.FC = () => {
               </Row>
             </div>
           </div>
-          <div className="stats-section">
+          <div className="stats-section" ref={ref}>
             <div
               className="stats-container"
               style={{ maxWidth: 1200, margin: "0 auto" }}
@@ -104,28 +107,56 @@ const HomePage: React.FC = () => {
                 <Col xs={24} sm={12} md={6}>
                   <div className="stats-item">
                     <EnvironmentOutlined className="stats-icon" />
-                    <div className="stats-number">14</div>
+                    <div className="stats-number">
+                      {inView ? <CountUp end={14} duration={2} /> : 0}
+                    </div>
                     <div className="stats-label">Ga Tàu Điện</div>
                   </div>
                 </Col>
+
                 <Col xs={24} sm={12} md={6}>
                   <div className="stats-item">
                     <ThunderboltOutlined className="stats-icon" />
-                    <div className="stats-number">19.7km</div>
+                    <div className="stats-number">
+                      {inView ? (
+                        <CountUp
+                          end={19.7}
+                          decimals={1}
+                          suffix="km"
+                          duration={2}
+                        />
+                      ) : (
+                        "0km"
+                      )}
+                    </div>
                     <div className="stats-label">Tổng Chiều Dài</div>
                   </div>
                 </Col>
+
                 <Col xs={24} sm={12} md={6}>
                   <div className="stats-item">
                     <TeamOutlined className="stats-icon" />
-                    <div className="stats-number">100K</div>
+                    <div className="stats-number">
+                      {inView ? (
+                        <CountUp end={100000} separator="," duration={2} />
+                      ) : (
+                        0
+                      )}
+                    </div>
                     <div className="stats-label">Hành Khách/Ngày</div>
                   </div>
                 </Col>
+
                 <Col xs={24} sm={12} md={6}>
                   <div className="stats-item">
                     <GlobalOutlined className="stats-icon" />
-                    <div className="stats-number">5</div>
+                    <div className="stats-number">
+                      {inView ? (
+                        <CountUp end={5} suffix=" phút" duration={2} />
+                      ) : (
+                        "0 phút"
+                      )}
+                    </div>
                     <div className="stats-label">Phút/Chuyến</div>
                   </div>
                 </Col>

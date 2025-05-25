@@ -21,16 +21,16 @@
                   animation-delay: 0s;
             }
             .path-2 {
-                  animation-delay: 0.5s;
+                  animation-delay: 0.4s;
             }
             .path-3 {
-                  animation-delay: 1s;
+                  animation-delay: 0.8s;
             }
             .path-4 {
-                  animation-delay: 1.5s;
+                  animation-delay: 1.2s;
             }
             .path-5 {
-                  animation-delay: 2s;
+                  animation-delay: 1.6s;
             }
 
             animation: fadeOut 1s ease forwards;
@@ -40,9 +40,9 @@
             opacity: 0;
             transform: translateY(20px);
             animation:
-                  appearText 1s ease-out forwards 2.5s,
-                  disappearText 2s ease-out forwards 5s;
-            animation-delay: 2.5s;
+                  appearText 1s ease-out forwards 2s,
+                  disappearText 2s ease-out forwards 4s;
+            animation-delay: 2s;
 
             color: #005daa;
             font-size: 50px;
