@@ -5,6 +5,9 @@ import enFlag from "../../assets/svg/en.svg";
 import logo from "../../assets/HCMC_Metro_Logo.png";
 import "./Header.scss";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import path from "../../constants/path";
+import HeroSection from "../HeroSection";
 
 const Header: React.FC = () => {
   const { i18n } = useTranslation();
@@ -22,13 +25,19 @@ const Header: React.FC = () => {
       <header className="header">
         <div className="header-nav">
           <div className="header-logo">
-            <img src={logo} alt="Logo" />
+            <Link to="/">
+              <img src={logo} alt="Logo" />
+            </Link>
           </div>
           <Menu mode="horizontal" className="header-menu" selectable={false}>
-            <Menu.Item key="home">HOME</Menu.Item>
+            <Menu.Item key="home">
+              <Link to={path.home}>HOME</Link>
+            </Menu.Item>
+            <Menu.Item key="whatToKnow">
+              <Link to={path.whatToKnow}>WHAT TO KNOW</Link>
+            </Menu.Item>
             <Menu.Item key="time">STOP & TIMETABLE</Menu.Item>
-            <Menu.Item key="news">NEWS</Menu.Item>
-            <Menu.Item key="contact">WHAT TO KNOW</Menu.Item>
+            <Menu.Item key="buy">BUY TICKET</Menu.Item>
             <Menu.Item key="contact">CONTACT US</Menu.Item>
             <Menu.Item key="login">LOGIN</Menu.Item>
             <Menu.Item key="lang" className="header-lang">
@@ -73,6 +82,7 @@ const Header: React.FC = () => {
           </Menu>
         </div>
       </header>
+      <HeroSection />
     </>
   );
 };

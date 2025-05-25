@@ -1,21 +1,25 @@
 import React from "react";
 import { useRoutes } from "react-router-dom";
 import LayoutDefault from "../layouts/MainLayout";
-import { Suspense } from "react";
 import HomePage from "../pages/HomePage";
+import WhatToKnow from "../pages/WhatToKnow";
+import path from "../constants/path";
 
 const RouteElements: React.FC = () => {
   const routeElements = useRoutes([
     {
-      path: "",
-      index: true,
-      element: (
-        <LayoutDefault>
-          <Suspense>
-            <HomePage />
-          </Suspense>
-        </LayoutDefault>
-      ),
+      path: "/",
+      element: <LayoutDefault />,
+      children: [
+        {
+          index: true,
+          element: <HomePage />,
+        },
+        {
+          path: path.whatToKnow,
+          element: <WhatToKnow />,
+        },
+      ],
     },
   ]);
 
