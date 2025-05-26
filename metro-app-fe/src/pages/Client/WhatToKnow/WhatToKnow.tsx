@@ -52,7 +52,6 @@ const WhatToKnow: React.FC = () => {
                     điện tử ngay lập tức
                   </p>
 
-                  {/* Sample Ticket */}
                   <div className="bg-white rounded-2xl p-6 border border-blue-600 relative mb-6">
                     <div className="mb-4 pb-3 border-b-2 border-dashed border-blue-600 relative z-10">
                       <div className="font-bold text-blue-600 text-lg">
@@ -77,7 +76,6 @@ const WhatToKnow: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Buttons */}
                   <div className="flex flex-wrap justify-center gap-4">
                     <Button
                       type="primary"
@@ -117,7 +115,6 @@ const WhatToKnow: React.FC = () => {
             </Row>
           </div>
 
-          {/* Divider */}
           <div className="my-8">
             <Divider style={{ borderColor: "rgba(255,255,255,0.2)" }} />
           </div>
@@ -146,7 +143,7 @@ const WhatToKnow: React.FC = () => {
                         className="w-36 h-72 object-cover rounded-3xl border-4 border-blue-600 shadow-2xl"
                       />
                       <div className="text-left">
-                        <h5 className="text-white text-xl mb-4 font-semibold">
+                        <h5 className="text-black text-xl mb-4 font-semibold">
                           Tính năng nổi bật:
                         </h5>
                         <ul className="space-y-2">
@@ -171,6 +168,7 @@ const WhatToKnow: React.FC = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <Button
+                        type="primary"
                         size="large"
                         className="h-11 rounded-2xl font-semibold text-sm bg-gray-800 text-white border-none hover:bg-gray-700 transform hover:-translate-y-0.5 transition-all duration-300"
                         icon={<AppleOutlined />}

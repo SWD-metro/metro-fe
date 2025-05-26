@@ -1,7 +1,10 @@
 import React from "react";
 import { useRoutes } from "react-router-dom";
 import path from "src/constants/path";
+import AuthLayout from "src/layouts/AuthLayout";
 import MainLayout from "src/layouts/MainLayout";
+import LoginPage from "src/pages/Auth/Login";
+import RegisterPage from "src/pages/Auth/Register";
 import HomePage from "src/pages/Client/HomePage";
 import WhatToKnow from "src/pages/Client/WhatToKnow";
 
@@ -18,6 +21,20 @@ const RouteElements: React.FC = () => {
         {
           path: path.whatToKnow,
           element: <WhatToKnow />,
+        },
+      ],
+    },
+    {
+      path: "auth",
+      element: <AuthLayout />,
+      children: [
+        {
+          path: path.login,
+          element: <LoginPage />,
+        },
+        {
+          path: path.register,
+          element: <RegisterPage />,
         },
       ],
     },
