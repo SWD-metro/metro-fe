@@ -1,0 +1,173 @@
+import { chartsConfig } from "@/configs";
+
+interface ChartSeries {
+  name: string;
+  data: number[];
+}
+
+interface ChartOptions {
+  colors: string | string[];
+  plotOptions?: {
+    bar?: {
+      columnWidth: string;
+      borderRadius: number;
+    };
+  };
+  stroke?: {
+    lineCap: string;
+  };
+  markers?: {
+    size: number;
+  };
+  xaxis: {
+    categories: string[];
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
+interface Chart {
+  type: string;
+  height: number;
+  series: ChartSeries[];
+  options: ChartOptions;
+}
+
+interface StatisticsChart {
+  color: string;
+  title: string;
+  description: string;
+  footer: string;
+  chart: Chart;
+}
+
+const websiteViewsChart: Chart = {
+  type: "bar",
+  height: 220,
+  series: [
+    {
+      name: "Views",
+      data: [50, 20, 10, 22, 50, 10, 40],
+    },
+  ],
+  options: {
+    ...chartsConfig,
+    colors: "#388e3c",
+    plotOptions: {
+      bar: {
+        columnWidth: "16%",
+        borderRadius: 5,
+      },
+    },
+    xaxis: {
+      ...chartsConfig.xaxis,
+      categories: ["M", "T", "W", "T", "F", "S", "S"],
+    },
+  },
+};
+
+const dailySalesChart: Chart = {
+  type: "line",
+  height: 220,
+  series: [
+    {
+      name: "Sales",
+      data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
+    },
+  ],
+  options: {
+    ...chartsConfig,
+    colors: ["#0288d1"],
+    stroke: {
+      lineCap: "round",
+    },
+    markers: {
+      size: 5,
+    },
+    xaxis: {
+      ...chartsConfig.xaxis,
+      categories: [
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ],
+    },
+  },
+};
+
+const completedTaskChart: Chart = {
+  type: "line",
+  height: 220,
+  series: [
+    {
+      name: "Sales",
+      data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
+    },
+  ],
+  options: {
+    ...chartsConfig,
+    colors: ["#388e3c"],
+    stroke: {
+      lineCap: "round",
+    },
+    markers: {
+      size: 5,
+    },
+    xaxis: {
+      ...chartsConfig.xaxis,
+      categories: [
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ],
+    },
+  },
+};
+
+const completedTasksChart: Chart = {
+  ...completedTaskChart,
+  series: [
+    {
+      name: "Tasks",
+      data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+    },
+  ],
+};
+
+export const statisticsChartsData: StatisticsChart[] = [
+  {
+    color: "white",
+    title: "Website View",
+    description: "Last Campaign Performance",
+    footer: "campaign sent 2 days ago",
+    chart: websiteViewsChart,
+  },
+  {
+    color: "white",
+    title: "Daily Sales",
+    description: "15% increase in today sales",
+    footer: "updated 4 min ago",
+    chart: dailySalesChart,
+  },
+  {
+    color: "white",
+    title: "Completed Tasks",
+    description: "Last Campaign Performance",
+    footer: "just updated",
+    chart: completedTasksChart,
+  },
+];
+
+export default statisticsChartsData;
