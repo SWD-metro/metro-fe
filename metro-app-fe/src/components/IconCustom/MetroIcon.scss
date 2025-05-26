@@ -1,0 +1,79 @@
+.metro-card {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 80vh;
+      width: 100%;
+      margin: 0 auto;
+      background: transparent;
+      .metro-svg {
+            .metro-path {
+                  stroke: black;
+                  stroke-width: 2;
+                  fill-opacity: 0;
+                  stroke-dasharray: 1000;
+                  stroke-dashoffset: 1000;
+                  animation: draw 1.5s ease forwards;
+            }
+
+            .path-1 {
+                  animation-delay: 0s;
+            }
+            .path-2 {
+                  animation-delay: 0.4s;
+            }
+            .path-3 {
+                  animation-delay: 0.8s;
+            }
+            .path-4 {
+                  animation-delay: 1.2s;
+            }
+            .path-5 {
+                  animation-delay: 1.6s;
+            }
+
+            animation: fadeOut 1s ease forwards;
+            animation-delay: 3s;
+      }
+      .metro-text {
+            opacity: 0;
+            transform: translateY(20px);
+            animation:
+                  appearText 1s ease-out forwards 2s,
+                  disappearText 2s ease-out forwards 4s;
+            animation-delay: 2s;
+
+            color: #005daa;
+            font-size: 50px;
+            font-weight: bold;
+            margin: 0;
+      }
+}
+
+@keyframes draw {
+      to {
+            stroke-dashoffset: 0;
+            fill-opacity: 1;
+      }
+}
+
+@keyframes fadeOut {
+      to {
+            opacity: 0;
+            transform: scale(0.95);
+      }
+}
+
+@keyframes appearText {
+      to {
+            opacity: 1;
+            transform: translateY(20);
+      }
+}
+
+@keyframes disappearText {
+      to {
+            opacity: 0;
+      }
+}
