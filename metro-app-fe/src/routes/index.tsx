@@ -38,6 +38,10 @@ const RouteElements: React.FC = () => {
         },
       ],
     },
+    {
+      path: "admin",
+      element: <HomePage />,
+    }
   ]);
 
   return routeElements;
