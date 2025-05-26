@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.7",
     "@tanstack/react-query": "^5.76.1",
     "antd": "^5.25.2",
     "axios": "^1.9.0",
@@ -20,7 +21,8 @@
     "react-intersection-observer": "^9.16.0",
     "react-router-dom": "^7.6.0",
     "sass": "^1.89.0",
-    "scss": "^0.2.4"
+    "scss": "^0.2.4",
+    "tailwindcss": "^4.1.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
