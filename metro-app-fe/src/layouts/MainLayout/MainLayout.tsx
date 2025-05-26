@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import MetroIcon from "../../components/IconCustom/MetroIcon";
-import "./MainLayout.scss";
+
 const MainLayout: React.FC = () => {
   const [showMetro, setShowMetro] = useState(true);
 
@@ -16,7 +16,12 @@ const MainLayout: React.FC = () => {
   return (
     <>
       {showMetro ? (
-        <div className="metro-splash-screen">
+        <div
+          className="w-full h-screen overflow-hidden bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url("../../assets/stats_section.jpg")`,
+          }}
+        >
           <MetroIcon width={550} />
         </div>
       ) : (
