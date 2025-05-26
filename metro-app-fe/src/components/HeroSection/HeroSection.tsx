@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Typography, Button, Carousel, Space } from "antd";
 import { EnvironmentOutlined, ClockCircleOutlined } from "@ant-design/icons";
-import background1 from "../../assets/background1.jpg";
-import background2 from "../../assets/background2.jpg";
-import background3 from "../../assets/background3.jpg";
+import background1 from "src/assets/background1.jpg";
+import background2 from "src/assets/background2.jpg";
+import background3 from "src/assets/background3.jpg";
 import { useLocation } from "react-router-dom";
 
 const { Title, Paragraph } = Typography;

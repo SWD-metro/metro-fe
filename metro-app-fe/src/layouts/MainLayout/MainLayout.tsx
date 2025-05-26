@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
-import MetroIcon from "../../components/IconCustom/MetroIcon";
+import Footer from "src/components/Footer";
+import Header from "src/components/Header";
+import MetroIcon from "src/components/IconCustom/MetroIcon";
 
 const MainLayout: React.FC = () => {
   const [showMetro, setShowMetro] = useState(true);
