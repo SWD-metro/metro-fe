@@ -113,12 +113,12 @@ const HomePage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div className="text-center p-6">
                   <div className="bg-white bg-opacity-10 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                    <EnvironmentOutlined className="text-3xl text-cyan-400" />
+                    <EnvironmentOutlined className="text-3xl text-cyan-500" />
                   </div>
-                  <div className="text-5xl font-bold text-cyan-300 mb-2">
+                  <div className="text-5xl font-bold text-cyan-800 mb-2">
                     {inView ? <CountUp end={14} duration={2} /> : 0}
                   </div>
-                  <div className="text-sm text-cyan-200 uppercase tracking-wider font-semibold">
+                  <div className="text-sm text-cyan-600 uppercase tracking-wider font-semibold">
                     Ga Tàu Điện
                   </div>
                 </div>
@@ -127,7 +127,7 @@ const HomePage: React.FC = () => {
                   <div className="bg-white bg-opacity-10 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
                     <ThunderboltOutlined className="text-3xl text-cyan-400" />
                   </div>
-                  <div className="text-5xl font-bold text-cyan-300 mb-2">
+                  <div className="text-5xl font-bold text-cyan-800 mb-2">
                     {inView ? (
                       <CountUp
                         end={19.7}
@@ -139,7 +139,7 @@ const HomePage: React.FC = () => {
                       "0km"
                     )}
                   </div>
-                  <div className="text-sm text-cyan-200 uppercase tracking-wider font-semibold">
+                  <div className="text-sm text-cyan-600 uppercase tracking-wider font-semibold">
                     Tổng Chiều Dài
                   </div>
                 </div>
@@ -148,14 +148,14 @@ const HomePage: React.FC = () => {
                   <div className="bg-white bg-opacity-10 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
                     <TeamOutlined className="text-3xl text-cyan-400" />
                   </div>
-                  <div className="text-5xl font-bold text-cyan-300 mb-2">
+                  <div className="text-5xl font-bold text-cyan-800 mb-2">
                     {inView ? (
                       <CountUp end={100000} separator="," duration={2} />
                     ) : (
                       0
                     )}
                   </div>
-                  <div className="text-sm text-cyan-200 uppercase tracking-wider font-semibold">
+                  <div className="text-sm text-cyan-600 uppercase tracking-wider font-semibold">
                     Hành Khách/Ngày
                   </div>
                 </div>
@@ -164,14 +164,14 @@ const HomePage: React.FC = () => {
                   <div className="bg-white bg-opacity-10 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
                     <GlobalOutlined className="text-3xl text-cyan-400" />
                   </div>
-                  <div className="text-5xl font-bold text-cyan-300 mb-2">
+                  <div className="text-5xl font-bold text-cyan-800 mb-2">
                     {inView ? (
                       <CountUp end={5} suffix=" phút" duration={2} />
                     ) : (
                       "0 phút"
                     )}
                   </div>
-                  <div className="text-sm text-cyan-200 uppercase tracking-wider font-semibold">
+                  <div className="text-sm text-cyan-600 uppercase tracking-wider font-semibold">
                     Phút/Chuyến
                   </div>
                 </div>
@@ -224,7 +224,7 @@ const HomePage: React.FC = () => {
                             <h5 className="text-black font-semibold mb-2 text-lg">
                               {news.title}
                             </h5>
-                            <span className="text-cyan-300 text-sm font-medium">
+                            <span className="text-cyan-800 text-sm font-medium">
                               {news.time}
                             </span>
                           </div>
