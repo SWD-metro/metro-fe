@@ -10,10 +10,10 @@ import {
 } from "@ant-design/icons";
 import { useInView } from "react-intersection-observer";
 import CountUp from "react-countup";
-import newsSection from "../../assets/news_section.jpg";
-import metroMap from "../../assets/metro_map.jpg";
-import statsBackground from "../../assets/stats_section.jpg";
-import featuresBackground from "../../assets/feature_section.png";
+import newsSection from "src/assets/news_section.jpg";
+import metroMap from "src/assets/metro_map.jpg";
+import statsBackground from "src/assets/stats_section.jpg";
+import featuresBackground from "src/assets/feature_section.png";
 
 const { Content } = Layout;
 

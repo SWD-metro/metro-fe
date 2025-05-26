@@ -8,8 +8,8 @@ import {
   MobileOutlined,
   QrcodeOutlined,
 } from "@ant-design/icons";
-import statsBackground from "../../assets/stats_section.jpg";
-import metromb from "../../assets/app-metro-mb.jpg";
+import statsBackground from "src/assets/stats_section.jpg";
+import metromb from "src/assets/app-metro-mb.jpg";
 
 type StepsListProps = {
   steps: string[];

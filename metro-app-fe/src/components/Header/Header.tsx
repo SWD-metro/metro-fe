@@ -1,12 +1,12 @@
 import React, { useState, type JSX } from "react";
 import { Button, Drawer, Dropdown, Menu } from "antd";
 import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
-import viFlag from "../../assets/svg/vi.svg";
-import enFlag from "../../assets/svg/en.svg";
-import logo from "../../assets/HCMC_Metro_Logo.png";
+import viFlag from "src/assets/svg/vi.svg";
+import enFlag from "src/assets/svg/en.svg";
+import logo from "src/assets/HCMC_Metro_Logo.png";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import path from "../../constants/path";
+import path from "src/constants/path";
 import HeroSection from "../HeroSection";
 
 const Header: React.FC = () => {

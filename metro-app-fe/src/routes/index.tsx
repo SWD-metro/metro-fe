@@ -1,9 +1,9 @@
 import React from "react";
 import { useRoutes } from "react-router-dom";
-import MainLayout from "../layouts/MainLayout";
-import HomePage from "../pages/HomePage";
-import WhatToKnow from "../pages/WhatToKnow";
-import path from "../constants/path";
+import path from "src/constants/path";
+import MainLayout from "src/layouts/MainLayout";
+import HomePage from "src/pages/HomePage";
+import WhatToKnow from "src/pages/WhatToKnow";
 
 const RouteElements: React.FC = () => {
   const routeElements = useRoutes([
