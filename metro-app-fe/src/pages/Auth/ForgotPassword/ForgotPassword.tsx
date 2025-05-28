@@ -35,7 +35,7 @@ const ForgotPassword: React.FC = () => {
         {formState.isEmailSent ? (
           <>
             <Form.Item>
-              <div className="text-lg font-bold text-gray-800 text-center mb-2">
+              <div className="!text-lg font-bold text-gray-800 text-center mb-2">
                 Please check your email for password reset instructions
               </div>
             </Form.Item>
@@ -56,7 +56,7 @@ const ForgotPassword: React.FC = () => {
           </>
         ) : (
           <>
-            <Typography className="text-lg font-bold text-gray-800 text-center mb-2">
+            <Typography className="!text-lg font-bold text-gray-800 text-center mb-2">
               Please input your registered email to reset your password
             </Typography>
             <Form.Item

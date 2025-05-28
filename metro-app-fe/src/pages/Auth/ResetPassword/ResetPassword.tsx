@@ -21,7 +21,7 @@ const ResetPassword: React.FC = () => {
     <>
       {isSuccessChange ? (
         <>
-          <label className="block text-lg italic text-center text-cyan-800 mb-6">
+          <label className="block !text-lg italic text-center text-cyan-800 mb-6">
             Password changed successfully. You may close this window.
           </label>
           <Button

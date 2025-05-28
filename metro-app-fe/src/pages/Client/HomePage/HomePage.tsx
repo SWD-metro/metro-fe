@@ -198,7 +198,7 @@ const HomePage: React.FC = () => {
                     className="w-full h-96 lg:h-[500px] object-cover hover:scale-105 transition-transform duration-700"
                   />
                 </div>
-                <div className="absolute -top-4 -right-4 bg-cyan-500 text-white px-4 py-2 rounded-full font-semibold shadow-lg">
+                <div className="absolute -top-4 -right-4 bg-cyan-400 text-white px-4 py-2 rounded-full font-semibold shadow-lg">
                   Tuyến 1
                 </div>
               </div>

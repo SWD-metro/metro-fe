@@ -17,7 +17,7 @@ const AuthLayout: React.FC = () => {
   const isRegister = location.pathname === "/auth/register";
 
   const handleBackHome = () => {
-    navigate("/");
+    navigate(-1);
   };
 
   const renderFlag = (language: string | undefined): JSX.Element => {
@@ -87,7 +87,7 @@ const AuthLayout: React.FC = () => {
         }`}
       >
         <div
-          className="rounded-2xl shadow-xl p-8 backdrop-blur-sm"
+          className="rounded-2xl shadow-xl p-8 backdrop-blur-sm border-4 border-cyan-400"
           style={{
             backgroundImage: `url(${background})`,
           }}
@@ -97,8 +97,8 @@ const AuthLayout: React.FC = () => {
               type="primary"
               onClick={handleBackHome}
               size="large"
-              icon={<RollbackOutlined style={{ fontSize: 24 }} />}
-              className="!flex items-center justify-center !w-12 !h-12 rounded-full shadow hover:shadow-md transition-all duration-200"
+              icon={<RollbackOutlined style={{ fontSize: 30 }} />}
+              className="!w-12 !h-12"
             />
 
             <Link to={path.home} className="ms-8">

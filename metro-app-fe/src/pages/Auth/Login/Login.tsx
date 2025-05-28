@@ -4,7 +4,7 @@ import { UserOutlined, LockOutlined, GoogleOutlined } from "@ant-design/icons";
 import { Link as RouterLink } from "react-router-dom";
 import path from "src/constants/path";
 
-const { Title, Text, Link } = Typography;
+const { Title, Text } = Typography;
 const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
@@ -15,7 +15,7 @@ const LoginPage: React.FC = () => {
   return (
     <>
       <div className="text-center mb-6">
-        <Title level={3} className="text-gray-800 mb-2">
+        <Title level={3} className="!text-cyan-800 mb-2">
           Đăng nhập
         </Title>
       </div>
@@ -47,9 +47,12 @@ const LoginPage: React.FC = () => {
         <Form.Item>
           <div className="flex justify-between items-center">
             <Checkbox>Ghi nhớ đăng nhập</Checkbox>
-            <Link className="text-blue-600 hover:text-blue-800">
+            <RouterLink
+              to={path.forgotPassword}
+              className="text-blue-600 hover:text-blue-800"
+            >
               Quên mật khẩu?
-            </Link>
+            </RouterLink>
           </div>
         </Form.Item>
 
@@ -57,8 +60,8 @@ const LoginPage: React.FC = () => {
           <Button
             type="primary"
             htmlType="submit"
+            shape="round"
             loading={loading}
-            className="rounded-lg bg-gradient-to-r from-blue-600 to-green-500 border-0 hover:from-blue-700 hover:to-green-600 shadow-lg"
             style={{ width: "70%", margin: "0 auto", display: "block" }}
           >
             Đăng nhập
@@ -69,7 +72,7 @@ const LoginPage: React.FC = () => {
 
         <Button
           icon={<GoogleOutlined className="me-2" />}
-          className="w-full h-12 rounded-lg border border-gray-300 hover:border-gray-400 shadow-sm hover:shadow-md flex items-center justify-center text-gray-700"
+          shape="round"
           style={{ width: "70%", margin: "0 auto", display: "block" }}
         >
           Đăng nhập với Google
