@@ -19,27 +19,28 @@ const LoginPage: React.FC = () => {
           Đăng nhập
         </Title>
       </div>
-
       <Form name="login" onFinish={onFinish} size="large" layout="vertical">
         <Form.Item
+          label="Tên đăng nhập"
           name="username"
           rules={[{ required: true, message: "Vui lòng nhập tên đăng nhập!" }]}
         >
           <Input
             prefix={<UserOutlined className="text-gray-400" />}
             placeholder="Tên đăng nhập"
-            className="rounded-lg"
+            className="rounded-lg h-12"
           />
         </Form.Item>
 
         <Form.Item
+          label="Mật khẩu"
           name="password"
           rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
         >
           <Input.Password
             prefix={<LockOutlined className="text-gray-400" />}
             placeholder="Mật khẩu"
-            className="rounded-lg"
+            className="rounded-lg h-12"
           />
         </Form.Item>
 
@@ -57,21 +58,19 @@ const LoginPage: React.FC = () => {
             type="primary"
             htmlType="submit"
             loading={loading}
-            className=" h-12 rounded-lg bg-gradient-to-r from-blue-600 to-green-500 border-0 hover:from-blue-700 hover:to-green-600 shadow-lg"
-            style={{ width: "50%", margin: "0 auto", display: "block" }}
+            className="rounded-lg bg-gradient-to-r from-blue-600 to-green-500 border-0 hover:from-blue-700 hover:to-green-600 shadow-lg"
+            style={{ width: "70%", margin: "0 auto", display: "block" }}
           >
             Đăng nhập
           </Button>
         </Form.Item>
 
-        <Divider>
-          <Text className="text-gray-400">hoặc</Text>
-        </Divider>
+        <Divider className="text-gray-400 !my-2">Hoặc</Divider>
 
         <Button
-          icon={<GoogleOutlined />}
+          icon={<GoogleOutlined className="me-2" />}
           className="w-full h-12 rounded-lg border border-gray-300 hover:border-gray-400 shadow-sm hover:shadow-md flex items-center justify-center text-gray-700"
-          style={{ width: "50%", margin: "0 auto", display: "block" }}
+          style={{ width: "70%", margin: "0 auto", display: "block" }}
         >
           Đăng nhập với Google
         </Button>

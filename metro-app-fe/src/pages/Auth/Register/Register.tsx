@@ -48,7 +48,7 @@ const RegisterPage: React.FC = () => {
               <Input
                 prefix={<UserOutlined className="text-gray-400" />}
                 placeholder="Tên đăng nhập"
-                className="rounded-lg"
+                className="rounded-lg h-12"
               />
             </Form.Item>
           </Col>
@@ -61,7 +61,7 @@ const RegisterPage: React.FC = () => {
               <Input
                 prefix={<UserOutlined className="text-gray-400" />}
                 placeholder="Họ và tên"
-                className="rounded-lg"
+                className="rounded-lg h-12"
               />
             </Form.Item>
           </Col>
@@ -79,7 +79,7 @@ const RegisterPage: React.FC = () => {
               <Input
                 prefix={<MailOutlined className="text-gray-400" />}
                 placeholder="Email"
-                className="rounded-lg"
+                className="rounded-lg h-12"
               />
             </Form.Item>
           </Col>
@@ -97,7 +97,7 @@ const RegisterPage: React.FC = () => {
               <Input
                 prefix={<PhoneOutlined className="text-gray-400" />}
                 placeholder="Số điện thoại"
-                className="rounded-lg"
+                className="rounded-lg h-12"
               />
             </Form.Item>
           </Col>
@@ -114,7 +114,7 @@ const RegisterPage: React.FC = () => {
               <Input
                 prefix={<IdcardOutlined className="text-gray-400" />}
                 placeholder="Số CCCD (không bắt buộc)"
-                className="rounded-lg"
+                className="rounded-lg h-12"
               />
             </Form.Item>
           </Col>
@@ -132,7 +132,7 @@ const RegisterPage: React.FC = () => {
               <Input.Password
                 prefix={<LockOutlined className="text-gray-400" />}
                 placeholder="Mật khẩu"
-                className="rounded-lg"
+                className="rounded-lg h-12"
               />
             </Form.Item>
           </Col>
@@ -156,7 +156,7 @@ const RegisterPage: React.FC = () => {
               <Input.Password
                 prefix={<LockOutlined className="text-gray-400" />}
                 placeholder="Xác nhận mật khẩu"
-                className="rounded-lg"
+                className="rounded-lg h-12"
               />
             </Form.Item>
           </Col>
