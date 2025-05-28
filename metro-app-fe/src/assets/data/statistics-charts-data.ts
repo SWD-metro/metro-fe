@@ -1,4 +1,4 @@
-import { chartsConfig } from "@/configs";
+import { chartsConfig } from "../../layouts/dashboardLayout/widgets/charts";
 
 interface ChartSeries {
   name: string;

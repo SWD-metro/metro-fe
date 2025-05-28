@@ -13,19 +13,15 @@ import {
   Tooltip,
   Progress,
 } from "@material-tailwind/react";
-import {
-  EllipsisVerticalIcon,
-  ArrowUpIcon,
-} from "@heroicons/react/24/outline";
-import { StatisticsCard } from "@/widgets/cards";
-import { StatisticsChart } from "@/widgets/charts";
+import { StatisticsCard } from "../../layouts/dashboardLayout/widgets/cards";
+import { StatisticsChart } from "../../layouts/dashboardLayout/widgets/charts";
 import {
   statisticsCardsData,
   statisticsChartsData,
   projectsTableData,
   ordersOverviewData,
 } from "../../assets/data/index"
-import { CheckCircleIcon, ClockIcon } from "@heroicons/react/24/solid";
+import { ArrowUpOutlined, CheckCircleFilled, ClockCircleFilled, MoreOutlined } from "@ant-design/icons";
 
 export function Home() {
   return (
@@ -37,7 +33,7 @@ export function Home() {
             {...rest}
             title={title}
             icon={React.createElement(icon, {
-              className: "w-6 h-6 text-white",
+              className: "w-6 h-6 text-red-500",
             })}
             footer={
               <Typography className="font-normal text-blue-gray-600">
@@ -58,7 +54,7 @@ export function Home() {
                 variant="small"
                 className="flex items-center font-normal text-blue-gray-600"
               >
-                <ClockIcon strokeWidth={2} className="h-4 w-4 text-blue-gray-400" />
+                <ClockCircleFilled className="h-4 w-4 text-blue-gray-400" />
                 &nbsp;{props.footer}
               </Typography>
             }
@@ -81,14 +77,14 @@ export function Home() {
                 variant="small"
                 className="flex items-center gap-1 font-normal text-blue-gray-600"
               >
-                <CheckCircleIcon strokeWidth={3} className="h-4 w-4 text-blue-gray-200" />
+                <CheckCircleFilled  strokeWidth={3} className="h-4 w-4 text-blue-gray-200" />
                 <strong>30 done</strong> this month
               </Typography>
             </div>
             <Menu placement="left-start">
               <MenuHandler>
                 <IconButton size="sm" variant="text" color="blue-gray">
-                  <EllipsisVerticalIcon
+                  <MoreOutlined
                     strokeWidth={3}
                     fill="currenColor"
                     className="h-6 w-6"
@@ -207,8 +203,8 @@ export function Home() {
               variant="small"
               className="flex items-center gap-1 font-normal text-blue-gray-600"
             >
-              <ArrowUpIcon
-                strokeWidth={3}
+              <ArrowUpOutlined
+                // strokeWidth={3}
                 className="h-3.5 w-3.5 text-green-500"
               />
               <strong>24%</strong> this month
