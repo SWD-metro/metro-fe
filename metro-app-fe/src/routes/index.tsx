@@ -3,8 +3,10 @@ import { useRoutes } from "react-router-dom";
 import path from "src/constants/path";
 import AuthLayout from "src/layouts/AuthLayout";
 import MainLayout from "src/layouts/MainLayout";
+import ForgotPassword from "src/pages/Auth/ForgotPassword";
 import LoginPage from "src/pages/Auth/Login";
 import RegisterPage from "src/pages/Auth/Register";
+import ResetPassword from "src/pages/Auth/ResetPassword";
 import HomePage from "src/pages/Client/HomePage";
 import WhatToKnow from "src/pages/Client/WhatToKnow";
 import Home from "src/pages/dashboard/Home";
@@ -37,12 +39,20 @@ const RouteElements: React.FC = () => {
           path: path.register,
           element: <RegisterPage />,
         },
+        {
+          path: path.forgotPassword,
+          element: <ForgotPassword />,
+        },
+        {
+          path: path.resetPassword,
+          element: <ResetPassword />,
+        },
       ],
     },
     {
       path: "admin",
       element: <Home />,
-    }
+    },
   ]);
 
   return routeElements;

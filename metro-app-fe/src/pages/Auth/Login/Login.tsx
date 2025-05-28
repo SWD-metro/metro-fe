@@ -4,7 +4,7 @@ import { UserOutlined, LockOutlined, GoogleOutlined } from "@ant-design/icons";
 import { Link as RouterLink } from "react-router-dom";
 import path from "src/constants/path";
 
-const { Title, Text, Link } = Typography;
+const { Title, Text } = Typography;
 const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
@@ -15,40 +15,44 @@ const LoginPage: React.FC = () => {
   return (
     <>
       <div className="text-center mb-6">
-        <Title level={3} className="text-gray-800 mb-2">
+        <Title level={3} className="!text-cyan-800 mb-2">
           Đăng nhập
         </Title>
       </div>
-
       <Form name="login" onFinish={onFinish} size="large" layout="vertical">
         <Form.Item
+          label="Tên đăng nhập"
           name="username"
           rules={[{ required: true, message: "Vui lòng nhập tên đăng nhập!" }]}
         >
           <Input
             prefix={<UserOutlined className="text-gray-400" />}
             placeholder="Tên đăng nhập"
-            className="rounded-lg"
+            className="rounded-lg h-12"
           />
         </Form.Item>
 
         <Form.Item
+          label="Mật khẩu"
           name="password"
           rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
         >
           <Input.Password
             prefix={<LockOutlined className="text-gray-400" />}
             placeholder="Mật khẩu"
-            className="rounded-lg"
+            className="rounded-lg h-12"
           />
         </Form.Item>
 
         <Form.Item>
           <div className="flex justify-between items-center">
             <Checkbox>Ghi nhớ đăng nhập</Checkbox>
-            <Link className="text-blue-600 hover:text-blue-800">
+            <RouterLink
+              to={path.forgotPassword}
+              className="text-blue-600 hover:text-blue-800"
+            >
               Quên mật khẩu?
-            </Link>
+            </RouterLink>
           </div>
         </Form.Item>
 
@@ -56,22 +60,20 @@ const LoginPage: React.FC = () => {
           <Button
             type="primary"
             htmlType="submit"
+            shape="round"
             loading={loading}
-            className=" h-12 rounded-lg bg-gradient-to-r from-blue-600 to-green-500 border-0 hover:from-blue-700 hover:to-green-600 shadow-lg"
-            style={{ width: "50%", margin: "0 auto", display: "block" }}
+            style={{ width: "70%", margin: "0 auto", display: "block" }}
           >
             Đăng nhập
           </Button>
         </Form.Item>
 
-        <Divider>
-          <Text className="text-gray-400">hoặc</Text>
-        </Divider>
+        <Divider className="text-gray-400 !my-2">Hoặc</Divider>
 
         <Button
-          icon={<GoogleOutlined />}
-          className="w-full h-12 rounded-lg border border-gray-300 hover:border-gray-400 shadow-sm hover:shadow-md flex items-center justify-center text-gray-700"
-          style={{ width: "50%", margin: "0 auto", display: "block" }}
+          icon={<GoogleOutlined className="me-2" />}
+          shape="round"
+          style={{ width: "70%", margin: "0 auto", display: "block" }}
         >
           Đăng nhập với Google
         </Button>

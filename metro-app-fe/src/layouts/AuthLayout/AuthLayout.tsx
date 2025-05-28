@@ -1,20 +1,23 @@
 import React, { JSX } from "react";
-import { Col, Row, Button, Dropdown, Menu } from "antd";
-import { Outlet, useNavigate } from "react-router-dom";
-import { LeftOutlined } from "@ant-design/icons";
+import { Button, Dropdown, Menu } from "antd";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import metroImage from "src/assets/app-metro-mb.jpg";
 import enFlag from "src/assets/svg/en.svg";
 import viFlag from "src/assets/svg/vi.svg";
-import background1 from "src/assets/stats_section.jpg";
-import background2 from "src/assets/feature_section.png";
+import background1 from "src/assets/background2.jpg";
+import logo from "src/assets/HCMC_Metro_Logo.png";
+import background from "src/assets/stats_section.jpg";
+import path from "src/constants/path";
+import { RollbackOutlined } from "@ant-design/icons";
 
 const AuthLayout: React.FC = () => {
   const navigate = useNavigate();
   const { i18n } = useTranslation();
+  const location = useLocation();
+  const isRegister = location.pathname === "/auth/register";
 
   const handleBackHome = () => {
-    navigate("/");
+    navigate(-1);
   };
 
   const renderFlag = (language: string | undefined): JSX.Element => {
@@ -68,69 +71,45 @@ const AuthLayout: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen">
-      <Row className="min-h-screen">
-        <Col
-          xs={24}
-          lg={14}
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="absolute inset-0">
+        <div
+          className="w-full h-full bg-cover bg-center"
           style={{
             backgroundImage: `url(${background1})`,
           }}
+        />
+      </div>
+
+      <div
+        className={`relative z-10 w-full ${
+          isRegister ? "max-w-2xl" : "max-w-xl"
+        }`}
+      >
+        <div
+          className="rounded-2xl shadow-xl p-8 backdrop-blur-sm border-4 border-cyan-400"
+          style={{
+            backgroundImage: `url(${background})`,
+          }}
         >
-          <div
-            className="flex-1 flex items-center justify-center"
-            style={{
-              transform:
-                window.innerWidth < 768
-                  ? "translateY(20px)"
-                  : "translateY(100px)",
-            }}
-          >
-            <div className="w-full max-w-sm sm:max-w-md lg:max-w-2xl mx-auto">
-              <div className="flex justify-between items-center py-4 mb-4 sm:mb-6">
-                <Button
-                  type="primary"
-                  icon={<LeftOutlined />}
-                  onClick={handleBackHome}
-                  size="large"
-                />
+          <div className="flex justify-between items-center mb-6">
+            <Button
+              type="primary"
+              onClick={handleBackHome}
+              size="large"
+              icon={<RollbackOutlined style={{ fontSize: 30 }} />}
+              className="!w-12 !h-12"
+            />
 
-                <LanguageDropdown />
-              </div>
+            <Link to={path.home} className="ms-8">
+              <img src={logo} alt="Logo" className="w-[120px]" />
+            </Link>
 
-              <div className="bg-white/90 border !border-blue-600 rounded-xl p-4 sm:p-6 lg:p-8">
-                <Outlet />
-              </div>
-            </div>
+            <LanguageDropdown />
           </div>
-        </Col>
-
-        <Col xs={0} lg={10} className="relative overflow-hidden">
-          <div
-            className="absolute inset-0 bg-gradient-to-br"
-            style={{
-              backgroundImage: `url(${background2})`,
-            }}
-          >
-            <div className="absolute inset-0 bg-black/10">
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-            </div>
-
-            <div className="relative h-full flex items-center justify-center p-6">
-              <div className="relative w-full max-w-2xl">
-                <img
-                  src={metroImage}
-                  alt="Metro App"
-                  className="w-full h-auto object-contain drop-shadow-2xl"
-                  style={{ maxHeight: "85vh" }}
-                />
-
-                <div className="absolute -inset-4 bg-white/10 rounded-2xl blur-xl -z-10"></div>
-              </div>
-            </div>
-          </div>
-        </Col>
-      </Row>
+          <Outlet />
+        </div>
+      </div>
     </div>
   );
 };
