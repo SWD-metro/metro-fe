@@ -1,10 +1,5 @@
-import {
-    BanknotesIcon,
-    UserPlusIcon,
-    UsersIcon,
-    ChartBarIcon,
-  } from "@heroicons/react/24/solid";
-  import { FC, SVGProps } from "react";
+import { AreaChartOutlined, BankFilled, UsergroupAddOutlined, UserOutlined } from "@ant-design/icons";
+import { AntdIconProps } from "@ant-design/icons/lib/components/AntdIcon";
   
   interface StatisticsCardFooter {
     color: string;
@@ -14,7 +9,7 @@ import {
   
   interface StatisticsCard {
     color: string;
-    icon: FC<SVGProps<SVGSVGElement>>;
+    icon: React.ForwardRefExoticComponent<Omit<AntdIconProps, 'ref'> & React.RefAttributes<HTMLSpanElement>>;
     title: string;
     value: string;
     footer: StatisticsCardFooter;
@@ -23,7 +18,7 @@ import {
   export const statisticsCardsData: StatisticsCard[] = [
     {
       color: "gray",
-      icon: BanknotesIcon,
+      icon: BankFilled,
       title: "Today's Money",
       value: "$53k",
       footer: {
@@ -34,7 +29,7 @@ import {
     },
     {
       color: "gray",
-      icon: UsersIcon,
+      icon: UserOutlined,
       title: "Today's Users",
       value: "2,300",
       footer: {
@@ -45,7 +40,7 @@ import {
     },
     {
       color: "gray",
-      icon: UserPlusIcon,
+      icon: UsergroupAddOutlined,
       title: "New Clients",
       value: "3,462",
       footer: {
@@ -56,7 +51,7 @@ import {
     },
     {
       color: "gray",
-      icon: ChartBarIcon,
+      icon: AreaChartOutlined,
       title: "Sales",
       value: "$103,430",
       footer: {

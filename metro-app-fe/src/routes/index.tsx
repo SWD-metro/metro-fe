@@ -9,6 +9,7 @@ import RegisterPage from "src/pages/Auth/Register";
 import ResetPassword from "src/pages/Auth/ResetPassword";
 import HomePage from "src/pages/Client/HomePage";
 import WhatToKnow from "src/pages/Client/WhatToKnow";
+import Home from "src/pages/dashboard/Home";
 
 const RouteElements: React.FC = () => {
   const routeElements = useRoutes([
@@ -50,7 +51,7 @@ const RouteElements: React.FC = () => {
     },
     {
       path: "admin",
-      element: <HomePage />,
+      element: <Home />,
     },
   ]);
 
