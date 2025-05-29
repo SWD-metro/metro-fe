@@ -3,6 +3,7 @@ import React from "react";
 import { MailOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import path from "src/constants/path";
+import { useTranslation } from "react-i18next";
 
 interface FormState {
   isEmailSent: boolean;
@@ -10,6 +11,7 @@ interface FormState {
 }
 
 const ForgotPassword: React.FC = () => {
+  const { t } = useTranslation("auth");
   const [formState, setFormState] = React.useState<FormState>({
     isLoading: false,
     isEmailSent: false,
@@ -36,7 +38,7 @@ const ForgotPassword: React.FC = () => {
           <>
             <Form.Item>
               <div className="!text-lg font-bold text-gray-800 text-center mb-2">
-                Please check your email for password reset instructions
+                {t("forgotPassword.emailSent.title")}
               </div>
             </Form.Item>
             <Form.Item>
@@ -49,7 +51,7 @@ const ForgotPassword: React.FC = () => {
                 loading={formState.isLoading}
               >
                 <Link to={path.login} aria-label="Go to login">
-                  BACK TO LOGIN
+                  {t("forgotPassword.emailSent.backToLogin")}
                 </Link>
               </Button>
             </Form.Item>
@@ -57,7 +59,7 @@ const ForgotPassword: React.FC = () => {
         ) : (
           <>
             <Typography className="!text-lg font-bold text-gray-800 text-center mb-2">
-              Please input your registered email to reset your password
+              {t("forgotPassword.form.title")}
             </Typography>
             <Form.Item
               name="email"
@@ -65,7 +67,7 @@ const ForgotPassword: React.FC = () => {
                 {
                   type: "email",
                   required: true,
-                  message: "Please input your email",
+                  message: t("forgotPassword.form.email.required"),
                 },
               ]}
             >
@@ -73,7 +75,7 @@ const ForgotPassword: React.FC = () => {
                 prefix={<MailOutlined />}
                 disabled={formState.isLoading}
                 size="large"
-                placeholder="Email"
+                placeholder={t("forgotPassword.form.email.placeholder")}
                 aria-label="Email address"
                 autoComplete="email"
                 className="h-12"
@@ -90,7 +92,7 @@ const ForgotPassword: React.FC = () => {
                 aria-label="Send request to resend password"
                 className="rounded-full h-12"
               >
-                RESET
+                {t("forgotPassword.form.resetButton")}
               </Button>
             </Form.Item>
           </>

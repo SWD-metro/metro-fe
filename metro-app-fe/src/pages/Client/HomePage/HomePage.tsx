@@ -14,34 +14,18 @@ import newsSection from "src/assets/news_section.jpg";
 import metroMap from "src/assets/metro_map.jpg";
 import statsBackground from "src/assets/stats_section.jpg";
 import featuresBackground from "src/assets/feature_section.png";
+import { useTranslation } from "react-i18next";
 
 const { Content } = Layout;
 
 const HomePage: React.FC = () => {
   const [ref, inView] = useInView({ threshold: 0.2, triggerOnce: false });
-
-  const newsData = [
-    {
-      title: "Tuyến Metro số 1 chính thức vận hành thương mại",
-      time: "2024-12-19",
-      color: "green",
-    },
-    {
-      title: "Khai trương 14 ga tàu điện ngầm đầu tiên",
-      time: "2024-12-15",
-      color: "blue",
-    },
-    {
-      title: "Lịch trình vận hành Metro Line 1 từ 6:00 - 22:00",
-      time: "2024-12-10",
-      color: "orange",
-    },
-    {
-      title: "Giá vé Metro HCMC chính thức được công bố",
-      time: "2024-12-05",
-      color: "purple",
-    },
-  ];
+  const { t } = useTranslation("home");
+  const newsData = t("news.items", { returnObjects: true }) as Array<{
+    title: string;
+    time: string;
+  }>;
+  const newsColors = ["green", "blue", "orange", "purple"];
 
   return (
     <div className="metro-homepage">
@@ -54,10 +38,10 @@ const HomePage: React.FC = () => {
             <div className="relative z-10 max-w-6xl mx-auto px-4">
               <div className="text-center mb-12 pt-8">
                 <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4 uppercase tracking-wider">
-                  Ưu Điểm Nổi Bật
+                  {t("features.title")}
                 </h1>
                 <p className="text-lg lg:text-xl text-white font-light max-w-2xl mx-auto">
-                  Tại sao nên chọn Metro làm phương tiện di chuyển?
+                  {t("features.subtitle")}
                 </p>
               </div>
 
@@ -66,11 +50,10 @@ const HomePage: React.FC = () => {
                   <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-8 text-center transform transition-all duration-300 hover:-translate-y-2 hover:bg-opacity-20 border border-white border-opacity-20">
                     <SafetyCertificateOutlined className="text-5xl text-cyan-400 mb-6 block" />
                     <h3 className="text-xl font-semibold text-black mb-4">
-                      An Toàn Tuyệt Đối
+                      {t("features.safety.title")}
                     </h3>
                     <p className="text-black text-opacity-90 leading-relaxed">
-                      Hệ thống an ninh hiện đại với camera giám sát 24/7, đảm
-                      bảo an toàn tuyệt đối cho hành khách.
+                      {t("features.safety.description")}
                     </p>
                   </div>
                 </div>
@@ -79,11 +62,10 @@ const HomePage: React.FC = () => {
                   <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-8 text-center transform transition-all duration-300 hover:-translate-y-2 hover:bg-opacity-20 border border-white border-opacity-20">
                     <ClockCircleOutlined className="text-5xl text-cyan-400 mb-6 block" />
                     <h3 className="text-xl font-semibold  text-black mb-4">
-                      Đúng Giờ
+                      {t("features.punctual.title")}
                     </h3>
                     <p className="text-black text-opacity-90 leading-relaxed">
-                      Tàu chạy đúng lịch trình với tần suất 3-5 phút/chuyến,
-                      giúp tiết kiệm thời gian di chuyển.
+                      {t("features.punctual.description")}
                     </p>
                   </div>
                 </div>
@@ -92,11 +74,10 @@ const HomePage: React.FC = () => {
                   <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-8 text-center transform transition-all duration-300 hover:-translate-y-2 hover:bg-opacity-20 border border-white border-opacity-20">
                     <EnvironmentOutlined className="text-5xl text-cyan-400 mb-6 block" />
                     <h3 className="text-xl font-semibold text-black mb-4">
-                      Thân Thiện Môi Trường
+                      {t("features.environment.title")}
                     </h3>
                     <p className="text-black text-opacity-90 leading-relaxed">
-                      Sử dụng năng lượng điện sạch, góp phần giảm ô nhiễm không
-                      khí và bảo vệ môi trường.
+                      {t("features.environment.description")}
                     </p>
                   </div>
                 </div>
@@ -119,7 +100,7 @@ const HomePage: React.FC = () => {
                     {inView ? <CountUp end={14} duration={2} /> : 0}
                   </div>
                   <div className="text-sm text-cyan-600 uppercase tracking-wider font-semibold">
-                    Ga Tàu Điện
+                    {t("stats.stations")}
                   </div>
                 </div>
 
@@ -140,7 +121,7 @@ const HomePage: React.FC = () => {
                     )}
                   </div>
                   <div className="text-sm text-cyan-600 uppercase tracking-wider font-semibold">
-                    Tổng Chiều Dài
+                    {t("stats.totalLength")}
                   </div>
                 </div>
 
@@ -156,7 +137,7 @@ const HomePage: React.FC = () => {
                     )}
                   </div>
                   <div className="text-sm text-cyan-600 uppercase tracking-wider font-semibold">
-                    Hành Khách/Ngày
+                    {t("stats.passengersPerDay")}
                   </div>
                 </div>
 
@@ -165,14 +146,10 @@ const HomePage: React.FC = () => {
                     <GlobalOutlined className="text-3xl text-cyan-400" />
                   </div>
                   <div className="text-5xl font-bold text-cyan-800 mb-2">
-                    {inView ? (
-                      <CountUp end={5} suffix=" phút" duration={2} />
-                    ) : (
-                      "0 phút"
-                    )}
+                    {inView ? <CountUp end={5} duration={2} /> : `0`}
                   </div>
                   <div className="text-sm text-cyan-600 uppercase tracking-wider font-semibold">
-                    Phút/Chuyến
+                    {t("stats.frequency")}
                   </div>
                 </div>
               </div>
@@ -183,10 +160,10 @@ const HomePage: React.FC = () => {
             <div className="max-w-6xl mx-auto px-4">
               <div className="text-center mb-12">
                 <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4 uppercase tracking-wider">
-                  Bản Đồ Tuyến Metro
+                  {t("metroMap.title")}
                 </h2>
                 <p className="text-lg lg:text-xl text-gray-600 font-light max-w-2xl mx-auto">
-                  Khám phá các tuyến đường và ga tàu trên toàn thành phố
+                  {t("metroMap.subtitle")}
                 </p>
               </div>
 
@@ -199,7 +176,7 @@ const HomePage: React.FC = () => {
                   />
                 </div>
                 <div className="absolute -top-4 -right-4 bg-cyan-400 text-white px-4 py-2 rounded-full font-semibold shadow-lg">
-                  Tuyến 1
+                  {t("metroMap.line1")}
                 </div>
               </div>
             </div>
@@ -213,13 +190,16 @@ const HomePage: React.FC = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div>
                   <h2 className="text-4xl lg:text-5xl font-bold text-white mb-8 uppercase tracking-wider">
-                    Tin Tức Mới Nhất
+                    {t("news.title")}
                   </h2>
 
                   <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-2xl p-8 border border-white border-opacity-20">
                     <Timeline className="custom-timeline">
                       {newsData.map((news, index) => (
-                        <Timeline.Item key={index} color={news.color}>
+                        <Timeline.Item
+                          key={index}
+                          color={newsColors[index % newsColors.length]}
+                        >
                           <div className="bg-white bg-opacity-5 rounded-lg backdrop-blur-sm">
                             <h5 className="text-black font-semibold mb-2 text-lg">
                               {news.title}
@@ -244,7 +224,7 @@ const HomePage: React.FC = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
                     <div className="absolute bottom-4 left-4 text-white">
                       <div className="bg-red-500 text-xs px-2 py-1 rounded-full font-semibold mb-2">
-                        MỚI NHẤT
+                        {t("news.latest")}
                       </div>
                     </div>
                   </div>

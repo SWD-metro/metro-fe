@@ -5,12 +5,14 @@ import background1 from "src/assets/background1.jpg";
 import background2 from "src/assets/background2.jpg";
 import background3 from "src/assets/background3.jpg";
 import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const { Title, Paragraph } = Typography;
 
 const HeroSection: React.FC = () => {
   const [currentTime, setCurrentTime] = useState<Date>(new Date());
   const { pathname } = useLocation();
+  const { t } = useTranslation("home");
   const isHome: boolean = pathname === "/";
 
   useEffect(() => {
@@ -129,7 +131,7 @@ const HeroSection: React.FC = () => {
                     ...animationStyles,
                   }}
                 >
-                  METRO HỒ CHÍ MINH
+                  {t("hero.title")}
                 </Title>
                 <div
                   className="w-full h-2.5 mt-4 mb-2 bg-yellow-400"
@@ -142,8 +144,7 @@ const HeroSection: React.FC = () => {
                   className="!text-xl !mb-7 opacity-90 !text-white"
                   style={subtitleAnimationStyles}
                 >
-                  Hệ thống giao thông công cộng hiện đại - Kết nối mọi điểm đến
-                  trong thành phố
+                  {t("hero.subtitle")}
                 </Paragraph>
 
                 <Space
@@ -158,7 +159,7 @@ const HeroSection: React.FC = () => {
                     style={heroButtonPrimaryStyle}
                     icon={<EnvironmentOutlined />}
                   >
-                    Xem Bản Đồ Tuyến
+                    {t("hero.btn1")}
                   </Button>
 
                   <Button
@@ -167,7 +168,7 @@ const HeroSection: React.FC = () => {
                     style={heroButtonSecondaryStyle}
                     icon={<ClockCircleOutlined />}
                   >
-                    Lịch Trình Tàu
+                    {t("hero.btn2")}
                   </Button>
                 </Space>
 
@@ -176,7 +177,7 @@ const HeroSection: React.FC = () => {
                   style={currentTimeStyle}
                 >
                   <ClockCircleOutlined style={{ marginRight: 8 }} />
-                  Hiện tại: {currentTime.toLocaleString("vi-VN")}
+                  {t("hero.now")}: {currentTime.toLocaleString("vi-VN")}
                 </div>
               </>
             </div>

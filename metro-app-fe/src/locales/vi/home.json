@@ -1,0 +1,74 @@
+{
+  "header": {
+    "home": "Trang chủ",
+    "whatToKnow": "Về ứng dụng",
+    "stops": "Trạm & Lịch trình",
+    "tickets": "Mua vé",
+    "contact": "Liên hệ",
+    "login": "Đăng nhập"
+  },
+  "hero": {
+    "title": "METRO HỒ CHÍ MINH",
+    "subtitle": "Hệ thống giao thông công cộng hiện đại - Kết nối mọi điểm đến trong thành phố",
+    "btn1": "Xem Bản Đồ Tuyến",
+    "btn2": "Lịch Trình Tàu",
+    "now": "Hiện tại"
+  },
+  "features": {
+    "title": "Ưu Điểm Nổi Bật",
+    "subtitle": "Tại sao nên chọn Metro làm phương tiện di chuyển?",
+    "safety": {
+      "title": "An Toàn Tuyệt Đối",
+      "description": "Hệ thống an ninh hiện đại với camera giám sát 24/7, đảm bảo an toàn tuyệt đối cho hành khách."
+    },
+    "punctual": {
+      "title": "Đúng Giờ",
+      "description": "Tàu chạy đúng lịch trình với tần suất 3-5 phút/chuyến, giúp tiết kiệm thời gian di chuyển."
+    },
+    "environment": {
+      "title": "Thân Thiện Môi Trường",
+      "description": "Sử dụng năng lượng điện sạch, góp phần giảm ô nhiễm không khí và bảo vệ môi trường."
+    }
+  },
+  "stats": {
+    "stations": "Ga Tàu Điện",
+    "totalLength": "Tổng Chiều Dài",
+    "passengersPerDay": "Hành Khách/Ngày",
+    "frequency": "Phút/Chuyến",
+    "frequencyUnit": "phút"
+  },
+  "metroMap": {
+    "title": "Bản Đồ Tuyến Metro",
+    "subtitle": "Khám phá các tuyến đường và ga tàu trên toàn thành phố",
+    "line1": "Tuyến 1",
+    "mapAlt": "Bản đồ Metro"
+  },
+  "news": {
+    "title": "Tin Tức Mới Nhất",
+    "latest": "MỚI NHẤT",
+    "imageAlt": "Tin tức Metro",
+    "items": [
+      {
+        "title": "Tuyến Metro số 1 chính thức vận hành thương mại",
+        "time": "2024-12-19"
+      },
+      {
+        "title": "Khai trương 14 ga tàu điện ngầm đầu tiên",
+        "time": "2024-12-15"
+      },
+      {
+        "title": "Lịch trình vận hành Metro Line 1 từ 6:00 - 22:00",
+        "time": "2024-12-10"
+      },
+      {
+        "title": "Giá vé Metro HCMC chính thức được công bố",
+        "time": "2024-12-05"
+      }
+    ]
+  },
+  "footer": {
+    "title": "Metro Hồ Chí Minh",
+    "subtitle": "Kết nối thành phố, kết nối tương lai",
+    "copyright": "© 2025 Metro HCMC. Tất cả quyền được bảo lưu."
+  }
+}
