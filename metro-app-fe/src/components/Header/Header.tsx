@@ -10,8 +10,10 @@ import path from "src/constants/path";
 import HeroSection from "../HeroSection";
 
 const Header: React.FC = () => {
-  const { i18n } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const { t, i18n } = useTranslation("home");
+
+  console.log("i18n", i18n);
 
   const renderFlag = (language: string | undefined): JSX.Element => {
     return (
@@ -31,64 +33,54 @@ const Header: React.FC = () => {
     setMobileMenuOpen(false);
   };
 
-  const languageDropdownStyle: React.CSSProperties = {
-    backgroundColor: "transparent",
-    boxShadow: "none",
-    border: "none",
-  };
-
   const menuItems: Array<{ key: string; label: string; to?: string }> = [
-    { key: "home", label: "HOME", to: path.home },
-    { key: "whatToKnow", label: "WHAT TO KNOW", to: path.whatToKnow },
-    { key: "time", label: "STOP & TIMETABLE" },
-    { key: "buy", label: "BUY TICKET" },
-    { key: "contact", label: "CONTACT US" },
-    { key: "login", label: "LOGIN", to: path.login },
+    { key: "home", label: t("header.home"), to: path.home },
+    { key: "whatToKnow", label: t("header.whatToKnow"), to: path.whatToKnow },
+    { key: "time", label: t("header.stops") },
+    { key: "buy", label: t("header.tickets") },
+    { key: "contact", label: t("header.contact") },
+    { key: "login", label: t("header.login"), to: path.login },
   ];
+
+  const changeLanguage = (lng: "en" | "vi") => {
+    i18n.changeLanguage(lng);
+  };
 
   const LanguageDropdown: React.FC = () => (
     <Dropdown
-      overlay={
-        <Menu className="!p-2 !rounded-[10px] !shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
-          <Menu.Item
-            key="en"
-            onClick={() => i18n.changeLanguage("en")}
-            className="!p-[8px_12px] !font-medium hover:!bg-gray-100"
-            style={{ display: "flex", alignItems: "center", gap: 10 }}
-          >
-            <img
-              src={enFlag}
-              alt="en"
-              style={{ height: 20, width: 20, marginRight: 8 }}
-            />
-            <span>English</span>
-          </Menu.Item>
-          <Menu.Item
-            key="vi"
-            onClick={() => i18n.changeLanguage("vi")}
-            className="!p-[8px_12px] !font-medium hover:!bg-gray-100"
-            style={{ display: "flex", alignItems: "center", gap: 10 }}
-          >
-            <img
-              src={viFlag}
-              alt="vi"
-              style={{ height: 20, width: 20, marginRight: 8 }}
-            />
-            <span>Tiếng Việt</span>
-          </Menu.Item>
-        </Menu>
-      }
+      menu={{
+        items: [
+          {
+            key: "en",
+            label: (
+              <div className="flex items-center gap-2 py-1">
+                <img src={enFlag} alt="en" className="w-5 h-5" />
+                <span>English</span>
+              </div>
+            ),
+            onClick: () => changeLanguage("en"),
+          },
+          {
+            key: "vi",
+            label: (
+              <div className="flex items-center gap-2 py-1">
+                <img src={viFlag} alt="vi" className="w-5 h-5" />
+                <span>Tiếng Việt</span>
+              </div>
+            ),
+            onClick: () => changeLanguage("vi"),
+          },
+        ],
+      }}
+      placement="bottomRight"
+      trigger={["click"]}
     >
       <Button
         type="text"
-        style={{
-          ...languageDropdownStyle,
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-        }}
+        className="!bg-transparent !border-0 !shadow-none flex items-center mt-3 gap-2 !text-white hover:!text-[#007acc]"
       >
-        {renderFlag(i18n.resolvedLanguage)}
+        {renderFlag(i18n.resolvedLanguage || "vi")}
+        {i18n.resolvedLanguage === "en" ? "EN" : "VN"}
       </Button>
     </Dropdown>
   );
@@ -122,7 +114,6 @@ const Header: React.FC = () => {
           </Menu>
 
           <div className="flex items-center gap-4 lg:hidden">
-            <LanguageDropdown />
             <Button
               type="text"
               icon={<MenuOutlined />}

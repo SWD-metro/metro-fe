@@ -1,14 +1,12 @@
 import React from "react";
 import { Typography, Divider, Row, Col } from "antd";
-import {
-  PhoneOutlined,
-  MailOutlined,
-  EnvironmentOutlined,
-} from "@ant-design/icons";
+import { PhoneOutlined, MailOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
 const { Title, Text } = Typography;
 
 const Footer: React.FC = () => {
+  const { t } = useTranslation("home");
   const footerBackgroundStyle: React.CSSProperties = {
     background: "linear-gradient(135deg, #1f2937 0%, #111827 100%)",
   };
@@ -32,13 +30,6 @@ const Footer: React.FC = () => {
       label: "Email:",
       highlight: "contact@metro.vn",
     },
-    {
-      icon: (
-        <EnvironmentOutlined className="text-[#40a9ff] text-lg flex-shrink-0" />
-      ),
-      label: "Xem bản đồ tuyến Metro HCMC",
-      highlight: "",
-    },
   ];
 
   return (
@@ -57,10 +48,10 @@ const Footer: React.FC = () => {
                   level={3}
                   className="!text-white !mb-4 !font-bold !text-2xl md:!text-xl !leading-tight"
                 >
-                  Metro Hồ Chí Minh
+                  {t("footer.title")}
                   <br />
                   <span className="text-[#40a9ff] text-lg md:text-base font-normal block mt-2">
-                    Kết nối thành phố, kết nối tương lai
+                    {t("footer.subtitle")}
                   </span>
                 </Title>
 
@@ -106,7 +97,9 @@ const Footer: React.FC = () => {
 
           <div className="text-center">
             <Text className="!text-white">
-              © 2025 Metro HCMC. Tất cả quyền được bảo lưu.
+              {t("footer.copyright", {
+                year: new Date().getFullYear(),
+              })}
             </Text>
           </div>
         </div>

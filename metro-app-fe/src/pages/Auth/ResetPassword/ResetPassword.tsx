@@ -3,11 +3,13 @@ import React, { useState } from "react";
 import { LockOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import path from "src/constants/path";
+import { useTranslation } from "react-i18next";
 
 const ResetPassword: React.FC = () => {
   const [isSuccessChange, setSuccessChange] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation("auth");
 
   const backToLogin = () => {
     navigate(path.login);
@@ -22,7 +24,7 @@ const ResetPassword: React.FC = () => {
       {isSuccessChange ? (
         <>
           <label className="block !text-lg italic text-center text-cyan-800 mb-6">
-            Password changed successfully. You may close this window.
+            {t("resetPassword.success.message")}
           </label>
           <Button
             block
@@ -34,7 +36,7 @@ const ResetPassword: React.FC = () => {
             className="rounded-full"
             onClick={backToLogin}
           >
-            Back to login
+            {t("resetPassword.success.backToLogin")}
           </Button>
         </>
       ) : (
@@ -48,13 +50,13 @@ const ResetPassword: React.FC = () => {
             name="newPassword"
             label={
               <label className="text-base font-medium text-cyan-800">
-                New Password
+                {t("resetPassword.newPassword.label")}
               </label>
             }
             rules={[
               {
                 required: true,
-                message: "Please input your new password",
+                message: t("resetPassword.newPassword.required"),
               },
             ]}
           >
@@ -62,7 +64,7 @@ const ResetPassword: React.FC = () => {
               prefix={<LockOutlined />}
               type="password"
               size="large"
-              placeholder="New password"
+              placeholder={t("resetPassword.newPassword.placeholder")}
               className="rounded-lg h-12"
               disabled={isLoading}
             />
@@ -71,13 +73,13 @@ const ResetPassword: React.FC = () => {
             name="confirmPassword"
             label={
               <label className="text-base font-medium text-cyan-800">
-                Confirm Password
+                {t("resetPassword.confirmPassword.label")}
               </label>
             }
             rules={[
               {
                 required: true,
-                message: "Please input your confirm password",
+                message: t("resetPassword.confirmPassword.required"),
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
@@ -85,7 +87,7 @@ const ResetPassword: React.FC = () => {
                     return Promise.resolve();
                   }
                   return Promise.reject(
-                    new Error("The new password that you entered do not match!")
+                    new Error(t("resetPassword.confirmPassword.notMatch"))
                   );
                 },
               }),
@@ -95,7 +97,7 @@ const ResetPassword: React.FC = () => {
               prefix={<LockOutlined />}
               type="password"
               size="large"
-              placeholder="Confirm password"
+              placeholder={t("resetPassword.confirmPassword.placeholder")}
               className="rounded-lg h-12"
               disabled={isLoading}
             />
@@ -109,7 +111,7 @@ const ResetPassword: React.FC = () => {
               htmlType="submit"
               loading={isLoading}
             >
-              Confirm
+              {t("resetPassword.confirmButton")}
             </Button>
           </Form.Item>
         </Form>

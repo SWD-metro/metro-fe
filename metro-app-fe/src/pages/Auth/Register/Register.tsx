@@ -9,12 +9,14 @@ import {
 } from "@ant-design/icons";
 import { Link as RouterLink } from "react-router-dom";
 import path from "src/constants/path";
+import { useTranslation } from "react-i18next";
 
 const { Title, Text } = Typography;
 
 const RegisterPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
+  const { t } = useTranslation("auth");
 
   const onFinish = async () => {
     setLoading(true);
@@ -24,7 +26,7 @@ const RegisterPage: React.FC = () => {
     <>
       <div className="text-center mb-6">
         <Title level={3} className="!text-cyan-800 mb-2">
-          Đăng ký tài khoản
+          {t("register.title")}
         </Title>
       </div>
 
@@ -41,13 +43,13 @@ const RegisterPage: React.FC = () => {
             <Form.Item
               name="username"
               rules={[
-                { required: true, message: "Vui lòng nhập tên đăng nhập!" },
-                { min: 3, message: "Tên đăng nhập phải có ít nhất 3 ký tự!" },
+                { required: true, message: t("register.username.required") },
+                { min: 3, message: t("register.username.minLength") },
               ]}
             >
               <Input
                 prefix={<UserOutlined className="text-gray-400" />}
-                placeholder="Tên đăng nhập"
+                placeholder={t("register.username.placeholder")}
                 className="rounded-lg h-12"
               />
             </Form.Item>
@@ -56,11 +58,13 @@ const RegisterPage: React.FC = () => {
           <Col span={24}>
             <Form.Item
               name="full_name"
-              rules={[{ required: true, message: "Vui lòng nhập họ và tên!" }]}
+              rules={[
+                { required: true, message: t("register.fullName.required") },
+              ]}
             >
               <Input
                 prefix={<UserOutlined className="text-gray-400" />}
-                placeholder="Họ và tên"
+                placeholder={t("register.fullName.placeholder")}
                 className="rounded-lg h-12"
               />
             </Form.Item>
@@ -72,13 +76,13 @@ const RegisterPage: React.FC = () => {
             <Form.Item
               name="email"
               rules={[
-                { type: "email", message: "Email không hợp lệ!" },
+                { type: "email", message: t("register.email.invalid") },
                 { required: false },
               ]}
             >
               <Input
                 prefix={<MailOutlined className="text-gray-400" />}
-                placeholder="Email"
+                placeholder={t("register.email.placeholder")}
                 className="rounded-lg h-12"
               />
             </Form.Item>
@@ -90,13 +94,13 @@ const RegisterPage: React.FC = () => {
               rules={[
                 {
                   pattern: /^[0-9]{10,11}$/,
-                  message: "Số điện thoại không hợp lệ!",
+                  message: t("register.phone.invalid"),
                 },
               ]}
             >
               <Input
                 prefix={<PhoneOutlined className="text-gray-400" />}
-                placeholder="Số điện thoại"
+                placeholder={t("register.phone.placeholder")}
                 className="rounded-lg h-12"
               />
             </Form.Item>
@@ -108,12 +112,12 @@ const RegisterPage: React.FC = () => {
             <Form.Item
               name="cccd"
               rules={[
-                { pattern: /^[0-9]{12}$/, message: "CCCD phải có 12 chữ số!" },
+                { pattern: /^[0-9]{12}$/, message: t("register.cccd.invalid") },
               ]}
             >
               <Input
                 prefix={<IdcardOutlined className="text-gray-400" />}
-                placeholder="Số CCCD (không bắt buộc)"
+                placeholder={t("register.cccd.placeholder")}
                 className="rounded-lg h-12"
               />
             </Form.Item>
@@ -125,13 +129,13 @@ const RegisterPage: React.FC = () => {
             <Form.Item
               name="password"
               rules={[
-                { required: true, message: "Vui lòng nhập mật khẩu!" },
-                { min: 6, message: "Mật khẩu phải có ít nhất 6 ký tự!" },
+                { required: true, message: t("register.password.required") },
+                { min: 6, message: t("register.password.minLength") },
               ]}
             >
               <Input.Password
                 prefix={<LockOutlined className="text-gray-400" />}
-                placeholder="Mật khẩu"
+                placeholder={t("register.password.placeholder")}
                 className="rounded-lg h-12"
               />
             </Form.Item>
@@ -142,20 +146,25 @@ const RegisterPage: React.FC = () => {
               name="confirmPassword"
               dependencies={["password"]}
               rules={[
-                { required: true, message: "Vui lòng xác nhận mật khẩu!" },
+                {
+                  required: true,
+                  message: t("register.confirmPassword.required"),
+                },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
                     if (!value || getFieldValue("password") === value) {
                       return Promise.resolve();
                     }
-                    return Promise.reject("Mật khẩu xác nhận không khớp!");
+                    return Promise.reject(
+                      t("register.confirmPassword.notMatch")
+                    );
                   },
                 }),
               ]}
             >
               <Input.Password
                 prefix={<LockOutlined className="text-gray-400" />}
-                placeholder="Xác nhận mật khẩu"
+                placeholder={t("register.confirmPassword.placeholder")}
                 className="rounded-lg h-12"
               />
             </Form.Item>
@@ -170,13 +179,11 @@ const RegisterPage: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng đồng ý với điều khoản sử dụng!",
+                  message: t("register.agreement.required"),
                 },
               ]}
             >
-              <Checkbox>
-                Tôi đồng ý với điều khoản sử dụng và chính sách bảo mật
-              </Checkbox>
+              <Checkbox>{t("register.agreement.text")}</Checkbox>
             </Form.Item>
           </Col>
         </Row>
@@ -191,7 +198,7 @@ const RegisterPage: React.FC = () => {
                 loading={loading}
                 style={{ width: "70%", margin: "0 auto", display: "block" }}
               >
-                Đăng ký
+                {t("register.registerButton")}
               </Button>
             </Form.Item>
           </Col>
@@ -199,12 +206,12 @@ const RegisterPage: React.FC = () => {
 
         <div className="text-center">
           <Text className="text-gray-600">
-            Đã có tài khoản?{" "}
+            {t("register.hasAccount")}
             <RouterLink
               to={path.login}
               className="text-blue-600 hover:text-blue-800 font-medium no-underline"
             >
-              Đăng nhập ngay
+              {t("register.loginNow")}
             </RouterLink>
           </Text>
         </div>
