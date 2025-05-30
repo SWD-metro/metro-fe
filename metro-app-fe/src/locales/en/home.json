@@ -1,0 +1,74 @@
+{
+  "header": {
+    "home": "Home",
+    "whatToKnow": "What to know",
+    "stops": "Stop & Timetable",
+    "tickets": "Buy Ticket",
+    "contact": "Contact us",
+    "login": "Login"
+  },
+  "hero": {
+    "title": "METRO HCMC",
+    "subtitle": "Modern public transport system - Connecting every destination in the city",
+    "btn1": "View Route Map",
+    "btn2": "Train Schedule",
+    "now": "Current"
+  },
+  "features": {
+    "title": "Outstanding Features",
+    "subtitle": "Why choose Metro as your transportation method?",
+    "safety": {
+      "title": "Absolute Safety",
+      "description": "Modern security system with 24/7 surveillance cameras, ensuring absolute safety for passengers."
+    },
+    "punctual": {
+      "title": "On Time",
+      "description": "Trains run on schedule with a frequency of 3-5 minutes per trip, helping save travel time."
+    },
+    "environment": {
+      "title": "Environmentally Friendly",
+      "description": "Uses clean electric energy, contributing to reducing air pollution and protecting the environment."
+    }
+  },
+  "stats": {
+    "stations": "Train Stations",
+    "totalLength": "Total Length",
+    "passengersPerDay": "Passengers/Day",
+    "frequency": "Minutes/Trip",
+    "frequencyUnit": "minutes"
+  },
+  "metroMap": {
+    "title": "Metro Line Map",
+    "subtitle": "Explore routes and stations throughout the city",
+    "line1": "Line 1",
+    "mapAlt": "Metro Map"
+  },
+  "news": {
+    "title": "Latest News",
+    "latest": "LATEST",
+    "imageAlt": "Metro News",
+    "items": [
+      {
+        "title": "Metro Line 1 officially begins commercial operation",
+        "time": "2024-12-19"
+      },
+      {
+        "title": "Opening of the first 14 subway stations",
+        "time": "2024-12-15"
+      },
+      {
+        "title": "Metro Line 1 operating schedule from 6:00 - 22:00",
+        "time": "2024-12-10"
+      },
+      {
+        "title": "HCMC Metro ticket prices officially announced",
+        "time": "2024-12-05"
+      }
+    ]
+  },
+  "footer": {
+    "title": "Metro HCMC",
+    "subtitle": "Connecting the city with modern public transport",
+    "copyright": "© 2025 Metro HCMC. All rights reserved."
+  }
+}
