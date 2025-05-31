@@ -16,14 +16,13 @@ type StepsListProps = {
   isLight?: boolean;
 };
 
-const WhatToKnow: React.FC = () => {
+const ServicePage: React.FC = () => {
   return (
-    <div className="whatToKnow">
+    <div>
       <section
         className="relative py-5 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${statsBackground})` }}
       >
-        <div className="absolute top-0 left-0 right-0 h-0.5 bg-blue-600"></div>
         <div className="relative z-10 max-w-6xl mx-auto p-5">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-black mb-4 uppercase tracking-wide">
@@ -231,4 +230,4 @@ const StepsList = ({ steps, isLight = false }: StepsListProps) => {
   );
 };
 
-export default WhatToKnow;
+export default ServicePage;

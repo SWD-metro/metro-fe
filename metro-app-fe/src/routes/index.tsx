@@ -7,8 +7,9 @@ import ForgotPassword from "src/pages/Auth/ForgotPassword";
 import LoginPage from "src/pages/Auth/Login";
 import RegisterPage from "src/pages/Auth/Register";
 import ResetPassword from "src/pages/Auth/ResetPassword";
+import AboutUsPage from "src/pages/Client/AboutUs";
 import HomePage from "src/pages/Client/HomePage";
-import WhatToKnow from "src/pages/Client/WhatToKnow";
+import ServicePage from "src/pages/Client/Services";
 import Home from "src/pages/dashboard/Home";
 
 const RouteElements: React.FC = () => {
@@ -22,8 +23,12 @@ const RouteElements: React.FC = () => {
           element: <HomePage />,
         },
         {
-          path: path.whatToKnow,
-          element: <WhatToKnow />,
+          path: path.services,
+          element: <ServicePage />,
+        },
+        {
+          path: path.aboutUs,
+          element: <AboutUsPage />,
         },
       ],
     },

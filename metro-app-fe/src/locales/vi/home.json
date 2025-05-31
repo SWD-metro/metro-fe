@@ -1,10 +1,10 @@
 {
   "header": {
     "home": "Trang chủ",
-    "whatToKnow": "Về ứng dụng",
+    "whatToKnow": "Dịch vụ",
     "stops": "Trạm & Lịch trình",
     "tickets": "Mua vé",
-    "contact": "Liên hệ",
+    "contact": "Về chúng tôi",
     "login": "Đăng nhập"
   },
   "hero": {
@@ -65,6 +65,63 @@
         "time": "2024-12-05"
       }
     ]
+  },
+  "aboutus": {
+    "pageTitle": "Về Chúng Tôi",
+    "developmentJourney": {
+      "title": "Hành Trình Phát Triển",
+      "metroLine": "Metro 1: Bến Thành - Suối Tiên",
+      "paragraph1": "Metro Thành phố Hồ Chí Minh được khởi công xây dựng từ năm 2012, với mong muốn tạo ra một hệ thống giao thông công cộng hiện đại, kết nối các khu vực trọng điểm của thành phố.",
+      "paragraph2": "Sau hơn một thập kỷ phát triển, chúng tôi tự hào là một phần quan trọng trong hệ thống giao thông đô thị của TP.HCM, mang đến cho người dân những chuyến đi an toàn, nhanh chóng và tiện lợi.",
+      "paragraph3": "Với cam kết không ngừng cải tiến và phát triển, Metro HCM sẽ tiếp tục mở rộng mạng lưới, áp dụng công nghệ tiên tiến để phục vụ tốt hơn nhu cầu di chuyển của người dân thành phố."
+    },
+    "mission": {
+      "title": "Sứ Mệnh",
+      "description": "Cung cấp dịch vụ giao thông công cộng chất lượng cao, góp phần giảm ùn tắc giao thông và bảo vệ môi trường tại TP.HCM."
+    },
+    "vision": {
+      "title": "Tầm Nhìn",
+      "description": "Trở thành hệ thống giao thông đô thị hàng đầu Đông Nam Á, kết nối mọi người dân với cuộc sống hiện đại và bền vững."
+    },
+    "contact": {
+      "title": "Liên Hệ Với Chúng Tôi",
+      "address": {
+        "label": "Địa chỉ",
+        "value": "NVH Sinh Viên Đại Học Quốc Gia TP.HCM"
+      },
+      "phone": {
+        "label": "Điện thoại",
+        "value": "Hotline: 1900 1234"
+      },
+      "email": {
+        "label": "Email",
+        "value": "contact@metro.vn"
+      },
+      "workingHours": {
+        "label": "Giờ làm việc",
+        "value": "Thứ 2 - Thứ 7: 8:00 - 17:30"
+      },
+      "contactForm": {
+        "title": "Gửi Tin Nhắn",
+        "fullName": {
+          "label": "Họ và tên *",
+          "placeholder": "Nhập họ và tên của bạn"
+        },
+        "email": {
+          "label": "Email *",
+          "placeholder": "Nhập địa chỉ email"
+        },
+        "phone": {
+          "label": "Số điện thoại",
+          "placeholder": "Nhập số điện thoại"
+        },
+        "message": {
+          "label": "Nội dung *",
+          "placeholder": "Nhập nội dung tin nhắn..."
+        },
+        "submitButton": "Gửi Tin Nhắn"
+      }
+    }
   },
   "footer": {
     "title": "Metro Hồ Chí Minh",

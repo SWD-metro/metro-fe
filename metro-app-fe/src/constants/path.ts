@@ -5,6 +5,7 @@ const path = {
   forgotPassword: "/auth/forgot-password",
   resetPassword: "/auth/reset-password",
   logout: "/logout",
-  whatToKnow: "/what-to-know",
+  services: "/services",
+  aboutUs: "/about-us",
 } as const;
 export default path;

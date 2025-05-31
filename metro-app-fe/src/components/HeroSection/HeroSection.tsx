@@ -100,7 +100,7 @@ const HeroSection: React.FC = () => {
 
       <div
         className={`relative overflow-hidden rounded-b-[50px] shadow-[0_10px_30px_rgba(0,0,0,0.3)] ${
-          isHome ? "h-[55vh]" : "h-[24vh]"
+          isHome ? "h-[55vh]" : "h-[15vh]"
         }`}
       >
         <Carousel autoplay effect="fade" dots={false} speed={1000}>
@@ -110,7 +110,7 @@ const HeroSection: React.FC = () => {
                 src={image.url}
                 alt={image.title}
                 className={`w-full object-cover ${
-                  isHome ? "h-[55vh]" : "h-[24vh]"
+                  isHome ? "h-[55vh]" : "h-[15vh]"
                 }`}
               />
             </div>

@@ -1,10 +1,10 @@
 {
   "header": {
     "home": "Home",
-    "whatToKnow": "What to know",
+    "whatToKnow": "Services",
     "stops": "Stop & Timetable",
     "tickets": "Buy Ticket",
-    "contact": "Contact us",
+    "contact": "About us",
     "login": "Login"
   },
   "hero": {
@@ -65,6 +65,63 @@
         "time": "2024-12-05"
       }
     ]
+  },
+  "aboutus": {
+    "pageTitle": "About Us",
+    "developmentJourney": {
+      "title": "Development Journey",
+      "metroLine": "Metro Line 1: Ben Thanh - Suoi Tien",
+      "paragraph1": "Ho Chi Minh City Metro construction began in 2012, with the desire to create a modern public transportation system, connecting key areas of the city.",
+      "paragraph2": "After more than a decade of development, we are proud to be an important part of Ho Chi Minh City's urban transportation system, providing citizens with safe, fast and convenient trips.",
+      "paragraph3": "With a commitment to continuous improvement and development, Metro HCM will continue to expand the network, applying advanced technology to better serve the transportation needs of city residents."
+    },
+    "mission": {
+      "title": "Mission",
+      "description": "Provide high-quality public transportation services, contributing to reducing traffic congestion and protecting the environment in Ho Chi Minh City."
+    },
+    "vision": {
+      "title": "Vision",
+      "description": "Become the leading urban transportation system in Southeast Asia, connecting all citizens with modern and sustainable life."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "address": {
+        "label": "Address",
+        "value": "FPT University NVH, Ho Chi Minh City"
+      },
+      "phone": {
+        "label": "Phone",
+        "value": "Hotline: 1900 1234"
+      },
+      "email": {
+        "label": "Email",
+        "value": "contact@metro.vn"
+      },
+      "workingHours": {
+        "label": "Working Hours",
+        "value": "Monday - Saturday: 8:00 - 17:30"
+      },
+      "contactForm": {
+        "title": "Send Message",
+        "fullName": {
+          "label": "Full Name *",
+          "placeholder": "Enter your full name"
+        },
+        "email": {
+          "label": "Email *",
+          "placeholder": "Enter email address"
+        },
+        "phone": {
+          "label": "Phone Number",
+          "placeholder": "Enter phone number"
+        },
+        "message": {
+          "label": "Message *",
+          "placeholder": "Enter your message..."
+        },
+        "submitButton": "Send Message"
+      }
+    }
   },
   "footer": {
     "title": "Metro HCMC",
