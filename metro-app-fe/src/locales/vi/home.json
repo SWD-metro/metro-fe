@@ -11,8 +11,14 @@
     "title": "METRO HỒ CHÍ MINH",
     "subtitle": "Hệ thống giao thông công cộng hiện đại - Kết nối mọi điểm đến trong thành phố",
     "btn1": "Xem Bản Đồ Tuyến",
-    "btn2": "Lịch Trình Tàu",
+    "btn2": "Lịch Trình",
     "now": "Hiện tại"
+  },
+  "menu": {
+    "map": "BẢN ĐỒ TUYẾN L1",
+    "route": "TUYẾN BUÝT KẾT NỐI",
+    "buyTicket": "MUA VÉ",
+    "intructions": "HƯỚNG DẪN"
   },
   "features": {
     "title": "Ưu Điểm Nổi Bật",
@@ -43,28 +49,17 @@
     "line1": "Tuyến 1",
     "mapAlt": "Bản đồ Metro"
   },
-  "news": {
-    "title": "Tin Tức Mới Nhất",
-    "latest": "MỚI NHẤT",
-    "imageAlt": "Tin tức Metro",
-    "items": [
-      {
-        "title": "Tuyến Metro số 1 chính thức vận hành thương mại",
-        "time": "2024-12-19"
-      },
-      {
-        "title": "Khai trương 14 ga tàu điện ngầm đầu tiên",
-        "time": "2024-12-15"
-      },
-      {
-        "title": "Lịch trình vận hành Metro Line 1 từ 6:00 - 22:00",
-        "time": "2024-12-10"
-      },
-      {
-        "title": "Giá vé Metro HCMC chính thức được công bố",
-        "time": "2024-12-05"
-      }
-    ]
+  "information": {
+    "title": "Thông tin nhanh",
+    "subtitle": "Cầu hỏi 24/7",
+    "schedule": "Lịch hoạt động tuyến Metro L1",
+    "scheduleContent": "Tuyến Metro L1 hoạt động từ 5:00 - 22:00 hằng ngày với 200 chuyến/ngày và 9 đoàn tàu.\n\n🕕 Giờ cao điểm (6:00-8:00, 11:00-12:00, 15:30-18:00):\n• Tần suất: 8 phút/chuyến\n• Số đoàn tàu: 9 đoàn\n\n🕐 Giờ bình thường:\n• Tần suất: 12 phút/chuyến\n• Số đoàn tàu: 6 đoàn\n\n⏱️ Thời gian hành trình: 29 phút (Bến Thành ↔ Suối Tiên)\n📍 Quãng đường: 19,7km qua 14 ga tàu\n⏳ Thời gian dừng tại ga: 30 giây",
+    "ticketPrice": "Giá vé đi tàu?",
+    "ticketPriceContent": "Giá vé Metro L1 được tính theo khoảng cách di chuyển:\n\n🎫 Vé lượt: Từ 7,000đ\n\n🎫 Vé ngày: 30,000đ\n\n💳 Vé tháng:\n• Vé tháng không giới hạn: 300,000đ\n• Vé tháng sinh viên: 150,000đ\n\n🎯 Thanh toán: QR Code, thẻ ngân hàng",
+    "freeTicket": "Ai được hỗ trợ 100% giá vé?",
+    "freeTicketContent": "Các đối tượng được miễn phí hoàn toàn khi sử dụng Metro L1:\n\n👥 Đối tượng chính sách:\n• Người có công với cách mạng\n• Thương binh, bệnh binh\n• Người khuyết tật nặng\n\n👶 Trẻ em:\n• Trẻ em dưới 6 tuổi (đi cùng người lớn)\n• Trẻ em từ 6-15 tuổi giảm 50%\n\n📋 Yêu cầu:\n• Xuất trình giấy tờ chứng minh hợp lệ\n• Đăng ký thẻ ưu đãi tại các ga Metro",
+    "luggage": "Kích thước hành lý được phép mang lên tàu?",
+    "luggageContent": "Quy định hành lý khi đi Metro L1:\n\n✅ Được phép:\n• Túi xách cá nhân, ba lô thông thường\n• Vali kéo: ≤ 158cm (dài + rộng + cao)\n• Trọng lượng: ≤ 25kg/người\n• Xe đẩy trẻ em (gấp gọn)\n\n❌ Không được phép:\n• Hành lý có mùi nặng, độc hại\n• Động vật sống (trừ chó dẫn đường)\n• Chất lỏng dễ cháy, nổ\n• Vũ khí, công cụ hỗ trợ\n\n📏 Kích thước tối đa từng chiều: 100cm x 60cm x 40cm"
   },
   "aboutus": {
     "pageTitle": "Về Chúng Tôi",
@@ -120,6 +115,66 @@
           "placeholder": "Nhập nội dung tin nhắn..."
         },
         "submitButton": "Gửi Tin Nhắn"
+      }
+    }
+  },
+  "services": {
+    "title": "Mua Vé Điện Tử",
+    "subtitle": "Hai cách tiện lợi để mua vé Metro - Nhận vé điện tử dạng mã QR để quét khi lên tàu",
+    "promo": "🎉 Chỉ từ 7.000 đồng/lượt – Giải pháp tiết kiệm, nhanh chóng và hiện đại cho mỗi hành trình của bạn!",
+    "methods": {
+      "website": {
+        "title": "Mua Vé Qua Website",
+        "description": "Mua vé trực tuyến qua website, thanh toán online và nhận vé điện tử ngay lập tức",
+        "ticket": {
+          "title": "VÉ METRO HCMC",
+          "type": "Vé điện tử",
+          "route": "Ga Bến Thành → Ga Suối Tiên",
+          "validity": "Hạn sử dụng: 1 ngày"
+        },
+        "buttons": {
+          "buy": "Mua Vé Online",
+          "myTickets": "Vé Của Tôi"
+        },
+        "steps": {
+          "title": "Cách mua vé:",
+          "items": [
+            "Truy cập website Metro HCMC",
+            "Chọn ga đi và ga đến",
+            "Thanh toán qua thẻ/ví điện tử",
+            "Nhận vé QR qua email/SMS",
+            "Quét QR khi lên tàu"
+          ]
+        }
+      },
+      "app": {
+        "title": "Tải Ứng Dụng Metro HCMC",
+        "description": "Trải nghiệm đầy đủ với ứng dụng di động - Mua vé, tra cứu lịch trình, định vị ga tàu",
+        "features": {
+          "title": "Tính năng nổi bật:",
+          "items": [
+            "🎫 Mua vé trực tuyến",
+            "🕐 Tra cứu lịch tàu",
+            "📍 Định vị ga gần nhất",
+            "💳 Thanh toán nhanh gọn",
+            "🔔 Nhận thông báo tức thì",
+            "📊 Lịch sử di chuyển"
+          ]
+        },
+        "buttons": {
+          "appStore": "App Store",
+          "googlePlay": "Google Play"
+        },
+        "benefits": {
+          "title": "Tại sao chọn App:",
+          "items": [
+            "Mua vé mọi lúc mọi nơi",
+            "Lưu thông tin thanh toán",
+            "Nhận thông báo tàu trễ",
+            "Tích điểm thành viên",
+            "Hỗ trợ đa ngôn ngữ"
+          ]
+        }
       }
     }
   },

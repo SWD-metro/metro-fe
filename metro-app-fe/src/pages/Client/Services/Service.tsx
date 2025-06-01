@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Col, Divider, Row } from "antd";
+import { Button, Col, Row } from "antd";
 import {
   AndroidOutlined,
   AppleOutlined,
@@ -10,6 +10,7 @@ import {
 } from "@ant-design/icons";
 import statsBackground from "src/assets/stats_section.jpg";
 import metromb from "src/assets/app-metro-mb.jpg";
+import { useTranslation } from "react-i18next";
 
 type StepsListProps = {
   steps: string[];
@@ -17,6 +18,7 @@ type StepsListProps = {
 };
 
 const ServicePage: React.FC = () => {
+  const { t } = useTranslation("home");
   return (
     <div>
       <section
@@ -26,37 +28,36 @@ const ServicePage: React.FC = () => {
         <div className="relative z-10 max-w-6xl mx-auto p-5">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-black mb-4 uppercase tracking-wide">
-              Mua Vé Điện Tử
+              {t("services.title")}
             </h1>
             <p className="text-lg text-black mb-5 font-light">
-              Hai cách tiện lợi để mua vé Metro - Nhận vé điện tử dạng mã QR để
-              quét khi lên tàu
+              {t("services.subtitle")}
             </p>
             <p className="text-xl text-red-400 font-semibold mb-5">
-              🎉 Chỉ từ <strong>7.000 đồng/lượt</strong> – Giải pháp tiết kiệm,
-              nhanh chóng và hiện đại cho mỗi hành trình của bạn!
+              {t("services.promo")}
             </p>
           </div>
 
-          <div className="relative p-8 border border-blue-600 rounded-3xl mb-8 bg-white bg-opacity-10 backdrop-blur-sm">
+          <div className="relative p-8 border border-cyan-600 rounded-3xl mb-8 bg-white bg-opacity-10 backdrop-blur-sm">
             <Row gutter={[60, 60]} align="middle">
               <Col xs={24} md={12}>
                 <div className="text-center">
                   <h3 className="text-2xl font-semibold text-black mb-5 flex items-center justify-center gap-3">
                     <GlobalOutlined className="text-blue-400 text-3xl" />
-                    Mua Vé Qua Website
+                    {t("services.methods.website.title")}
                   </h3>
                   <p className="text-black text-base mb-5 leading-relaxed">
-                    Mua vé trực tuyến qua website, thanh toán online và nhận vé
-                    điện tử ngay lập tức
+                    {t("services.methods.website.description")}
                   </p>
 
-                  <div className="bg-white rounded-2xl p-6 border border-blue-600 relative mb-6">
-                    <div className="mb-4 pb-3 border-b-2 border-dashed border-blue-600 relative z-10">
-                      <div className="font-bold text-blue-600 text-lg">
-                        VÉ METRO HCMC
+                  <div className="bg-white rounded-2xl p-6 border border-cyan-600 relative mb-6">
+                    <div className="mb-4 pb-3 border-b-2 border-dashed border-cyan-600 relative z-10">
+                      <div className="font-bold text-cyan-800 text-lg">
+                        {t("services.methods.website.ticket.title")}
                       </div>
-                      <div className="text-gray-500">Vé điện tử</div>
+                      <div className="text-cyan-800">
+                        {t("services.methods.website.ticket.type")}
+                      </div>
                     </div>
 
                     <div className="my-4 bg-gray-50 rounded-lg inline-block relative z-10">
@@ -67,11 +68,14 @@ const ServicePage: React.FC = () => {
                       />
                     </div>
 
-                    <div className="mt-4 pt-3 border-t-2 border-dashed border-blue-600 relative z-10">
-                      <div className="font-bold text-gray-800">
-                        Ga Bến Thành → Ga Suối Tiên
+                    <div className="mt-4 pt-3 border-t-2 border-dashed border-cyan-600 relative z-10">
+                      <div className="font-bold text-cyan-800">
+                        {t("services.methods.website.ticket.route")}
                       </div>
-                      <div className="text-gray-500">Hạn sử dụng: 1 ngày</div>
+                      <div className="text-cyan-600">
+                        {" "}
+                        {t("services.methods.website.ticket.validity")}
+                      </div>
                     </div>
                   </div>
 
@@ -79,17 +83,12 @@ const ServicePage: React.FC = () => {
                     <Button
                       type="primary"
                       size="large"
-                      className="h-11 px-6 text-sm font-semibold rounded-full border-none bg-blue-600 hover:bg-blue-700 transform hover:-translate-y-0.5 transition-all duration-300"
                       icon={<CreditCardOutlined />}
                     >
-                      Mua Vé Online
+                      {t("services.methods.website.buttons.buy")}
                     </Button>
-                    <Button
-                      size="large"
-                      className="h-11 px-6 text-sm font-semibold rounded-full bg-transparent border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transform hover:-translate-y-0.5 transition-all duration-300"
-                      icon={<QrcodeOutlined />}
-                    >
-                      Vé Của Tôi
+                    <Button size="large" icon={<QrcodeOutlined />}>
+                      {t("services.methods.website.buttons.myTickets")}
                     </Button>
                   </div>
                 </div>
@@ -97,63 +96,68 @@ const ServicePage: React.FC = () => {
 
               <Col xs={24} md={12}>
                 <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200">
-                  <div className="font-bold text-yellow-500 text-lg mb-5">
-                    Cách mua vé:
+                  <div className="font-bold text-red-400 text-lg mb-5">
+                    {t("services.methods.website.steps.title")}
                   </div>
                   <StepsList
-                    steps={[
-                      "Truy cập website Metro HCMC",
-                      "Chọn ga đi và ga đến",
-                      "Thanh toán qua thẻ/ví điện tử",
-                      "Nhận vé QR qua email/SMS",
-                      "Quét QR khi lên tàu",
-                    ]}
+                    steps={
+                      t("services.methods.website.steps.items", {
+                        returnObjects: true,
+                      }) as string[]
+                    }
                   />
                 </div>
               </Col>
             </Row>
           </div>
 
-          <div className="my-8">
-            <Divider style={{ borderColor: "rgba(255,255,255,0.2)" }} />
-          </div>
-
           <div
-            className="relative p-8 border border-blue-600 rounded-3xl bg-cover bg-center"
+            className="relative p-8 border border-cyan-600 rounded-3xl bg-cover bg-center"
             style={{ backgroundImage: `url(${statsBackground})` }}
           >
             <div className="relative z-10">
               <Row gutter={[60, 60]} align="middle">
-                <Col xs={24} md={12} className="order-2 md:order-2">
+                <Col xs={24} md={12}>
+                  <div className="bg-white bg-opacity-10 backdrop-blur-sm p-6 rounded-2xl border border-white border-opacity-20">
+                    <div className="font-bold text-red-400 text-lg mb-5">
+                      {t("services.methods.app.benefits.title")}
+                    </div>
+                    <StepsList
+                      steps={
+                        t("services.methods.app.benefits.items", {
+                          returnObjects: true,
+                        }) as string[]
+                      }
+                      isLight={true}
+                    />
+                  </div>
+                </Col>
+                <Col xs={24} md={12}>
                   <div className="text-center">
                     <h3 className="text-2xl font-semibold text-black mb-5 flex items-center justify-center gap-3">
                       <MobileOutlined className="text-blue-400 text-3xl" />
-                      Tải Ứng Dụng Metro HCMC
+                      {t("services.methods.app.title")}
                     </h3>
                     <p className="text-black text-base mb-5 leading-relaxed">
-                      Trải nghiệm đầy đủ với ứng dụng di động - Mua vé, tra cứu
-                      lịch trình, định vị ga tàu
+                      {t("services.methods.app.description")}
                     </p>
 
                     <div className="flex flex-col md:flex-row items-center gap-8 mb-6">
                       <img
                         src={metromb}
                         alt="Metro App Screenshot"
-                        className="w-36 h-72 object-cover rounded-3xl border-4 border-blue-600 shadow-2xl"
+                        className="w-40 h-72 object-cover rounded-2xl border-2 border-cyan-400"
                       />
                       <div className="text-left">
                         <h5 className="text-black text-xl mb-4 font-semibold">
-                          Tính năng nổi bật:
+                          {t("services.methods.app.features.title")}
                         </h5>
                         <ul className="space-y-2">
-                          {[
-                            "🎫 Mua vé trực tuyến",
-                            "🕐 Tra cứu lịch tàu",
-                            "📍 Định vị ga gần nhất",
-                            "💳 Thanh toán nhanh gọn",
-                            "🔔 Nhận thông báo tức thì",
-                            "📊 Lịch sử di chuyển",
-                          ].map((feature, index) => (
+                          {(
+                            t("services.methods.app.features.items", {
+                              returnObjects: true,
+                            }) as string[]
+                          ).map((feature, index) => (
                             <li
                               key={index}
                               className="text-black py-2 text-base border-b border-gray-600 hover:text-blue-400 transition-colors duration-300 cursor-pointer"
@@ -169,37 +173,14 @@ const ServicePage: React.FC = () => {
                       <Button
                         type="primary"
                         size="large"
-                        className="h-11 rounded-2xl font-semibold text-sm bg-gray-800 text-white border-none hover:bg-gray-700 transform hover:-translate-y-0.5 transition-all duration-300"
                         icon={<AppleOutlined />}
                       >
                         App Store
                       </Button>
-                      <Button
-                        size="large"
-                        className="h-11 rounded-2xl font-semibold text-sm bg-blue-600 text-white border-none hover:bg-blue-700 transform hover:-translate-y-0.5 transition-all duration-300"
-                        icon={<AndroidOutlined />}
-                      >
+                      <Button size="large" icon={<AndroidOutlined />}>
                         Google Play
                       </Button>
                     </div>
-                  </div>
-                </Col>
-
-                <Col xs={24} md={12} className="order-1 md:order-1">
-                  <div className="bg-white bg-opacity-10 backdrop-blur-sm p-6 rounded-2xl border border-white border-opacity-20">
-                    <div className="font-bold text-yellow-400 text-lg mb-5">
-                      Tại sao chọn App:
-                    </div>
-                    <StepsList
-                      steps={[
-                        "Mua vé mọi lúc mọi nơi",
-                        "Lưu thông tin thanh toán",
-                        "Nhận thông báo tàu trễ",
-                        "Tích điểm thành viên",
-                        "Hỗ trợ đa ngôn ngữ",
-                      ]}
-                      isLight={true}
-                    />
                   </div>
                 </Col>
               </Row>
@@ -216,11 +197,13 @@ const StepsList = ({ steps, isLight = false }: StepsListProps) => {
     <div className="space-y-3">
       {steps.map((step, index) => (
         <div key={index} className="flex items-center gap-4 py-2">
-          <div className="flex-shrink-0 w-5 h-5 bg-blue-600 text-black rounded-full flex items-center justify-center text-xs font-bold">
+          <div className="flex-shrink-0 w-5 h-5 bg-cyan-800 text-white rounded-full flex items-center justify-center text-xs font-bold">
             {index + 1}
           </div>
           <div
-            className={`text-base ${isLight ? "text-black" : "text-gray-700"}`}
+            className={`text-base ${
+              isLight ? "text-cyan-600" : "text-cyan-800"
+            }`}
           >
             {step}
           </div>
