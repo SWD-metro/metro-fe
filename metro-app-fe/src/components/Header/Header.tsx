@@ -35,10 +35,10 @@ const Header: React.FC = () => {
 
   const menuItems: Array<{ key: string; label: string; to?: string }> = [
     { key: "home", label: t("header.home"), to: path.home },
-    { key: "whatToKnow", label: t("header.whatToKnow"), to: path.whatToKnow },
+    { key: "whatToKnow", label: t("header.whatToKnow"), to: path.services },
     { key: "time", label: t("header.stops") },
-    { key: "buy", label: t("header.tickets") },
-    { key: "contact", label: t("header.contact") },
+    { key: "buyTicket", label: t("header.tickets") },
+    { key: "contact", label: t("header.contact"), to: path.aboutUs },
     { key: "login", label: t("header.login"), to: path.login },
   ];
 
@@ -141,13 +141,6 @@ const Header: React.FC = () => {
           width={280}
           className="lg:hidden"
           closable={false}
-          headerStyle={{
-            borderBottom: "1px solid #f0f0f0",
-            padding: "16px 24px",
-          }}
-          bodyStyle={{
-            padding: "20px 0",
-          }}
         >
           <div className="flex flex-col space-y-1">
             {menuItems.map((item) => (

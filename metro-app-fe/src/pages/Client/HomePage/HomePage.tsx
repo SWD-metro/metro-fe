@@ -1,5 +1,5 @@
-import React from "react";
-import { Layout, Timeline } from "antd";
+import React, { useState } from "react";
+import { Layout, Collapse, Row, Col } from "antd";
 import {
   EnvironmentOutlined,
   ClockCircleOutlined,
@@ -7,30 +7,159 @@ import {
   SafetyCertificateOutlined,
   ThunderboltOutlined,
   GlobalOutlined,
+  MinusOutlined,
+  PlusOutlined,
+  InfoCircleOutlined,
+  CreditCardOutlined,
+  CarOutlined,
 } from "@ant-design/icons";
 import { useInView } from "react-intersection-observer";
 import CountUp from "react-countup";
-import newsSection from "src/assets/news_section.jpg";
 import metroMap from "src/assets/metro_map.jpg";
 import statsBackground from "src/assets/stats_section.jpg";
 import featuresBackground from "src/assets/feature_section.png";
+import aboutUs from "src/assets/about-us.png";
+
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import path from "src/constants/path";
 
 const { Content } = Layout;
+
+interface InfoItem {
+  key: string;
+  label: string;
+  content: string;
+}
+
+interface MenuItem {
+  icon: React.ReactNode;
+  title: string;
+  bgColor: string;
+  path: string;
+}
 
 const HomePage: React.FC = () => {
   const [ref, inView] = useInView({ threshold: 0.2, triggerOnce: false });
   const { t } = useTranslation("home");
-  const newsData = t("news.items", { returnObjects: true }) as Array<{
-    title: string;
-    time: string;
-  }>;
-  const newsColors = ["green", "blue", "orange", "purple"];
+  const navigate = useNavigate();
+  const [activeKeys, setActiveKeys] = useState<string[]>([]);
+
+  const handleNavigation = (path: string) => {
+    navigate(path);
+  };
+
+  const menuItems: MenuItem[] = [
+    {
+      icon: <CarOutlined />,
+      title: t("menu.map"),
+      bgColor: "bg-cyan-800",
+      path: "",
+    },
+    {
+      icon: <CarOutlined />,
+      title: t("menu.route"),
+      bgColor: "bg-yellow-500",
+      path: "",
+    },
+    {
+      icon: <CreditCardOutlined />,
+      title: t("menu.buyTicket"),
+      bgColor: "bg-red-400",
+      path: "",
+    },
+    {
+      icon: <InfoCircleOutlined />,
+      title: t("menu.intructions"),
+      bgColor: "bg-cyan-400",
+      path: path.services,
+    },
+  ];
+
+  const infoItems: InfoItem[] = [
+    {
+      key: "1",
+      label: t("information.schedule"),
+      content: t("information.scheduleContent"),
+    },
+    {
+      key: "2",
+      label: t("information.ticketPrice"),
+      content: t("information.ticketPriceContent"),
+    },
+    {
+      key: "3",
+      label: t("information.freeTicket"),
+      content: t("information.freeTicketContent"),
+    },
+    {
+      key: "4",
+      label: t("information.luggage"),
+      content: t("information.luggageContent"),
+    },
+  ];
+
+  const handleCollapseChange = (keys: string | string[]) => {
+    setActiveKeys(Array.isArray(keys) ? keys : [keys]);
+  };
+
+  const customExpandIcon = ({ isActive }: { isActive?: boolean }) => (
+    <div className="flex items-center justify-center w-6 h-6">
+      {isActive ? (
+        <MinusOutlined className="!text-cyan-200 text-sm" />
+      ) : (
+        <PlusOutlined className="!text-cyan-200 text-sm" />
+      )}
+    </div>
+  );
+
+  const items = infoItems.map((item) => ({
+    key: item.key,
+    label: (
+      <span className="text-white font-medium text-base">{item.label}</span>
+    ),
+    children: (
+      <div className="text-cyan-100 text-base leading-relaxed pl-2  whitespace-pre-line">
+        {item.content}
+      </div>
+    ),
+  }));
 
   return (
     <div className="metro-homepage">
       <Layout>
-        <Content className="pt-2.5">
+        <Content>
+          <section
+            className="relative py-6 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(${statsBackground})` }}
+          >
+            <div className="max-w-6xl mx-auto ">
+              <Row gutter={[32, 32]} justify="center" align="middle">
+                {menuItems.map((item, index) => (
+                  <Col
+                    key={index}
+                    xs={24}
+                    sm={12}
+                    lg={6}
+                    className="!flex !justify-center"
+                  >
+                    <div
+                      className={`${item.bgColor} rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer hover:opacity-90 transition-opacity shadow-lg min-h-[140px] min-w-[140px] w-full max-w-[220px]`}
+                      onClick={() => handleNavigation(item.path)}
+                    >
+                      <div className="text-white text-4xl mb-3">
+                        {item.icon}
+                      </div>
+                      <div className="text-white text-sm font-medium text-center leading-tight">
+                        {item.title}
+                      </div>
+                    </div>
+                  </Col>
+                ))}
+              </Row>
+            </div>
+          </section>
+
           <section
             className="relative py-6 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: `url(${featuresBackground})` }}
@@ -156,7 +285,7 @@ const HomePage: React.FC = () => {
             </div>
           </section>
 
-          <section className="bg-gradient-to-b from-gray-50 to-white py-16 border-t-4 border-cyan-500">
+          <section className="py-16 border-t-4 border-cyan-500">
             <div className="max-w-6xl mx-auto px-4">
               <div className="text-center mb-12">
                 <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4 uppercase tracking-wider">
@@ -183,53 +312,46 @@ const HomePage: React.FC = () => {
           </section>
 
           <section
-            className="relative bg-cover bg-center bg-no-repeat py-16"
+            className="relative bg-cover bg-center bg-no-repeat py-12"
             style={{ backgroundImage: `url(${featuresBackground})` }}
           >
-            <div className="relative z-10 max-w-6xl mx-auto px-4">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div>
-                  <h2 className="text-4xl lg:text-5xl font-bold text-white mb-8 uppercase tracking-wider">
-                    {t("news.title")}
-                  </h2>
+            <div className="max-w-6xl mx-auto">
+              <Row gutter={[32, 32]} align="middle">
+                <Col xs={24} md={24} lg={12}>
+                  <div className="p-4 lg:p-8 flex flex-col justify-start">
+                    <div className="mb-2">
+                      <span className="text-white text-sm font-bold">
+                        {t("information.title")}
+                      </span>
+                    </div>
 
-                  <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-2xl p-8 border border-white border-opacity-20">
-                    <Timeline className="custom-timeline">
-                      {newsData.map((news, index) => (
-                        <Timeline.Item
-                          key={index}
-                          color={newsColors[index % newsColors.length]}
-                        >
-                          <div className="bg-white bg-opacity-5 rounded-lg backdrop-blur-sm">
-                            <h5 className="text-black font-semibold mb-2 text-lg">
-                              {news.title}
-                            </h5>
-                            <span className="text-cyan-800 text-sm font-medium">
-                              {news.time}
-                            </span>
-                          </div>
-                        </Timeline.Item>
-                      ))}
-                    </Timeline>
-                  </div>
-                </div>
+                    <h1 className="text-3xl font-bold text-white mb-8">
+                      {t("information.subtitle")}
+                    </h1>
 
-                <div className="relative">
-                  <div className="relative overflow-hidden rounded-2xl shadow-2xl">
-                    <img
-                      src={newsSection}
-                      alt="Metro News"
-                      className="w-full h-80 lg:h-96 object-cover hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
-                    <div className="absolute bottom-4 left-4 text-white">
-                      <div className="bg-red-500 text-xs px-2 py-1 rounded-full font-semibold mb-2">
-                        {t("news.latest")}
-                      </div>
+                    <div className="space-y-1">
+                      <Collapse
+                        items={items}
+                        activeKey={activeKeys}
+                        onChange={handleCollapseChange}
+                        expandIcon={customExpandIcon}
+                        ghost
+                        size="large"
+                      />
                     </div>
                   </div>
-                </div>
-              </div>
+                </Col>
+
+                <Col xs={24} md={24} lg={12}>
+                  <div className="flex items-center justify-center h-full">
+                    <img
+                      src={aboutUs}
+                      alt="Hình ảnh tàu Metro"
+                      className="object-cover w-full h-auto max-h-[500px] rounded-lg shadow-lg"
+                    />
+                  </div>
+                </Col>
+              </Row>
             </div>
           </section>
         </Content>
