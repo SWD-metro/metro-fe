@@ -1,10 +1,10 @@
 {
   "header": {
     "home": "Home",
-    "whatToKnow": "What to know",
+    "whatToKnow": "Services",
     "stops": "Stop & Timetable",
     "tickets": "Buy Ticket",
-    "contact": "Contact us",
+    "contact": "About us",
     "login": "Login"
   },
   "hero": {
@@ -13,6 +13,12 @@
     "btn1": "View Route Map",
     "btn2": "Train Schedule",
     "now": "Current"
+  },
+  "menu": {
+    "map": "METRO MAP L1",
+    "route": "BUS ROUTES",
+    "buyTicket": "BUY TICKET",
+    "intructions": "INSTRUCTIONS"
   },
   "features": {
     "title": "Outstanding Features",
@@ -43,28 +49,134 @@
     "line1": "Line 1",
     "mapAlt": "Metro Map"
   },
-  "news": {
-    "title": "Latest News",
-    "latest": "LATEST",
-    "imageAlt": "Metro News",
-    "items": [
-      {
-        "title": "Metro Line 1 officially begins commercial operation",
-        "time": "2024-12-19"
+  "information": {
+    "title": "Quick Information",
+    "subtitle": "24/7 Support",
+    "schedule": "Metro L1 Operating Schedule",
+    "scheduleContent": "Metro L1 operates from 5:00 - 22:00 daily with 200 trips/day and 9 train sets.\n\n🕕 Peak hours (6:00-8:00, 11:00-12:00, 15:30-18:00):\n• Frequency: 8 minutes/trip\n• Train sets: 9 units\n\n🕐 Normal hours:\n• Frequency: 12 minutes/trip\n• Train sets: 6 units\n\n⏱️ Journey time: 29 minutes (Ben Thanh ↔ Suoi Tien)\n📍 Distance: 19.7km through 14 stations\n⏳ Station stop time: 30 seconds",
+    "ticketPrice": "Train Ticket Prices?",
+    "ticketPriceContent": "Metro L1 fares calculated by travel distance:\n\n🎫 Single tickets: From 7,000đ\n\n🎫 Day ticket: 30,000 VND\n\n💳 Monthly passes:\n• Unlimited monthly pass: 300,000đ\n• Student monthly pass: 150,000đ\n\n🎯 Payment: QR Code, Bank card",
+    "freeTicket": "Who gets 100% ticket support?",
+    "freeTicketContent": "Completely free for Metro L1 users:\n\n👥 Policy beneficiaries:\n• War veterans\n• Disabled veterans and patients\n• Severely disabled persons\n\n👶 Children:\n• Children under 6 years (with adult)\n• Children 6-15 years get 50% discount\n\n📋 Requirements:\n• Present valid identification documents\n• Register discount card at Metro stations",
+    "luggage": "Allowed luggage size on train?",
+    "luggageContent": "Metro L1 luggage regulations:\n\n✅ Allowed:\n• Personal bags, regular backpacks\n• Wheeled luggage: ≤ 158cm (length + width + height)\n• Weight: ≤ 25kg/person\n• Baby strollers (foldable)\n\n❌ Not allowed:\n• Luggage with strong, toxic odor\n• Live animals (except guide dogs)\n• Flammable, explosive liquids\n• Weapons, support tools\n\n📏 Maximum dimensions per side: 100cm x 60cm x 40cm"
+  },
+  "aboutus": {
+    "pageTitle": "About Us",
+    "developmentJourney": {
+      "title": "Development Journey",
+      "metroLine": "Metro Line 1: Ben Thanh - Suoi Tien",
+      "paragraph1": "Ho Chi Minh City Metro construction began in 2012, with the desire to create a modern public transportation system, connecting key areas of the city.",
+      "paragraph2": "After more than a decade of development, we are proud to be an important part of Ho Chi Minh City's urban transportation system, providing citizens with safe, fast and convenient trips.",
+      "paragraph3": "With a commitment to continuous improvement and development, Metro HCM will continue to expand the network, applying advanced technology to better serve the transportation needs of city residents."
+    },
+    "mission": {
+      "title": "Mission",
+      "description": "Provide high-quality public transportation services, contributing to reducing traffic congestion and protecting the environment in Ho Chi Minh City."
+    },
+    "vision": {
+      "title": "Vision",
+      "description": "Become the leading urban transportation system in Southeast Asia, connecting all citizens with modern and sustainable life."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "address": {
+        "label": "Address",
+        "value": "FPT University NVH, Ho Chi Minh City"
       },
-      {
-        "title": "Opening of the first 14 subway stations",
-        "time": "2024-12-15"
+      "phone": {
+        "label": "Phone",
+        "value": "Hotline: 1900 1234"
       },
-      {
-        "title": "Metro Line 1 operating schedule from 6:00 - 22:00",
-        "time": "2024-12-10"
+      "email": {
+        "label": "Email",
+        "value": "contact@metro.vn"
       },
-      {
-        "title": "HCMC Metro ticket prices officially announced",
-        "time": "2024-12-05"
+      "workingHours": {
+        "label": "Working Hours",
+        "value": "Monday - Saturday: 8:00 - 17:30"
+      },
+      "contactForm": {
+        "title": "Send Message",
+        "fullName": {
+          "label": "Full Name *",
+          "placeholder": "Enter your full name"
+        },
+        "email": {
+          "label": "Email *",
+          "placeholder": "Enter email address"
+        },
+        "phone": {
+          "label": "Phone Number",
+          "placeholder": "Enter phone number"
+        },
+        "message": {
+          "label": "Message *",
+          "placeholder": "Enter your message..."
+        },
+        "submitButton": "Send Message"
       }
-    ]
+    }
+  },
+  "services": {
+    "title": "Buy Electronic Tickets",
+    "subtitle": "Two convenient ways to buy Metro tickets - Receive electronic tickets as QR codes to scan when boarding",
+    "promo": "🎉 Starting from only 7,000 VND/trip – A cost-effective, fast and modern solution for every journey!",
+    "methods": {
+      "website": {
+        "title": "Buy Tickets via Website",
+        "description": "Purchase tickets online through the website, pay online and receive electronic tickets instantly",
+        "ticket": {
+          "title": "HCMC METRO TICKET",
+          "type": "Electronic ticket",
+          "route": "Ben Thanh Station → Suoi Tien Station",
+          "validity": "Valid for: 1 day"
+        },
+        "buttons": {
+          "buy": "Buy Ticket",
+          "myTickets": "My Tickets"
+        },
+        "steps": {
+          "title": "How to buy tickets:",
+          "items": [
+            "Access Metro HCMC website",
+            "Select departure and destination stations",
+            "Pay via card/e-wallet",
+            "Receive QR ticket via email/SMS",
+            "Scan QR when boarding"
+          ]
+        }
+      },
+      "app": {
+        "title": "Download Metro HCMC App",
+        "description": "Full experience with mobile app - Buy tickets, check schedules, locate stations",
+        "features": {
+          "title": "Outstanding features:",
+          "items": [
+            "🎫 Buy tickets online",
+            "🕐 Check train schedules",
+            "📍 Locate nearest station",
+            "💳 Quick payment",
+            "🔔 Instant notifications",
+            "📊 Travel history"
+          ]
+        },
+        "buttons": {
+          "appStore": "App Store",
+          "googlePlay": "Google Play"
+        },
+        "benefits": {
+          "title": "Why choose the App:",
+          "items": [
+            "Buy tickets anytime, anywhere",
+            "Save payment information",
+            "Receive train delay notifications",
+            "Earn membership points",
+            "Multi-language support"
+          ]
+        }
+      }
+    }
   },
   "footer": {
     "title": "Metro HCMC",
