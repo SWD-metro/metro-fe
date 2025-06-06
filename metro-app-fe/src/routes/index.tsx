@@ -9,8 +9,10 @@ import RegisterPage from "src/pages/Auth/Register";
 import ResetPassword from "src/pages/Auth/ResetPassword";
 import AboutUsPage from "src/pages/Client/AboutUs";
 import HomePage from "src/pages/Client/HomePage";
+import MapRoute from "src/pages/Client/MapRoute";
 import UserProfile from "src/pages/Client/profile/UserProfile";
 import ServicePage from "src/pages/Client/Services";
+import BuyTicketPage from "src/pages/Client/Ticket";
 import Home from "src/pages/dashboard/Home";
 
 const RouteElements: React.FC = () => {
@@ -30,6 +32,14 @@ const RouteElements: React.FC = () => {
         {
           path: path.aboutUs,
           element: <AboutUsPage />,
+        },
+        {
+          path: path.mapRoute,
+          element: <MapRoute />,
+        },
+        {
+          path: path.buyTicket,
+          element: <BuyTicketPage />,
         },
       ],
     },
@@ -62,7 +72,7 @@ const RouteElements: React.FC = () => {
     {
       path: "profile",
       element: <UserProfile />,
-    }
+    },
   ]);
 
   return routeElements;

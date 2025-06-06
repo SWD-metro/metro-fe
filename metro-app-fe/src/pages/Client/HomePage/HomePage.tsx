@@ -54,7 +54,7 @@ const HomePage: React.FC = () => {
       icon: <CarOutlined />,
       title: t("menu.map"),
       bgColor: "bg-cyan-800",
-      path: "",
+      path: path.mapRoute,
     },
     {
       icon: <CarOutlined />,
@@ -66,7 +66,7 @@ const HomePage: React.FC = () => {
       icon: <CreditCardOutlined />,
       title: t("menu.buyTicket"),
       bgColor: "bg-red-400",
-      path: "",
+      path: path.buyTicket,
     },
     {
       icon: <InfoCircleOutlined />,

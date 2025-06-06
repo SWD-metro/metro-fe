@@ -37,7 +37,7 @@ const Header: React.FC = () => {
     { key: "home", label: t("header.home"), to: path.home },
     { key: "whatToKnow", label: t("header.whatToKnow"), to: path.services },
     { key: "time", label: t("header.stops") },
-    { key: "buyTicket", label: t("header.tickets") },
+    { key: "buyTicket", label: t("header.tickets"), to: path.buyTicket },
     { key: "contact", label: t("header.contact"), to: path.aboutUs },
     { key: "login", label: t("header.login"), to: path.login },
   ];

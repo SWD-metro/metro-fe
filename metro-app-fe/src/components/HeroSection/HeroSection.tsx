@@ -99,8 +99,8 @@ const HeroSection: React.FC = () => {
       <style dangerouslySetInnerHTML={{ __html: fadeInUpKeyframes }} />
 
       <div
-        className={`relative overflow-hidden rounded-b-[50px] shadow-[0_10px_30px_rgba(0,0,0,0.3)] ${
-          isHome ? "h-[55vh]" : "h-[15vh]"
+        className={`relative overflow-hidden rounded-b-[40px] ${
+          isHome ? "h-[50vh]" : "h-[12vh]"
         }`}
       >
         <Carousel autoplay effect="fade" dots={false} speed={1000}>
@@ -110,7 +110,7 @@ const HeroSection: React.FC = () => {
                 src={image.url}
                 alt={image.title}
                 className={`w-full object-cover ${
-                  isHome ? "h-[55vh]" : "h-[15vh]"
+                  isHome ? "h-[50vh]" : "h-[12vh]"
                 }`}
               />
             </div>
@@ -176,7 +176,7 @@ const HeroSection: React.FC = () => {
                   className="inline-block !p-[15px_30px] !rounded-[50px] text-base"
                   style={currentTimeStyle}
                 >
-                  <ClockCircleOutlined style={{ marginRight: 8 }} />
+                  <ClockCircleOutlined style={{ marginRight: 6 }} />
                   {t("hero.now")}: {currentTime.toLocaleString("vi-VN")}
                 </div>
               </>
