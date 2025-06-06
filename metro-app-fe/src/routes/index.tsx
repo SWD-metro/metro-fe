@@ -10,6 +10,7 @@ import ResetPassword from "src/pages/Auth/ResetPassword";
 import AboutUsPage from "src/pages/Client/AboutUs";
 import HomePage from "src/pages/Client/HomePage";
 import MapRoute from "src/pages/Client/MapRoute";
+import UserProfile from "src/pages/Client/profile/UserProfile";
 import ServicePage from "src/pages/Client/Services";
 import BuyTicketPage from "src/pages/Client/Ticket";
 import Home from "src/pages/dashboard/Home";
@@ -67,6 +68,10 @@ const RouteElements: React.FC = () => {
     {
       path: "admin",
       element: <Home />,
+    },
+    {
+      path: "profile",
+      element: <UserProfile />,
     },
   ]);
 
