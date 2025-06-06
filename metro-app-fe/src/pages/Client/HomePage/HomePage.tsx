@@ -66,7 +66,7 @@ const HomePage: React.FC = () => {
       icon: <CreditCardOutlined />,
       title: t("menu.buyTicket"),
       bgColor: "bg-red-400",
-      path: "",
+      path: path.buyTicket,
     },
     {
       icon: <InfoCircleOutlined />,

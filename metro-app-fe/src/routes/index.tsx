@@ -11,6 +11,7 @@ import AboutUsPage from "src/pages/Client/AboutUs";
 import HomePage from "src/pages/Client/HomePage";
 import MapRoute from "src/pages/Client/MapRoute";
 import ServicePage from "src/pages/Client/Services";
+import BuyTicketPage from "src/pages/Client/Ticket";
 import Home from "src/pages/dashboard/Home";
 
 const RouteElements: React.FC = () => {
@@ -34,6 +35,10 @@ const RouteElements: React.FC = () => {
         {
           path: path.mapRoute,
           element: <MapRoute />,
+        },
+        {
+          path: path.buyTicket,
+          element: <BuyTicketPage />,
         },
       ],
     },

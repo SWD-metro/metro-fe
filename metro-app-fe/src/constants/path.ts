@@ -8,5 +8,6 @@ const path = {
   services: "/services",
   aboutUs: "/about-us",
   mapRoute: "/map-route",
+  buyTicket: "/buy-ticket",
 } as const;
 export default path;
