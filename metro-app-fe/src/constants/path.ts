@@ -7,5 +7,6 @@ const path = {
   logout: "/logout",
   services: "/services",
   aboutUs: "/about-us",
+  mapRoute: "/map-route",
 } as const;
 export default path;
