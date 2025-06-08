@@ -196,8 +196,6 @@ const OrdersOverview = () => {
 // Main Dashboard Component
 const Dashboard = () => {
   return (
-    <Layout className="min-h-screen">
-      <Sidebar />
       <Layout>
         <Content className="p-6 bg-gray-50">
           <StatisticsCards />
@@ -212,7 +210,6 @@ const Dashboard = () => {
           </div>
         </Content>
       </Layout>
-    </Layout>
   );
 };
 
