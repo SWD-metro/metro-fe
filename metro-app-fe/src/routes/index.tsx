@@ -1,6 +1,7 @@
 import React from "react";
 import { useRoutes } from "react-router-dom";
 import path from "src/constants/path";
+import AdminLayout from "src/layouts/adminLayout/AdminLayout";
 import AuthLayout from "src/layouts/AuthLayout";
 import MainLayout from "src/layouts/MainLayout";
 import ForgotPassword from "src/pages/Auth/ForgotPassword";
@@ -13,6 +14,7 @@ import MapRoute from "src/pages/Client/MapRoute";
 import UserProfile from "src/pages/Client/profile/UserProfile";
 import ServicePage from "src/pages/Client/Services";
 import BuyTicketPage from "src/pages/Client/Ticket";
+import Dashboard from "src/pages/dashboard/Dashboard";
 import Home from "src/pages/dashboard/Home";
 
 const RouteElements: React.FC = () => {
@@ -66,8 +68,22 @@ const RouteElements: React.FC = () => {
       ],
     },
     {
-      path: "admin",
-      element: <Home />,
+      path: "/admin",
+      element: <AdminLayout />, 
+      children: [
+        {
+          index: true, 
+          element: <Dashboard />,
+        },
+        {
+          path: "profile", 
+          element: <UserProfile />,
+        },
+        {
+          path: "products", 
+          element: <Dashboard />,
+        },
+      ],
     },
     {
       path: "profile",
