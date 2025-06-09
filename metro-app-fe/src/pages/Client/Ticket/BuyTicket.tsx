@@ -17,14 +17,10 @@ import {
 } from "@ant-design/icons";
 import background from "src/assets/feature_section.png";
 import background2 from "src/assets/stats_section.jpg";
+import { useGetStationList } from "src/queries/useStation";
 
 const { Option } = Select;
 const { TabPane } = Tabs;
-
-interface Station {
-  id: string;
-  name: string;
-}
 
 interface SingleTicketPrice {
   from: string;
@@ -46,22 +42,8 @@ const BuyTicketPage: React.FC = () => {
   const [toStation, setToStation] = useState<string>("");
   const [quantity, setQuantity] = useState<number>(1);
 
-  const stations: Station[] = [
-    { id: "1", name: "Bến Thành" },
-    { id: "2", name: "Nhà Hát Thành Phố" },
-    { id: "3", name: "Ba Son" },
-    { id: "4", name: "Văn Thánh" },
-    { id: "5", name: "Tân Cảng" },
-    { id: "6", name: "Thảo Điền" },
-    { id: "7", name: "An Phú" },
-    { id: "8", name: "Rạch Chiếc" },
-    { id: "9", name: "Phước Long" },
-    { id: "10", name: "Bình Thái" },
-    { id: "11", name: "Thủ Đức" },
-    { id: "12", name: "Khu Công Nghệ Cao" },
-    { id: "13", name: "Đại Học Quốc Gia" },
-    { id: "14", name: "Suối Tiên" },
-  ];
+  const { data: stations } = useGetStationList();
+  const stationsList = stations?.data?.data || [];
 
   const singleTicketPrices: SingleTicketPrice[] = [
     // Từ BT
@@ -188,8 +170,11 @@ const BuyTicketPage: React.FC = () => {
                           className="w-full"
                           size="large"
                         >
-                          {stations.map((station) => (
-                            <Option key={station.id} value={station.id}>
+                          {stationsList.map((station) => (
+                            <Option
+                              key={station.stationCode}
+                              value={station.stationCode}
+                            >
                               {station.name}
                             </Option>
                           ))}
@@ -207,8 +192,11 @@ const BuyTicketPage: React.FC = () => {
                           className="w-full"
                           size="large"
                         >
-                          {stations.map((station) => (
-                            <Option key={station.id} value={station.id}>
+                          {stationsList.map((station) => (
+                            <Option
+                              key={station.stationCode}
+                              value={station.stationCode}
+                            >
                               {station.name}
                             </Option>
                           ))}
@@ -234,8 +222,17 @@ const BuyTicketPage: React.FC = () => {
                         </h4>
                         <div className="flex justify-between items-center">
                           <span className="text-sm text-cyan-800">
-                            {stations.find((s) => s.id === fromStation)?.name} →{" "}
-                            {stations.find((s) => s.id === toStation)?.name}
+                            {
+                              stationsList.find(
+                                (s) => s.stationCode === fromStation
+                              )?.name
+                            }{" "}
+                            →{" "}
+                            {
+                              stationsList.find(
+                                (s) => s.stationCode === toStation
+                              )?.name
+                            }
                           </span>
                           <span className="font-bold text-blue-600 text-lg">
                             {formatPrice(
@@ -362,8 +359,17 @@ const BuyTicketPage: React.FC = () => {
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm text-cyan-800">Tuyến:</span>
                         <span className="font-medium text-sm">
-                          {stations.find((s) => s.id === fromStation)?.name} →{" "}
-                          {stations.find((s) => s.id === toStation)?.name}
+                          {
+                            stationsList.find(
+                              (s) => s.stationCode === fromStation
+                            )?.name
+                          }{" "}
+                          →{" "}
+                          {
+                            stationsList.find(
+                              (s) => s.stationCode === toStation
+                            )?.name
+                          }
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
