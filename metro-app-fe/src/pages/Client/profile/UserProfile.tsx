@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Layout,
   Card,
   Avatar,
   Typography,
@@ -21,10 +20,8 @@ import {
   MessageOutlined as MessageIcon,
   EditOutlined, 
 } from '@ant-design/icons';
-import Header from 'src/components/Header'; 
-import avt from '../../../assets/avt.jpg';
 
-const { Content } = Layout;
+import avt from '../../../assets/avt.jpg';
 const { Title, Text } = Typography;
 
 const favoriteTrips = [

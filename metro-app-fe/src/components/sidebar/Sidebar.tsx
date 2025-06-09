@@ -7,15 +7,20 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
+import logo from "src/assets/HCMC_Metro_Logo.png";
 import Sider from "antd/es/layout/Sider";
-import React from "react";
 import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
   return (
     <Sider width={200} className="!bg-white shadow-sm h-dvh">
       <div className="p-4">
-        <h2 className="text-gray-800 text-lg font-semibold">Mevantro</h2>
+      <div className="text-center flex flex-col items-center">
+            <NavLink to="/">
+              <img src={logo} alt="Logo" className="w-[120px]" />
+            </NavLink>
+          </div>
       </div>
       <Menu
         mode="inline"
