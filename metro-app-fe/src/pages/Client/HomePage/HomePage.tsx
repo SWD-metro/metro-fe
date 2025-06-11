@@ -54,7 +54,7 @@ const HomePage: React.FC = () => {
       icon: <CarOutlined />,
       title: t("menu.map"),
       bgColor: "bg-cyan-800",
-      path: path.mapRoute,
+      path: path.stationMap,
     },
     {
       icon: <CarOutlined />,

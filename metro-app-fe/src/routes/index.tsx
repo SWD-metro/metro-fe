@@ -13,6 +13,7 @@ import HomePage from "src/pages/Client/HomePage";
 import MapRoute from "src/pages/Client/MapRoute";
 import UserProfile from "src/pages/Client/profile/UserProfile";
 import ServicePage from "src/pages/Client/Services";
+import StationMapPage from "src/pages/Client/StationMap";
 import BuyTicketPage from "src/pages/Client/Ticket";
 import Dashboard from "src/pages/dashboard/Dashboard";
 import Home from "src/pages/dashboard/Home";
@@ -43,6 +44,10 @@ const RouteElements: React.FC = () => {
           path: path.buyTicket,
           element: <BuyTicketPage />,
         },
+        {
+          path: path.stationMap,
+          element: <StationMapPage />,
+        },
       ],
     },
     {
@@ -69,18 +74,18 @@ const RouteElements: React.FC = () => {
     },
     {
       path: "/admin",
-      element: <AdminLayout />, 
+      element: <AdminLayout />,
       children: [
         {
-          index: true, 
+          index: true,
           element: <Dashboard />,
         },
         {
-          path: "profile", 
+          path: "profile",
           element: <UserProfile />,
         },
         {
-          path: "products", 
+          path: "products",
           element: <Dashboard />,
         },
       ],
