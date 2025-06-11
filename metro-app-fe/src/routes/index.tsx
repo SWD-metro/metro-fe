@@ -10,7 +10,6 @@ import RegisterPage from "src/pages/Auth/Register";
 import ResetPassword from "src/pages/Auth/ResetPassword";
 import AboutUsPage from "src/pages/Client/AboutUs";
 import HomePage from "src/pages/Client/HomePage";
-import MapRoute from "src/pages/Client/MapRoute";
 import UserProfile from "src/pages/Client/profile/UserProfile";
 import ServicePage from "src/pages/Client/Services";
 import StationMapPage from "src/pages/Client/StationMap";
@@ -35,10 +34,6 @@ const RouteElements: React.FC = () => {
         {
           path: path.aboutUs,
           element: <AboutUsPage />,
-        },
-        {
-          path: path.mapRoute,
-          element: <MapRoute />,
         },
         {
           path: path.buyTicket,
