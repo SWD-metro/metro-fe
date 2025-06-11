@@ -1,6 +1,6 @@
 export enum Direction {
-  INBOUND = "INBOUND",
-  OUTBOUND = "OUTBOUND",
+  FORWARD = "forward",
+  BACKWARD = "backward",
 }
 
 export interface SchedulesRequest {

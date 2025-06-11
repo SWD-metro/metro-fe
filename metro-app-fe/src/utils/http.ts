@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosResponse, type AxiosInstance } from "axios";
-import { ResponseApi } from "src/types/api.type";
+import { ApiResponse } from "src/types/api.type";
 
 class Http {
   instance: AxiosInstance;
@@ -26,7 +26,7 @@ class Http {
       }
     );
     this.instance.interceptors.response.use(
-      (response: AxiosResponse<ResponseApi<any>>) => {
+      (response: AxiosResponse<ApiResponse<any>>) => {
         return response;
       },
       function (error) {

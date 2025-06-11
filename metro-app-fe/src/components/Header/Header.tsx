@@ -36,7 +36,7 @@ const Header: React.FC = () => {
   const menuItems: Array<{ key: string; label: string; to?: string }> = [
     { key: "home", label: t("header.home"), to: path.home },
     { key: "whatToKnow", label: t("header.whatToKnow"), to: path.services },
-    { key: "time", label: t("header.stops") },
+    { key: "time", label: t("header.stops"), to: path.stationMap },
     { key: "buyTicket", label: t("header.tickets"), to: path.buyTicket },
     { key: "contact", label: t("header.contact"), to: path.aboutUs },
     { key: "login", label: t("header.login"), to: path.login },
