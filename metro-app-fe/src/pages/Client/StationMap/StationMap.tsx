@@ -1,14 +1,12 @@
 import React, { useState } from "react";
-import { Card, Spin, Select, Tag, Drawer, Row, Col } from "antd";
-import {
-  EnvironmentOutlined,
-  NodeIndexOutlined,
-  InfoCircleOutlined,
-} from "@ant-design/icons";
+import { Card, Spin, Select, Tag, Row, Col } from "antd";
+import { EnvironmentOutlined, NodeIndexOutlined } from "@ant-design/icons";
 import { useGetStationList } from "src/queries/useStation";
 import { StationsResponse } from "src/types/stations.type";
 import { useGetRouteList } from "src/queries/useRoute";
 import { Train } from "lucide-react";
+import StationInfoDrawer from "src/components/StationInfo";
+import background from "src/assets/stats_section.jpg";
 
 const StationMapPage: React.FC = () => {
   const [selectedStation, setSelectedStation] =
@@ -25,7 +23,7 @@ const StationMapPage: React.FC = () => {
   const routes = routesData?.data?.data || [];
 
   const filteredStations = selectedRoute
-    ? stations.filter((s) => s.routeId === selectedRoute)
+    ? stations.filter((s: { routeId: number }) => s.routeId === selectedRoute)
     : stations;
 
   const sortedStations = [...filteredStations].sort(
@@ -39,8 +37,8 @@ const StationMapPage: React.FC = () => {
   ) => {
     if (index < stations.length) {
       return {
-        left: `${8 + index * 6.5}%`,
-        top: `${10 + index * 6.5}%`,
+        left: `${7 + index * 6.5}%`,
+        top: `${9 + index * 6.5}%`,
       };
     }
 
@@ -57,7 +55,10 @@ const StationMapPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen p-4">
+    <div
+      className="min-h-screen p-4"
+      style={{ backgroundImage: `url(${background})` }}
+    >
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-cyan-800 mb-2 flex items-center justify-center gap-3">
@@ -99,7 +100,7 @@ const StationMapPage: React.FC = () => {
                 ))}
                 <div className="flex items-center gap-2 ml-auto">
                   <span className="text-sm text-cyan-600">
-                    Tổng số Ga:{" "}
+                    Tổng số trạm:{" "}
                     <span className="font-semibold">
                       {filteredStations.length}
                     </span>
@@ -112,10 +113,10 @@ const StationMapPage: React.FC = () => {
 
         {selectedRoute && (
           <>
-            <Row>
+            <Row gutter={12}>
               <Col xs={24} lg={18}>
                 <Card bodyStyle={{ padding: 0 }}>
-                  <div className="relative">
+                  <div className="relative border">
                     {stationsLoading && (
                       <div className="absolute inset-0 bg-white bg-opacity-80 flex items-center justify-center z-10">
                         <Spin size="large" tip="Đang tải bản đồ..." />
@@ -131,79 +132,94 @@ const StationMapPage: React.FC = () => {
                           preserveAspectRatio="none"
                         >
                           {Object.entries(
-                            sortedStations.reduce((acc, station) => {
+                            sortedStations.reduce<
+                              Record<string, StationsResponse[]>
+                            >((acc, station) => {
                               if (!acc[station.routeId])
                                 acc[station.routeId] = [];
                               acc[station.routeId].push(station);
                               return acc;
-                            }, {} as Record<number, StationsResponse[]>)
-                          ).map(([routeId, routeStations]) => {
-                            const sortedRouteStations = routeStations.sort(
-                              (a, b) => a.sequenceOrder - b.sequenceOrder
-                            );
+                            }, {})
+                          ).map(
+                            ([routeId, routeStations]: [
+                              string,
+                              StationsResponse[]
+                            ]) => {
+                              const sortedRouteStations = routeStations.sort(
+                                (a, b) => a.sequenceOrder - b.sequenceOrder
+                              );
 
-                            return (
-                              <g key={routeId}>
-                                {sortedRouteStations.map((station, index) => {
-                                  if (index === sortedRouteStations.length - 1)
-                                    return null;
+                              return (
+                                <g key={routeId}>
+                                  {sortedRouteStations.map(
+                                    (
+                                      station: StationsResponse,
+                                      index: number
+                                    ) => {
+                                      if (
+                                        index ===
+                                        sortedRouteStations.length - 1
+                                      )
+                                        return null;
 
-                                  const currentPos = getStationPosition(
-                                    station,
-                                    index,
-                                    sortedRouteStations.length
-                                  );
-                                  const nextStation =
-                                    sortedRouteStations[index + 1];
-                                  const nextPos = getStationPosition(
-                                    nextStation,
-                                    index + 1,
-                                    sortedRouteStations.length
-                                  );
+                                      const currentPos = getStationPosition(
+                                        station,
+                                        index,
+                                        sortedRouteStations.length
+                                      );
+                                      const nextStation =
+                                        sortedRouteStations[index + 1];
+                                      const nextPos = getStationPosition(
+                                        nextStation,
+                                        index + 1,
+                                        sortedRouteStations.length
+                                      );
 
-                                  return (
-                                    <g key={`${routeId}-${index}`}>
-                                      <line
-                                        x1={parseFloat(
-                                          currentPos.left.replace("%", "")
-                                        )}
-                                        y1={parseFloat(
-                                          currentPos.top.replace("%", "")
-                                        )}
-                                        x2={parseFloat(
-                                          nextPos.left.replace("%", "")
-                                        )}
-                                        y2={parseFloat(
-                                          nextPos.top.replace("%", "")
-                                        )}
-                                        stroke={"#1890ff"}
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        opacity="0.3"
-                                      />
-                                      <line
-                                        x1={parseFloat(
-                                          currentPos.left.replace("%", "")
-                                        )}
-                                        y1={parseFloat(
-                                          currentPos.top.replace("%", "")
-                                        )}
-                                        x2={parseFloat(
-                                          nextPos.left.replace("%", "")
-                                        )}
-                                        y2={parseFloat(
-                                          nextPos.top.replace("%", "")
-                                        )}
-                                        stroke={"#1890ff"}
-                                        strokeWidth="1"
-                                        strokeLinecap="round"
-                                      />
-                                    </g>
-                                  );
-                                })}
-                              </g>
-                            );
-                          })}
+                                      return (
+                                        <g key={`${routeId}-${index}`}>
+                                          <line
+                                            x1={parseFloat(
+                                              currentPos.left.replace("%", "")
+                                            )}
+                                            y1={parseFloat(
+                                              currentPos.top.replace("%", "")
+                                            )}
+                                            x2={parseFloat(
+                                              nextPos.left.replace("%", "")
+                                            )}
+                                            y2={parseFloat(
+                                              nextPos.top.replace("%", "")
+                                            )}
+                                            stroke={"#1890ff"}
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            opacity="0.3"
+                                          />
+                                          <line
+                                            x1={parseFloat(
+                                              currentPos.left.replace("%", "")
+                                            )}
+                                            y1={parseFloat(
+                                              currentPos.top.replace("%", "")
+                                            )}
+                                            x2={parseFloat(
+                                              nextPos.left.replace("%", "")
+                                            )}
+                                            y2={parseFloat(
+                                              nextPos.top.replace("%", "")
+                                            )}
+                                            stroke={"#1890ff"}
+                                            strokeWidth="1"
+                                            strokeLinecap="round"
+                                          />
+                                        </g>
+                                      );
+                                    }
+                                  )}
+                                </g>
+                              );
+                            }
+                          )}
                         </svg>
                       )}
 
@@ -249,7 +265,7 @@ const StationMapPage: React.FC = () => {
                 </Card>
               </Col>
               <Col xs={24} lg={6}>
-                <Card title="Danh sách Ga">
+                <Card title="Danh sách trạm">
                   <div className="space-y-3 max-h-[800px] overflow-y-auto">
                     {stationsLoading ? (
                       <div className="flex justify-center py-8">
@@ -281,7 +297,6 @@ const StationMapPage: React.FC = () => {
                               {station.name}
                             </h4>
                             <div>
-                              <Tag color="blue">{station.stationCode}</Tag>
                               <Tag color="green">{station.status}</Tag>
                             </div>
                           </div>
@@ -300,61 +315,12 @@ const StationMapPage: React.FC = () => {
           </>
         )}
 
-        <Drawer
-          title={
-            <div className="flex items-center gap-2">
-              <Train className="text-blue-600" />
-              Thông tin Ga
-            </div>
-          }
-          placement="right"
-          onClose={() => setDrawerOpen(false)}
+        <StationInfoDrawer
           open={drawerOpen}
-          width={400}
-        >
-          {selectedStation && (
-            <div className="space-y-4">
-              <div className="bg-blue-50 p-4">
-                <h3 className="text-xl font-bold text-blue-800 mb-2">
-                  {selectedStation.name}
-                </h3>
-                <div className="text-sm text-cyan-600">
-                  Ga thứ{" "}
-                  <span className="font-bold text-blue-600">
-                    #{selectedStation.sequenceOrder}
-                  </span>{" "}
-                  trên tuyến
-                </div>
-              </div>
-
-              <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-                <div className="flex items-center gap-2 mb-2">
-                  <InfoCircleOutlined className="text-yellow-600" />
-                  <span className="font-medium text-yellow-800">Kết nối</span>
-                </div>
-                <div className="text-sm text-yellow-600">
-                  {selectedStation.sequenceOrder > 1 && (
-                    <p>
-                      ← Ga trước:{" "}
-                      <strong>
-                        Ga{" "}
-                        {sortedStations[selectedStation.sequenceOrder - 2].name}
-                      </strong>
-                    </p>
-                  )}
-                  {selectedStation.sequenceOrder < sortedStations.length && (
-                    <p>
-                      → Ga sau:{" "}
-                      <strong>
-                        Ga {sortedStations[selectedStation.sequenceOrder].name}
-                      </strong>
-                    </p>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-        </Drawer>
+          onClose={() => setDrawerOpen(false)}
+          selectedStation={selectedStation}
+          sortedStations={sortedStations}
+        />
       </div>
     </div>
   );

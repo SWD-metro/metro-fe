@@ -13,6 +13,7 @@ import {
   CreditCardOutlined,
   CarOutlined,
 } from "@ant-design/icons";
+import { Train } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 import CountUp from "react-countup";
 import metroMap from "src/assets/metro_map.jpg";
@@ -51,7 +52,7 @@ const HomePage: React.FC = () => {
 
   const menuItems: MenuItem[] = [
     {
-      icon: <CarOutlined />,
+      icon: <Train size={36} />,
       title: t("menu.map"),
       bgColor: "bg-cyan-800",
       path: path.stationMap,
