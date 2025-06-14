@@ -12,3 +12,19 @@ export interface SocialLoginRequest {
   pictureUrl: string;
   authProvider: AuthProvider;
 }
+export interface EmailRequest {
+  to: string;
+  subject: string;
+  content: string;
+}
+
+export interface OtpRequest {
+  email: string;
+  purpose: string;
+}
+
+export interface VerifyOtpRequest {
+  email: string;
+  otp: string;
+  purpose: string;
+}

@@ -70,9 +70,6 @@ const UserDropdown: React.FC = () => {
       onClick: () => navigate("/profile"),
     },
     {
-      type: "divider" as const,
-    },
-    {
       key: "logout",
       icon: <LogoutOutlined />,
       label: "Logout",

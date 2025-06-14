@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useState } from "react";
-import { User } from "src/types/user.type";
+import { RegisterRequest, User } from "src/types/user.type";
 import { getProfileFromLS, setProfileToLS } from "src/utils/utils";
 
 interface AppContextInterface {
@@ -9,6 +9,8 @@ interface AppContextInterface {
   profile: User | null;
   setProfile: (profile: User | null) => void;
   reset: () => void;
+  registerData: RegisterRequest | null;
+  setRegisterData: React.Dispatch<React.SetStateAction<RegisterRequest | null>>;
 }
 
 const initialAppContext: AppContextInterface = {
@@ -17,6 +19,8 @@ const initialAppContext: AppContextInterface = {
   profile: getProfileFromLS(),
   setProfile: () => null,
   reset: () => null,
+  registerData: null,
+  setRegisterData: () => null,
 };
 
 export const AppContext = createContext<AppContextInterface>(initialAppContext);
@@ -27,6 +31,10 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   );
   const [profile, setProfile] = useState<User | null>(
     initialAppContext.profile
+  );
+
+  const [registerData, setRegisterData] = useState<RegisterRequest | null>(
+    null
   );
 
   const handleSetProfile = (profile: User | null) => {
@@ -49,6 +57,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         profile,
         setProfile: handleSetProfile,
         reset,
+        registerData,
+        setRegisterData,
       }}
     >
       {children}
