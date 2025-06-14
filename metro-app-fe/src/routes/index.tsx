@@ -43,6 +43,10 @@ const RouteElements: React.FC = () => {
           path: path.stationMap,
           element: <StationMapPage />,
         },
+        {
+          path: path.profile,
+          element: <UserProfile />,
+        },
       ],
     },
     {
@@ -84,10 +88,6 @@ const RouteElements: React.FC = () => {
           element: <Dashboard />,
         },
       ],
-    },
-    {
-      path: "profile",
-      element: <UserProfile />,
     },
   ]);
 

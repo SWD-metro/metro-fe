@@ -125,7 +125,7 @@ const HeroSection: React.FC = () => {
             <div className="text-center text-white max-w-[800px] px-5">
               <div className="relative">
                 <Title
-                  className="!text-5xl !font-bold !mb-2.5 !text-white !leading-tight"
+                  className="!lg:text-5xl !font-bold !mb-2.5 !text-white !leading-tight"
                   style={{
                     textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
                     ...animationStyles,
@@ -155,7 +155,7 @@ const HeroSection: React.FC = () => {
                   <Button
                     type="primary"
                     size="large"
-                    className="!h-[50px] !px-7 !text-base !rounded-[25px] !mx-2.5 transform transition-all duration-300 hover:!-translate-y-1 hover:!shadow-[0_8px_25px_rgba(0,0,0,0.3)] !shadow-[0_5px_15px_rgba(0,0,0,0.2)]"
+                    className="!h-[40px] !px-6 !text-base !rounded-[25px] !mx-2.5 transform transition-all duration-300 hover:!-translate-y-1 hover:!shadow-[0_8px_25px_rgba(0,0,0,0.3)] !shadow-[0_5px_15px_rgba(0,0,0,0.2)]"
                     style={heroButtonPrimaryStyle}
                     icon={<EnvironmentOutlined />}
                   >
@@ -164,7 +164,7 @@ const HeroSection: React.FC = () => {
 
                   <Button
                     size="large"
-                    className="!h-[50px] !px-7 !text-base !rounded-[25px] !mx-2.5 transform transition-all duration-300 hover:!-translate-y-1 hover:!shadow-[0_8px_25px_rgba(0,0,0,0.3)] !shadow-[0_5px_15px_rgba(0,0,0,0.2)]"
+                    className="!h-[40px] !px-6 !text-base !rounded-[25px] !mx-2.5 transform transition-all duration-300 hover:!-translate-y-1 hover:!shadow-[0_8px_25px_rgba(0,0,0,0.3)] !shadow-[0_5px_15px_rgba(0,0,0,0.2)]"
                     style={heroButtonSecondaryStyle}
                     icon={<ClockCircleOutlined />}
                   >
@@ -173,7 +173,7 @@ const HeroSection: React.FC = () => {
                 </Space>
 
                 <div
-                  className="inline-block !p-[15px_30px] !rounded-[50px] text-base"
+                  className="inline-block !p-[10px_20px] !rounded-[20px] text-base"
                   style={currentTimeStyle}
                 >
                   <ClockCircleOutlined style={{ marginRight: 6 }} />

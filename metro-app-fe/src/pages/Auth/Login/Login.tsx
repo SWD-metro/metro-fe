@@ -1,17 +1,33 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Form, Input, Button, Typography, Divider, Checkbox } from "antd";
 import { UserOutlined, LockOutlined, GoogleOutlined } from "@ant-design/icons";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import path from "src/constants/path";
 import { useTranslation } from "react-i18next";
+import { useLoginMutation } from "src/queries/useAuth";
+import { LocalLoginRequest } from "src/types/auth.type";
+import { AppContext } from "src/contexts/app.context";
 
 const { Title, Text } = Typography;
 const LoginPage: React.FC = () => {
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const { t } = useTranslation("auth");
 
-  const onFinish = async () => {
-    setLoading(true);
+  const { setIsAuthenticated, setProfile } = useContext(AppContext);
+  const loginMutation = useLoginMutation();
+
+  const onFinish = async (data: LocalLoginRequest) => {
+    if (loginMutation.isPending) return;
+    try {
+      const result = await loginMutation.mutateAsync(data);
+      if (result?.data?.data) {
+        setIsAuthenticated(true);
+        setProfile(result.data.data);
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -28,7 +44,7 @@ const LoginPage: React.FC = () => {
               {t("login.username.label")}
             </label>
           }
-          name="username"
+          name="usernameOrEmail"
           rules={[
             { required: true, message: t("login.username.usernameRequired") },
           ]}
@@ -75,7 +91,6 @@ const LoginPage: React.FC = () => {
             type="primary"
             htmlType="submit"
             shape="round"
-            loading={loading}
             style={{ width: "70%", margin: "0 auto", display: "block" }}
           >
             {t("login.loginButton")}

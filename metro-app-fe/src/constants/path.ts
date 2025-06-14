@@ -9,5 +9,6 @@ const path = {
   aboutUs: "/about-us",
   buyTicket: "/buy-ticket",
   stationMap: "/station-map",
+  profile: "profile",
 } as const;
 export default path;
