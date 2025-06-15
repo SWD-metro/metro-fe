@@ -8,19 +8,21 @@ import ForgotPassword from "src/pages/Auth/ForgotPassword";
 import LoginPage from "src/pages/Auth/Login";
 import RegisterPage from "src/pages/Auth/Register";
 import ResetPassword from "src/pages/Auth/ResetPassword";
+import VerifyOtpPage from "src/pages/Auth/VerifyOtp";
 import AboutUsPage from "src/pages/Client/AboutUs";
 import HomePage from "src/pages/Client/HomePage";
-import MapRoute from "src/pages/Client/MapRoute";
 import UserProfile from "src/pages/Client/profile/UserProfile";
 import ServicePage from "src/pages/Client/Services";
+import StationMapPage from "src/pages/Client/StationMap";
 import BuyTicketPage from "src/pages/Client/Ticket";
 import Dashboard from "src/pages/dashboard/Dashboard";
-import Home from "src/pages/dashboard/Home";
+import PublicRoute from "./PublicRoute";
+import ProtectedRoute from "./ProtectedRoute";
 
 const RouteElements: React.FC = () => {
   const routeElements = useRoutes([
     {
-      path: "/",
+      path: path.home,
       element: <MainLayout />,
       children: [
         {
@@ -36,18 +38,31 @@ const RouteElements: React.FC = () => {
           element: <AboutUsPage />,
         },
         {
-          path: path.mapRoute,
-          element: <MapRoute />,
-        },
-        {
           path: path.buyTicket,
           element: <BuyTicketPage />,
+        },
+        {
+          path: path.stationMap,
+          element: <StationMapPage />,
+        },
+        {
+          element: <ProtectedRoute allowedRoles={["ROLE_CUSTOMER"]} />,
+          children: [
+            {
+              path: path.profile,
+              element: <UserProfile />,
+            },
+          ],
         },
       ],
     },
     {
-      path: "auth",
-      element: <AuthLayout />,
+      path: path.auth,
+      element: (
+        <PublicRoute>
+          <AuthLayout />
+        </PublicRoute>
+      ),
       children: [
         {
           path: path.login,
@@ -65,29 +80,30 @@ const RouteElements: React.FC = () => {
           path: path.resetPassword,
           element: <ResetPassword />,
         },
+        {
+          path: path.verifyOtp,
+          element: <VerifyOtpPage />,
+        },
       ],
     },
     {
-      path: "/admin",
-      element: <AdminLayout />, 
+      path: path.admin,
+      element: <ProtectedRoute allowedRoles={["ROLE_ADMIN"]} />,
       children: [
         {
-          index: true, 
-          element: <Dashboard />,
-        },
-        {
-          path: "profile", 
-          element: <UserProfile />,
-        },
-        {
-          path: "products", 
-          element: <Dashboard />,
+          element: <AdminLayout />,
+          children: [
+            {
+              index: true,
+              element: <Dashboard />,
+            },
+            {
+              path: "profile",
+              element: <UserProfile />,
+            },
+          ],
         },
       ],
-    },
-    {
-      path: "profile",
-      element: <UserProfile />,
     },
   ]);
 

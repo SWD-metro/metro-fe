@@ -1,6 +1,5 @@
 import React from "react";
 import { Card, Layout } from "antd";
-import Header from "src/components/Header";
 import Sidebar from "src/components/sidebar/Sidebar";
 import { Outlet } from "react-router-dom";
 
@@ -10,7 +9,6 @@ const { Content } = Layout;
 const AdminLayout: React.FC = () => {
     return (
       <Layout className="min-h-screen">
-        <Header />
         <Layout className="site-layout">
           <Content
             className="mx-6 my-6 bg-gray-100 p-6 rounded-lg relative z-10"

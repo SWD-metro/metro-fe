@@ -1,5 +1,5 @@
-import React, { useState, type JSX } from "react";
-import { Button, Drawer, Dropdown, Menu } from "antd";
+import React, { useContext, useState, type JSX } from "react";
+import { Button, Col, Drawer, Dropdown, Menu, Row } from "antd";
 import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
 import viFlag from "src/assets/svg/vi.svg";
 import enFlag from "src/assets/svg/en.svg";
@@ -8,12 +8,14 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import path from "src/constants/path";
 import HeroSection from "../HeroSection";
+import { AppContext } from "src/contexts/app.context";
+import UserDropdown from "../UserDropdown";
+import { LogIn } from "lucide-react";
 
 const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const { t, i18n } = useTranslation("home");
-
-  console.log("i18n", i18n);
+  const { isAuthenticated } = useContext(AppContext);
 
   const renderFlag = (language: string | undefined): JSX.Element => {
     return (
@@ -36,10 +38,9 @@ const Header: React.FC = () => {
   const menuItems: Array<{ key: string; label: string; to?: string }> = [
     { key: "home", label: t("header.home"), to: path.home },
     { key: "whatToKnow", label: t("header.whatToKnow"), to: path.services },
-    { key: "time", label: t("header.stops") },
+    { key: "time", label: t("header.stops"), to: path.stationMap },
     { key: "buyTicket", label: t("header.tickets"), to: path.buyTicket },
     { key: "contact", label: t("header.contact"), to: path.aboutUs },
-    { key: "login", label: t("header.login"), to: path.login },
   ];
 
   const changeLanguage = (lng: "en" | "vi") => {
@@ -53,7 +54,7 @@ const Header: React.FC = () => {
           {
             key: "en",
             label: (
-              <div className="flex items-center gap-2 py-1">
+              <div className="flex items-center gap-2 py-2">
                 <img src={enFlag} alt="en" className="w-5 h-5" />
                 <span>English</span>
               </div>
@@ -77,7 +78,7 @@ const Header: React.FC = () => {
     >
       <Button
         type="text"
-        className="!bg-transparent !border-0 !shadow-none flex items-center mt-3 gap-2 !text-white hover:!text-[#007acc]"
+        className="!bg-transparent !border-0 !shadow-none flex items-center gap-2 !text-white hover:!text-[#007acc]"
       >
         {renderFlag(i18n.resolvedLanguage || "vi")}
         {i18n.resolvedLanguage === "en" ? "EN" : "VN"}
@@ -87,41 +88,65 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <header className="absolute top-[2%] w-full z-[100] px-7 text-center">
-        <div className="flex justify-between items-center mx-auto flex-wrap">
-          <div className="text-center flex flex-col items-center">
+      <header className="absolute top-[2%] w-full z-[100] px-4 text-center">
+        <Row align="middle" justify="space-between" className="mx-4">
+          <Col flex="none">
             <Link to="/">
               <img src={logo} alt="Logo" className="w-[120px]" />
             </Link>
-          </div>
+          </Col>
 
-          <Menu
-            mode="horizontal"
-            className="hidden lg:flex w-[70%] !bg-transparent !border-b-0 justify-end items-center gap-1 mr-20"
-            selectable={false}
-          >
-            {menuItems.map((item) => (
-              <Menu.Item
-                key={item.key}
-                className="!text-base !font-medium !text-white hover:!text-[#007acc]"
-              >
-                {item.to ? <Link to={item.to}>{item.label}</Link> : item.label}
-              </Menu.Item>
-            ))}
-            <Menu.Item key="lang">
+          <Col flex="auto" className="hidden lg:block text-center !ms-[5%]">
+            <Menu
+              mode="horizontal"
+              className="!bg-transparent !border-b-0 justify-center items-center"
+              selectable={false}
+            >
+              {menuItems.map((item) => (
+                <Menu.Item
+                  key={item.key}
+                  className="!text-base !font-medium !px-6 !text-white hover:!text-[#007acc]"
+                >
+                  {item.to ? (
+                    <Link to={item.to}>{item.label}</Link>
+                  ) : (
+                    item.label
+                  )}
+                </Menu.Item>
+              ))}
+            </Menu>
+          </Col>
+
+          <Col flex="none">
+            <div className="hidden lg:flex items-center gap-4">
+              {isAuthenticated ? (
+                <UserDropdown />
+              ) : (
+                <Link
+                  to={path.login}
+                  className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-red-500 to-blue-600 
+                  hover:from-red-800 hover:to-blue-700  !text-white font-medium rounded-lg transition-colors"
+                >
+                  <span className="flex items-center gap-2">
+                    <LogIn className="w-4 h-4" />
+                    {t("header.login")}
+                  </span>
+                </Link>
+              )}
               <LanguageDropdown />
-            </Menu.Item>
-          </Menu>
+            </div>
 
-          <div className="flex items-center gap-4 lg:hidden">
-            <Button
-              type="text"
-              icon={<MenuOutlined />}
-              onClick={toggleMobileMenu}
-              className="!text-white !text-xl !p-2"
-            />
-          </div>
-        </div>
+            <div className="flex items-center gap-3 lg:hidden">
+              {isAuthenticated && <UserDropdown />}
+              <Button
+                type="text"
+                icon={<MenuOutlined />}
+                onClick={toggleMobileMenu}
+                className="!text-white !text-xl !p-2"
+              />
+            </div>
+          </Col>
+        </Row>
 
         <Drawer
           title={

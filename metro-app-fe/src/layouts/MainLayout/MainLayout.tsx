@@ -1,18 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Navigate, Outlet } from "react-router-dom";
 import Footer from "src/components/Footer";
 import Header from "src/components/Header";
 import MetroIcon from "src/components/IconCustom/MetroIcon";
 import background from "src/assets/stats_section.jpg";
+import { AppContext } from "src/contexts/app.context";
+import path from "src/constants/path";
 const MainLayout: React.FC = () => {
-  const [showMetro, setShowMetro] = useState(true);
+  const { profile } = useContext(AppContext);
+
+  const [showMetro, setShowMetro] = useState(() => {
+    return !sessionStorage.getItem("metro-show");
+  });
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowMetro(false);
-    }, 4000);
-    return () => clearTimeout(timer);
-  }, []);
+    if (showMetro) {
+      const timer = setTimeout(() => {
+        setShowMetro(false);
+        sessionStorage.setItem("metro-show", "true");
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [showMetro]);
+
+  if (profile?.role === "ROLE_ADMIN") {
+    return <Navigate to={path.admin} replace />;
+  }
   return (
     <>
       {showMetro ? (
