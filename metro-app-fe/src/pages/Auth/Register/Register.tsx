@@ -1,25 +1,71 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Form, Input, Button, Typography, Checkbox, Row, Col } from "antd";
-import {
-  UserOutlined,
-  LockOutlined,
-  MailOutlined,
-  PhoneOutlined,
-  IdcardOutlined,
-} from "@ant-design/icons";
-import { Link as RouterLink } from "react-router-dom";
+import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import path from "src/constants/path";
 import { useTranslation } from "react-i18next";
+import { RegisterRequest } from "src/types/user.type";
+import { AppContext } from "src/contexts/app.context";
+import {
+  useCheckEmail,
+  useCheckUserName,
+  useSendOtpMutation,
+} from "src/queries/useAuth";
 
 const { Title, Text } = Typography;
 
 const RegisterPage: React.FC = () => {
-  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const { t } = useTranslation("auth");
+  const agreementChecked = Form.useWatch("agreement", form);
+  const { setRegisterData } = useContext(AppContext);
+  const navigate = useNavigate();
+  const sendOtpMutation = useSendOtpMutation();
 
-  const onFinish = async () => {
-    setLoading(true);
+  const checkEmail = useCheckEmail(form.getFieldValue("email"), true);
+  const checkUserName = useCheckUserName(form.getFieldValue("username"), true);
+
+  const onFinish = async (body: RegisterRequest) => {
+    if (sendOtpMutation.isPending) return;
+
+    try {
+      const [emailResult, usernameResult] = await Promise.all([
+        checkEmail.refetch(),
+        checkUserName.refetch(),
+      ]);
+      const errors = [];
+      if (emailResult.data?.data.data) {
+        errors.push({ name: "email", errors: ["Email đã được sử dụng"] });
+      }
+      if (usernameResult.data?.data.data) {
+        errors.push({
+          name: "username",
+          errors: ["Tên đăng nhập đã được sử dụng"],
+        });
+      }
+      if (errors.length > 0) {
+        form.setFields(errors);
+        console.error("Vui lòng kiểm tra lại thông tin đăng ký");
+        return;
+      }
+
+      const otpRequest = {
+        email: body.email,
+        purpose: "REGISTER",
+      };
+
+      const otpResponse = await sendOtpMutation.mutateAsync(otpRequest);
+
+      if (otpResponse?.data.status === 200) {
+        console.log("Mã OTP đã được gửi đến email");
+        setRegisterData(body);
+        navigate(path.verifyOtp, { state: { email: body.email } });
+      } else {
+        console.error("Không thể gửi OTP. Vui lòng thử lại");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -41,6 +87,11 @@ const RegisterPage: React.FC = () => {
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item
+              label={
+                <label className="text-base font-medium text-cyan-800">
+                  {t("login.username.label")}
+                </label>
+              }
               name="username"
               rules={[
                 { required: true, message: t("register.username.required") },
@@ -54,30 +105,17 @@ const RegisterPage: React.FC = () => {
               />
             </Form.Item>
           </Col>
-
           <Col span={24}>
             <Form.Item
-              name="full_name"
-              rules={[
-                { required: true, message: t("register.fullName.required") },
-              ]}
-            >
-              <Input
-                prefix={<UserOutlined className="text-gray-400" />}
-                placeholder={t("register.fullName.placeholder")}
-                className="rounded-lg h-12"
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Row gutter={16}>
-          <Col xs={24} md={12}>
-            <Form.Item
+              label={
+                <label className="text-base font-medium text-cyan-800">
+                  Email
+                </label>
+              }
               name="email"
               rules={[
                 { type: "email", message: t("register.email.invalid") },
-                { required: false },
+                { required: true },
               ]}
             >
               <Input
@@ -87,46 +125,16 @@ const RegisterPage: React.FC = () => {
               />
             </Form.Item>
           </Col>
-
-          <Col xs={24} md={12}>
-            <Form.Item
-              name="phone"
-              rules={[
-                {
-                  pattern: /^[0-9]{10,11}$/,
-                  message: t("register.phone.invalid"),
-                },
-              ]}
-            >
-              <Input
-                prefix={<PhoneOutlined className="text-gray-400" />}
-                placeholder={t("register.phone.placeholder")}
-                className="rounded-lg h-12"
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col span={24}>
-            <Form.Item
-              name="cccd"
-              rules={[
-                { pattern: /^[0-9]{12}$/, message: t("register.cccd.invalid") },
-              ]}
-            >
-              <Input
-                prefix={<IdcardOutlined className="text-gray-400" />}
-                placeholder={t("register.cccd.placeholder")}
-                className="rounded-lg h-12"
-              />
-            </Form.Item>
-          </Col>
         </Row>
 
         <Row gutter={16}>
           <Col xs={24} md={12}>
             <Form.Item
+              label={
+                <label className="text-base font-medium text-cyan-800">
+                  {t("login.password.label")}
+                </label>
+              }
               name="password"
               rules={[
                 { required: true, message: t("register.password.required") },
@@ -143,6 +151,11 @@ const RegisterPage: React.FC = () => {
 
           <Col xs={24} md={12}>
             <Form.Item
+              label={
+                <label className="text-base font-medium text-cyan-800">
+                  {t("register.confirmPassword.placeholder")}
+                </label>
+              }
               name="confirmPassword"
               dependencies={["password"]}
               rules={[
@@ -195,10 +208,12 @@ const RegisterPage: React.FC = () => {
                 type="primary"
                 htmlType="submit"
                 shape="round"
-                loading={loading}
+                disabled={!agreementChecked}
                 style={{ width: "70%", margin: "0 auto", display: "block" }}
               >
-                {t("register.registerButton")}
+                {sendOtpMutation.isPending
+                  ? "Đang xử lý..."
+                  : t("register.registerButton")}
               </Button>
             </Form.Item>
           </Col>
@@ -209,7 +224,7 @@ const RegisterPage: React.FC = () => {
             {t("register.hasAccount")}
             <RouterLink
               to={path.login}
-              className="text-blue-600 hover:text-blue-800 font-medium no-underline"
+              className="text-blue-600 hover:text-blue-800 font-medium no-underline ms-3"
             >
               {t("register.loginNow")}
             </RouterLink>
