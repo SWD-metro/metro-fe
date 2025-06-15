@@ -33,27 +33,36 @@ const RegisterPage: React.FC = () => {
         checkEmail.refetch(),
         checkUserName.refetch(),
       ]);
-
+      const errors = [];
       if (emailResult.data?.data.data) {
-        form.setFields([{ name: "email", errors: ["Email đã được sử dụng"] }]);
+        errors.push({ name: "email", errors: ["Email đã được sử dụng"] });
+      }
+      if (usernameResult.data?.data.data) {
+        errors.push({
+          name: "username",
+          errors: ["Tên đăng nhập đã được sử dụng"],
+        });
+      }
+      if (errors.length > 0) {
+        form.setFields(errors);
+        console.error("Vui lòng kiểm tra lại thông tin đăng ký");
         return;
       }
 
-      if (usernameResult.data?.data.data) {
-        form.setFields([
-          { name: "username", errors: ["Tên đăng nhập đã được sử dụng"] },
-        ]);
-        return;
-      }
       const otpRequest = {
         email: body.email,
         purpose: "REGISTER",
       };
 
-      await sendOtpMutation.mutateAsync(otpRequest);
+      const otpResponse = await sendOtpMutation.mutateAsync(otpRequest);
 
-      setRegisterData(body);
-      navigate(path.verifyOtp);
+      if (otpResponse?.data.status === 200) {
+        console.log("Mã OTP đã được gửi đến email");
+        setRegisterData(body);
+        navigate(path.verifyOtp, { state: { email: body.email } });
+      } else {
+        console.error("Không thể gửi OTP. Vui lòng thử lại");
+      }
     } catch (error) {
       console.log(error);
     }

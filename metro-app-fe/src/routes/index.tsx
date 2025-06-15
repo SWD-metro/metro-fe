@@ -16,11 +16,13 @@ import ServicePage from "src/pages/Client/Services";
 import StationMapPage from "src/pages/Client/StationMap";
 import BuyTicketPage from "src/pages/Client/Ticket";
 import Dashboard from "src/pages/dashboard/Dashboard";
+import PublicRoute from "./PublicRoute";
+import ProtectedRoute from "./ProtectedRoute";
 
 const RouteElements: React.FC = () => {
   const routeElements = useRoutes([
     {
-      path: "/",
+      path: path.home,
       element: <MainLayout />,
       children: [
         {
@@ -44,14 +46,23 @@ const RouteElements: React.FC = () => {
           element: <StationMapPage />,
         },
         {
-          path: path.profile,
-          element: <UserProfile />,
+          element: <ProtectedRoute allowedRoles={["ROLE_CUSTOMER"]} />,
+          children: [
+            {
+              path: path.profile,
+              element: <UserProfile />,
+            },
+          ],
         },
       ],
     },
     {
-      path: "auth",
-      element: <AuthLayout />,
+      path: path.auth,
+      element: (
+        <PublicRoute>
+          <AuthLayout />
+        </PublicRoute>
+      ),
       children: [
         {
           path: path.login,
@@ -76,20 +87,21 @@ const RouteElements: React.FC = () => {
       ],
     },
     {
-      path: "/admin",
-      element: <AdminLayout />,
+      path: path.admin,
+      element: <ProtectedRoute allowedRoles={["ROLE_ADMIN"]} />,
       children: [
         {
-          index: true,
-          element: <Dashboard />,
-        },
-        {
-          path: "profile",
-          element: <UserProfile />,
-        },
-        {
-          path: "products",
-          element: <Dashboard />,
+          element: <AdminLayout />,
+          children: [
+            {
+              index: true,
+              element: <Dashboard />,
+            },
+            {
+              path: "profile",
+              element: <UserProfile />,
+            },
+          ],
         },
       ],
     },

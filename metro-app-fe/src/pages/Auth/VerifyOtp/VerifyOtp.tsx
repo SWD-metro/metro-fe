@@ -1,10 +1,14 @@
 import { MailOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Typography } from "antd";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import path from "src/constants/path";
 import { AppContext } from "src/contexts/app.context";
-import { useRegisterMutation, useVerifyOtpMutation } from "src/queries/useAuth";
+import {
+  useRegisterMutation,
+  useSendOtpMutation,
+  useVerifyOtpMutation,
+} from "src/queries/useAuth";
 import { VerifyOtpRequest } from "src/types/auth.type";
 
 const VerifyOtpPage: React.FC = () => {
@@ -12,6 +16,16 @@ const VerifyOtpPage: React.FC = () => {
   const verifyOtpMutation = useVerifyOtpMutation();
   const registerMutation = useRegisterMutation();
   const navigate = useNavigate();
+  const [countdown, setCountdown] = useState(60);
+  const sendOtpMutation = useSendOtpMutation();
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [countdown]);
 
   const onFinish = async (values: { otp: string }) => {
     if (!registerData) {
@@ -33,26 +47,50 @@ const VerifyOtpPage: React.FC = () => {
         return;
       }
 
-      await registerMutation.mutateAsync(registerData);
+      const registerResponse = await registerMutation.mutateAsync(registerData);
 
-      console.log("Registration successful!");
-      navigate(path.login);
+      if (registerResponse?.data.data) {
+        console.log("Registration successful!");
+        navigate(path.login);
+      }
     } catch (error) {
       console.log(error);
     }
   };
+
+  const sendOtpCode = async () => {
+    if (countdown > 0 || !registerData) return;
+
+    try {
+      await sendOtpMutation.mutateAsync({
+        email: registerData.email,
+        purpose: "REGISTER",
+      });
+
+      setCountdown(60);
+      form.resetFields(["otp"]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const isLoading = sendOtpMutation.isPending;
+  const disableResendOTP = countdown > 0;
   return (
     <>
       <Form
+        form={form}
         name="VerifyOTP"
         initialValues={{}}
         onFinish={onFinish}
         layout="vertical"
         requiredMark="optional"
       >
-        <Typography className="text-center mb-4 text-base font-medium">
-          Enter 6 digit code we just sent to your email
-          <span className="text-blue-500">{registerData?.email}</span>
+        <Typography className="text-center mb-2 text-base font-medium">
+          Nhập mã 6 chữ số mà chúng tôi vừa gửi tới email của bạn:
+        </Typography>
+        <Typography className="text-center mb-2 text-base font-medium !text-blue-500">
+          {registerData?.email}{" "}
         </Typography>
         <Form.Item
           name="otp"
@@ -73,24 +111,35 @@ const VerifyOtpPage: React.FC = () => {
             className="!rounded-md !py-2 !px-3"
           />
         </Form.Item>
-        <div>
-          <label className="text-sm font-medium">
+        <div className="flex justify-between">
+          <label className="text-lg font-medium">
             * This code is valid for 5 minutes
           </label>
-          {/* {!isLoading && (
+          {!isLoading && (
             <span>
               {!disableResendOTP ? (
-                <a href="#" onClick={sendOtpCode} className="text-blue-600 hover:underline ml-2">
+                <a
+                  href="#"
+                  onClick={sendOtpCode}
+                  className="text-blue-600 font-medium ml-2 text-lg"
+                >
                   Resend new code
                 </a>
               ) : (
-                <p className="text-gray-500 text-sm">{`Please wait for 30s`}</p>
+                <p className="text-blue-600 text-lg">{`Please wait for ${countdown}`}</p>
               )}
             </span>
-          )} */}
+          )}
         </div>
         <Form.Item>
-          <Button block shape="round" type="primary" htmlType="submit">
+          <Button
+            block
+            shape="round"
+            type="primary"
+            htmlType="submit"
+            loading={verifyOtpMutation.isPending}
+            className="!mt-3"
+          >
             VERIFY
           </Button>
         </Form.Item>

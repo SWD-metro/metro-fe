@@ -66,13 +66,13 @@ const UserDropdown: React.FC = () => {
     {
       key: "profile",
       icon: <UserOutlined />,
-      label: "Profile",
+      label: "Hồ sơ",
       onClick: () => navigate("/profile"),
     },
     {
       key: "logout",
       icon: <LogoutOutlined />,
-      label: "Logout",
+      label: "Đăng xuất",
       onClick: handleLogout,
       className: "text-red-600 hover:text-red-700",
     },

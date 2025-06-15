@@ -25,7 +25,7 @@ export const useCheckEmail = (email: string, enabled: boolean = true) => {
   return useQuery({
     queryKey: ["checkEmail", email],
     queryFn: () => authApiRequests.checkEmail(email),
-    enabled: !!email && enabled,
+    enabled: enabled,
     retry: false,
     staleTime: 5 * 60 * 1000,
   });
@@ -35,7 +35,7 @@ export const useCheckUserName = (username: string, enabled: boolean = true) => {
   return useQuery({
     queryKey: ["checkUserName", username],
     queryFn: () => authApiRequests.checkUserName(username),
-    enabled: !!username && enabled,
+    enabled: enabled,
     retry: false,
     staleTime: 5 * 60 * 1000,
   });

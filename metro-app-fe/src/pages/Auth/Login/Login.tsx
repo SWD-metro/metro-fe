@@ -113,7 +113,7 @@ const LoginPage: React.FC = () => {
               {t("login.noAccount")}
               <RouterLink
                 to={path.register}
-                className="text-blue-600 hover:text-blue-800 font-medium no-underline"
+                className="text-blue-600 ms-3 hover:text-blue-800 font-medium no-underline"
               >
                 {t("login.registerNow")}
               </RouterLink>
