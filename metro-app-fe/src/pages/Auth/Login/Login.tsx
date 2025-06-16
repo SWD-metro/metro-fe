@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useLoginMutation } from "src/queries/useAuth";
 import { LocalLoginRequest } from "src/types/auth.type";
 import { AppContext } from "src/contexts/app.context";
+import toast from "react-hot-toast";
 
 const { Title, Text } = Typography;
 const LoginPage: React.FC = () => {
@@ -21,12 +22,22 @@ const LoginPage: React.FC = () => {
     try {
       const result = await loginMutation.mutateAsync(data);
       if (result?.data?.data) {
+        toast.success("Đăng nhập thành công!", {
+          duration: 3000,
+          style: {
+            borderRadius: "8px",
+            background: "#4BB543",
+            color: "#fff",
+            fontWeight: "500",
+          },
+        });
         setIsAuthenticated(true);
         setProfile(result.data.data);
         navigate("/");
       }
     } catch (error) {
       console.log(error);
+      toast.error("Đăng nhập thất bại!");
     }
   };
 
