@@ -4,6 +4,8 @@ import path from "src/constants/path";
 import AdminLayout from "src/layouts/adminLayout/AdminLayout";
 import AuthLayout from "src/layouts/AuthLayout";
 import MainLayout from "src/layouts/MainLayout";
+import Dashboard from "src/pages/admin/Dashboard";
+import Manage from "src/pages/admin/Manage";
 import ForgotPassword from "src/pages/Auth/ForgotPassword";
 import LoginPage from "src/pages/Auth/Login";
 import RegisterPage from "src/pages/Auth/Register";
@@ -14,8 +16,7 @@ import UserProfile from "src/pages/Client/profile/UserProfile";
 import ServicePage from "src/pages/Client/Services";
 import StationMapPage from "src/pages/Client/StationMap";
 import BuyTicketPage from "src/pages/Client/Ticket";
-import Dashboard from "src/pages/dashboard/Dashboard";
-import Home from "src/pages/dashboard/Home";
+
 
 const RouteElements: React.FC = () => {
   const routeElements = useRoutes([
@@ -80,8 +81,8 @@ const RouteElements: React.FC = () => {
           element: <UserProfile />,
         },
         {
-          path: "products",
-          element: <Dashboard />,
+          path: "manage",
+          element: <Manage />,
         },
       ],
     },
