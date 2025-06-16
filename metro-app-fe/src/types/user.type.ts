@@ -65,6 +65,7 @@ export interface FeedbackCreationRequest {
 export interface RegisterRequest {
   email: string;
   username: string;
+  name: string;
   password: string;
   authProvider: AuthProvider;
 }

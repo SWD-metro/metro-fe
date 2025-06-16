@@ -11,6 +11,7 @@ import {
   useCheckUserName,
   useSendOtpMutation,
 } from "src/queries/useAuth";
+import toast from "react-hot-toast";
 
 const { Title, Text } = Typography;
 
@@ -22,22 +23,25 @@ const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
   const sendOtpMutation = useSendOtpMutation();
 
-  const checkEmail = useCheckEmail(form.getFieldValue("email"), true);
-  const checkUserName = useCheckUserName(form.getFieldValue("username"), true);
+  const email = Form.useWatch("email", form);
+  const username = Form.useWatch("username", form);
+
+  const emailCheck = useCheckEmail(email, !!email);
+  const usernameCheck = useCheckUserName(username, !!username);
 
   const onFinish = async (body: RegisterRequest) => {
     if (sendOtpMutation.isPending) return;
-
     try {
       const [emailResult, usernameResult] = await Promise.all([
-        checkEmail.refetch(),
-        checkUserName.refetch(),
+        emailCheck.refetch(),
+        usernameCheck.refetch(),
       ]);
+
       const errors = [];
-      if (emailResult.data?.data.data) {
+      if (emailResult.data?.data?.data) {
         errors.push({ name: "email", errors: ["Email đã được sử dụng"] });
       }
-      if (usernameResult.data?.data.data) {
+      if (usernameResult.data?.data?.data) {
         errors.push({
           name: "username",
           errors: ["Tên đăng nhập đã được sử dụng"],
@@ -45,7 +49,7 @@ const RegisterPage: React.FC = () => {
       }
       if (errors.length > 0) {
         form.setFields(errors);
-        console.error("Vui lòng kiểm tra lại thông tin đăng ký");
+        toast.error("Vui lòng kiểm tra lại thông tin đăng ký");
         return;
       }
 
@@ -57,11 +61,19 @@ const RegisterPage: React.FC = () => {
       const otpResponse = await sendOtpMutation.mutateAsync(otpRequest);
 
       if (otpResponse?.data.status === 200) {
-        console.log("Mã OTP đã được gửi đến email");
+        toast.success("Mã OTP đã được gửi đến email", {
+          duration: 3000,
+          style: {
+            borderRadius: "8px",
+            background: "#4BB543",
+            color: "#fff",
+            fontWeight: "500",
+          },
+        });
         setRegisterData(body);
         navigate(path.verifyOtp, { state: { email: body.email } });
       } else {
-        console.error("Không thể gửi OTP. Vui lòng thử lại");
+        toast.error("Không thể gửi OTP. Vui lòng thử lại");
       }
     } catch (error) {
       console.log(error);
@@ -101,6 +113,23 @@ const RegisterPage: React.FC = () => {
               <Input
                 prefix={<UserOutlined className="text-gray-400" />}
                 placeholder={t("register.username.placeholder")}
+                className="rounded-lg h-12"
+              />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Form.Item
+              label={
+                <label className="text-base font-medium text-cyan-800">
+                  {t("register.name.placeholder")}
+                </label>
+              }
+              name="name"
+              rules={[{ required: true, message: t("register.name.required") }]}
+            >
+              <Input
+                prefix={<UserOutlined className="text-gray-400" />}
+                placeholder={t("register.name.placeholder")}
                 className="rounded-lg h-12"
               />
             </Form.Item>

@@ -23,7 +23,7 @@ const UserDropdown: React.FC = () => {
   };
 
   const getUserDisplayName = (): string => {
-    if (profile?.username) return profile.username;
+    if (profile?.name) return profile.name;
     return "METRO";
   };
 
