@@ -17,7 +17,6 @@ import UserProfile from "src/pages/Client/profile/UserProfile";
 import ServicePage from "src/pages/Client/Services";
 import StationMapPage from "src/pages/Client/StationMap";
 import BuyTicketPage from "src/pages/Client/Ticket";
-import Dashboard from "src/pages/dashboard/Dashboard";
 import PublicRoute from "./PublicRoute";
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -102,6 +101,10 @@ const RouteElements: React.FC = () => {
             {
               path: "profile",
               element: <UserProfile />,
+            },
+            {
+              path: "manage",
+              element: <Manage />,
             },
           ],
         },
