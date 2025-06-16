@@ -9,6 +9,7 @@ import {
   Col,
   Space,
   Tag,
+  Layout,
 } from 'antd';
 import {
   BellOutlined,
@@ -22,6 +23,8 @@ import {
 } from '@ant-design/icons';
 
 import avt from '../../../assets/avt.jpg';
+import Header from 'src/components/Header';
+import { Content } from 'antd/es/layout/layout';
 const { Title, Text } = Typography;
 
 const favoriteTrips = [
@@ -75,12 +78,12 @@ const DashboardProfileMetro: React.FC = () => {
 
   return (
     <>
-    {/* <Layout className="min-h-screen">
+    <Layout className="min-h-screen">
       <Header />
       <Layout className="site-layout">
         <Content className="mx-6 my-6 bg-gray-100 p-6 rounded-lg relative z-10"
           style={{ marginTop: "-30px" }} 
-        > */}
+        >
           <Card
             className="mb-6 overflow-hidden relative rounded-lg"
             style={{
@@ -165,7 +168,15 @@ const DashboardProfileMetro: React.FC = () => {
               </Card>
             </Col>
             <Col xs={24} lg={8}> 
-              <Card title="Thông tin cá nhân" className="mb-6">
+              <Card title={
+                <div>
+                  <Text strong>Thông tin cá nhân</Text>
+                  
+                  <Button type="text" icon={<EditOutlined />} className="text-white">
+                Edit
+              </Button>
+                </div>
+              } className="mb-6">
                 <p className="text-gray-600 mb-4">
                   Chào, tôi là Nguyễn Văn A. Nếu bạn không thể quyết định, câu trả lời là nếu hai lượng bằng nhau, hãy chọn một lượng ít gây đau đớn nhất trong thời gian ngắn (tránh xa ảo tưởng về sự bình đẳng).
                 </p>
@@ -257,9 +268,9 @@ const DashboardProfileMetro: React.FC = () => {
               </Col>
             ))}
           </Row>
-        {/* </Content>
+        </Content>
       </Layout>
-    </Layout> */}
+    </Layout>
     </>
   );
 };

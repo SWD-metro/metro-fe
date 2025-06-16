@@ -14,8 +14,8 @@ import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
   return (
-    <Sider width={200} className="!bg-white shadow-sm h-dvh">
-      <div className="p-4">
+    <Sider width={200} className="!bg-white shadow-sm ">
+      <div className="p-4 ">
       <div className="text-center flex flex-col items-center">
             <NavLink to="/">
               <img src={logo} alt="Logo" className="w-[120px]" />
