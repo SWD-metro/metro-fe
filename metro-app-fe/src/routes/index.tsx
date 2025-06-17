@@ -19,6 +19,7 @@ import StationMapPage from "src/pages/Client/StationMap";
 import BuyTicketPage from "src/pages/Client/Ticket";
 import PublicRoute from "./PublicRoute";
 import ProtectedRoute from "./ProtectedRoute";
+import OrderPage from "src/pages/Client/Order";
 
 const RouteElements: React.FC = () => {
   const routeElements = useRoutes([
@@ -45,6 +46,10 @@ const RouteElements: React.FC = () => {
         {
           path: path.stationMap,
           element: <StationMapPage />,
+        },
+        {
+          path: path.orderPage,
+          element: <OrderPage />,
         },
         {
           element: <ProtectedRoute allowedRoles={["ROLE_CUSTOMER"]} />,
