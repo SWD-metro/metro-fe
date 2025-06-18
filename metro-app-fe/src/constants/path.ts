@@ -13,6 +13,7 @@ const path = {
   resetPassword: "/auth/reset-password",
   verifyOtp: "/auth/verify-otp",
   logout: "/logout",
+  oauth2: "/oauth2/redirect",
 
   admin: "/admin",
 } as const;
