@@ -72,3 +72,9 @@ export interface TicketResponse {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface PaymentResponse {
+  amount: number;
+  paymentUrl: string;
+  transactionRef: string;
+}

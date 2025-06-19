@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Card, Button, Select, Tabs, Row, Col, InputNumber, Radio } from "antd";
 import {
   CalendarOutlined,
@@ -11,14 +11,22 @@ import background from "src/assets/feature_section.png";
 import background2 from "src/assets/stats_section.jpg";
 import { useGetStationList } from "src/queries/useStation";
 import {
-  useCreateTicketFareMatrixMutation,
-  useCreateTicketTypeMutation,
   useGetFareMatricesList,
   useGetTicketTypeList,
 } from "src/queries/useTicket";
 import { TicketTypeResponse } from "src/types/tickets.type";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { formatPrice } from "src/utils/utils";
+import {
+  useCreateOrderDaysMutation,
+  useCreateOrderSingleMutation,
+} from "src/queries/useOrder";
+import { useCreatePaymentMutation } from "src/queries/usePayment";
+import { AppContext } from "src/contexts/app.context";
+import {
+  OrderTicketDaysRequest,
+  OrderTicketSingleRequest,
+} from "src/types/orders.type";
 
 type TicketType = "single" | "days";
 
@@ -33,7 +41,7 @@ const BuyTicketPage: React.FC = () => {
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedTicketInfo, setSelectedTicketInfo] =
     useState<TicketTypeResponse | null>(null);
-  const navigate = useNavigate();
+  const { profile } = useContext(AppContext);
 
   const { data: stations } = useGetStationList();
   const stationsList = stations?.data?.data || [];
@@ -41,8 +49,10 @@ const BuyTicketPage: React.FC = () => {
   const { data: ticketTypes } = useGetTicketTypeList();
   const ticketTypesList = ticketTypes?.data?.data || [];
 
-  const useCreateTicketType = useCreateTicketTypeMutation();
-  const useCreateTicketFareMatrix = useCreateTicketFareMatrixMutation();
+  const useCreateOrderSingle = useCreateOrderSingleMutation();
+  const useCreateOrderDays = useCreateOrderDaysMutation();
+
+  const useCreatePayment = useCreatePaymentMutation();
 
   const { data: fareMatrices } = useGetFareMatricesList();
   const fareMatricesList = fareMatrices?.data.data || [];
@@ -76,6 +86,10 @@ const BuyTicketPage: React.FC = () => {
   };
 
   const handleBooking = async () => {
+    if (!profile) {
+      toast.error("Vui lòng đăng nhập để đặt vé.");
+      return;
+    }
     if (selectedTicketType === "single" && (!fromStation || !toStation)) {
       toast.error("Vui lòng chọn ga đi và ga đến");
       return;
@@ -86,11 +100,11 @@ const BuyTicketPage: React.FC = () => {
       return;
     }
 
-    if (useCreateTicketType.isPending) return;
+    if (useCreateOrderSingle.isPending) return;
 
     try {
-      let ticket;
-
+      let orderPayload: OrderTicketSingleRequest | OrderTicketDaysRequest;
+      let orderResponse;
       if (selectedTicketType === "single") {
         const fareMatrix = fareMatricesList.find(
           (p) =>
@@ -104,37 +118,41 @@ const BuyTicketPage: React.FC = () => {
           toast.error("Không tìm thấy thông tin giá vé");
           return;
         }
-        ticket = await useCreateTicketFareMatrix.mutateAsync(fareMatrixId);
-        console.log(ticket);
+        orderPayload = {
+          userId: profile.userId,
+          fareMatrixId: { id: fareMatrixId },
+          paymentMethodId: 1,
+        };
+        orderResponse = await useCreateOrderSingle.mutateAsync(orderPayload);
       } else {
         const ticketTypeId = selectedTicketInfo?.id;
         if (!ticketTypeId) {
           toast.error("Không tìm thấy loại vé hợp lệ");
           return;
         }
-
-        ticket = await useCreateTicketType.mutateAsync(ticketTypeId);
+        orderPayload = {
+          userId: profile.userId,
+          ticketId: { id: ticketTypeId },
+          paymentMethodId: 1,
+        };
+        orderResponse = await useCreateOrderDays.mutateAsync(orderPayload);
       }
-      const ticketId = ticket?.data?.data?.id;
-
-      if (ticketId) {
-        toast.success("Đặt vé thành công!");
-        navigate(`/order/${ticketId}`);
-      } else {
-        toast.error("Không thể tạo vé, vui lòng thử lại");
+      const ordersData = orderResponse.data.data;
+      if (ordersData) {
+        const paymentResponse = await useCreatePayment.mutateAsync(
+          ordersData.orderId
+        );
+        const redirectUrl = paymentResponse?.data?.data?.paymentUrl;
+        if (redirectUrl) {
+          window.location.href = redirectUrl;
+        } else {
+          toast.error("Không nhận được URL thanh toán.");
+        }
       }
     } catch (error) {
       toast.error("Lỗi khi tạo vé");
       console.log(error);
     }
-  };
-
-  const formatPrice = (price: number | undefined) => {
-    if (!price) return "0₫";
-    return new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(price);
   };
 
   const handleTicketSelection = (ticket: TicketTypeResponse) => {
@@ -247,7 +265,6 @@ const BuyTicketPage: React.FC = () => {
                         </label>
                         <InputNumber
                           min={1}
-                          max={10}
                           value={quantity}
                           onChange={(value) => setQuantity(value || 1)}
                           className="w-full"
@@ -255,43 +272,6 @@ const BuyTicketPage: React.FC = () => {
                         />
                       </div>
                     </div>
-                    {fromStation && toStation && fromStation !== toStation && (
-                      <div className="bg-blue-50 p-4 rounded-lg">
-                        <h4 className="font-medium text-cyan-800 mb-2">
-                          Thông tin giá vé
-                        </h4>
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-cyan-800">
-                            {
-                              stationsList.find(
-                                (s) => s.stationId === fromStation
-                              )?.name
-                            }{" "}
-                            →{" "}
-                            {
-                              stationsList.find(
-                                (s) => s.stationId === toStation
-                              )?.name
-                            }
-                          </span>
-                          <span className="font-bold text-blue-600 text-lg">
-                            {formatPrice(
-                              getSingleTicketPrice(fromStation, toStation)
-                            )}
-                          </span>
-                        </div>
-                        {quantity > 1 && (
-                          <div className="flex justify-between items-center mt-2 pt-2 border-t border-blue-200">
-                            <span className="text-sm text-cyan-800">
-                              Tổng cộng ({quantity} vé):
-                            </span>
-                            <span className="font-bold text-blue-600 text-lg">
-                              {formatPrice(calculatePrice())}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    )}
                   </div>
                 </TabPane>
 
@@ -302,7 +282,7 @@ const BuyTicketPage: React.FC = () => {
                       Các loại vé khác
                     </span>
                   }
-                  key="day"
+                  key="days"
                 >
                   {selectedTicketInfo && (
                     <div className="flex justify-between items-center bg-blue-50 p-3 rounded-lg mb-4">
@@ -328,48 +308,50 @@ const BuyTicketPage: React.FC = () => {
                       className="w-full"
                     >
                       <div className="space-y-4">
-                        {ticketTypesList.map((ticket) => (
-                          <div key={ticket.id} className="relative">
-                            <Radio
-                              value={ticket.id}
-                              className="absolute top-4 right-4 z-10"
-                            ></Radio>
-                            <div
-                              className={`rounded-xl text-white p-6 shadow-lg cursor-pointer transition-all duration-200 ${
-                                selectedTicketInfo?.id === ticket.id
-                                  ? "ring-4 ring-blue-300 transform scale-105"
-                                  : "hover:transform hover:scale-102"
-                              }`}
-                              style={{
-                                backgroundImage: `url(${background})`,
-                                backgroundSize: "cover",
-                                backgroundPosition: "center",
-                              }}
-                              onClick={() => handleTicketSelection(ticket)}
-                            >
-                              {selectedTicketInfo?.id === ticket.id && (
-                                <div className="absolute top-2 left-2">
-                                  <CheckCircleOutlined className="text-2xl !text-green-400" />
+                        {ticketTypesList.map((ticket) =>
+                          ticket.price > 0 ? (
+                            <div key={ticket.id} className="relative">
+                              <Radio
+                                value={ticket.id}
+                                className="absolute top-4 right-4 z-10"
+                              />
+                              <div
+                                className={`rounded-xl text-white p-6 shadow-lg cursor-pointer transition-all duration-200 ${
+                                  selectedTicketInfo?.id === ticket.id
+                                    ? "ring-4 ring-blue-300 transform scale-105"
+                                    : "hover:transform hover:scale-102"
+                                }`}
+                                style={{
+                                  backgroundImage: `url(${background})`,
+                                  backgroundSize: "cover",
+                                  backgroundPosition: "center",
+                                }}
+                                onClick={() => handleTicketSelection(ticket)}
+                              >
+                                {selectedTicketInfo?.id === ticket.id && (
+                                  <div className="absolute top-2 left-2">
+                                    <CheckCircleOutlined className="text-2xl !text-green-400" />
+                                  </div>
+                                )}
+                                <div className="mb-3 ms-2">
+                                  <CalendarOutlined className="text-2xl" />
                                 </div>
-                              )}
-                              <div className="mb-3 ms-2">
-                                <CalendarOutlined className="text-2xl" />
-                              </div>
-                              <h3 className="text-xl font-bold">
-                                {ticket.name}
-                              </h3>
-                              <p className="mt-2">{ticket.description}</p>
-                              <div className="flex justify-between items-center mt-3">
-                                <p className="text-2xl font-bold text-green-400">
-                                  {formatPrice(ticket.price)}
-                                </p>
-                                <p className="text-2xl font-bold text-green-400">
-                                  Hiệu lực: {ticket.validityDuration} ngày
-                                </p>
+                                <h3 className="text-xl font-bold">
+                                  {ticket.name}
+                                </h3>
+                                <p className="mt-2">{ticket.description}</p>
+                                <div className="flex justify-between items-center mt-3">
+                                  <p className="text-2xl font-bold text-green-400">
+                                    {formatPrice(ticket.price)}
+                                  </p>
+                                  <p className="text-2xl font-bold text-green-400">
+                                    Hiệu lực: {ticket.validityDuration} ngày
+                                  </p>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        ))}
+                          ) : null
+                        )}
                       </div>
                     </Radio.Group>
                   </div>
