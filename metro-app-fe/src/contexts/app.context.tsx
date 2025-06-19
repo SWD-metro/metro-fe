@@ -51,6 +51,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     setProfile(null);
     setProfileToLS(null);
   };
+
   useEffect(() => {
     if (isSuccess && data?.data?.data) {
       handleSetProfile(data.data.data);

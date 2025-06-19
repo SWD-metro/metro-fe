@@ -6,7 +6,7 @@ class Http {
   instance: AxiosInstance;
   constructor() {
     this.instance = axios.create({
-      baseURL: "http://localhost:4003/api/",
+      baseURL: "/api/",
       timeout: 10000,
       headers: {
         "Content-Type": "application/json",
@@ -29,7 +29,15 @@ class Http {
         if (error) {
           const data: any | undefined = error.response?.data;
           const message = data?.message || error.message;
-          console.log(message);
+          if (error.response?.status === 401) {
+            console.error(
+              "Unauthorized - token có thể hết hạn hoặc không hợp lệ"
+            );
+          } else if (error.response?.status === 403) {
+            console.error("Forbidden - không có quyền truy cập");
+          } else {
+            console.error(message);
+          }
         }
         return Promise.reject(error);
       }
