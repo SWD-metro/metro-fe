@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useGetTicketById, useGetTicketQRCode } from "src/queries/useTicket";
+import { useGetTicketById } from "src/queries/useTicket";
 import { Row, Col, Button, Spin, Typography, Divider, Select } from "antd";
 import { toast } from "react-hot-toast";
 const { Title, Text } = Typography;
@@ -10,8 +10,6 @@ const OrderPage: React.FC = () => {
   const { data: ticketData, isLoading } = useGetTicketById({ id: Number(id) });
   const ticket = ticketData?.data.data;
   const [paymentMethodId, setPaymentMethodId] = useState<number>(1);
-  const { data: qrCodeData } = useGetTicketQRCode(ticket?.ticketCode);
-  const qrCode = qrCodeData?.data.data;
   const handleBuyTicket = () => {
     if (!ticket) {
       toast.error("Không tìm thấy thông tin vé.");
@@ -51,17 +49,6 @@ const OrderPage: React.FC = () => {
 
         <Divider className="my-6" />
 
-        <div className="flex flex-col items-center justify-center">
-          <h4 className="text-lg font-semibold text-gray-700 mb-2">
-            Mã QR của vé: (test ở đây thôi)
-          </h4>
-          <img
-            src={`data:image/png;base64,${qrCode}`}
-            alt="QR Code"
-            className="w-64 h-64 border rounded-lg shadow-md"
-          />
-        </div>
-
         <div className="mt-6">
           <Text strong>Chọn phương thức thanh toán:</Text>
           <Select
@@ -70,6 +57,7 @@ const OrderPage: React.FC = () => {
             onChange={(value) => setPaymentMethodId(value)}
           >
             <Select.Option value={1}>VNPAY</Select.Option>
+            <Select.Option value={2}>PayPal</Select.Option>
           </Select>
         </div>
 

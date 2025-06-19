@@ -11,7 +11,9 @@ import background from "src/assets/feature_section.png";
 import background2 from "src/assets/stats_section.jpg";
 import { useGetStationList } from "src/queries/useStation";
 import {
+  useCreateTicketFareMatrixMutation,
   useCreateTicketTypeMutation,
+  useGetFareMatricesList,
   useGetTicketTypeList,
 } from "src/queries/useTicket";
 import { TicketTypeResponse } from "src/types/tickets.type";
@@ -20,20 +22,14 @@ import { useNavigate } from "react-router-dom";
 
 type TicketType = "single" | "days";
 
-interface SingleTicketPrice {
-  from: string;
-  to: string;
-  price: number;
-}
-
 const { Option } = Select;
 const { TabPane } = Tabs;
 
 const BuyTicketPage: React.FC = () => {
   const [selectedTicketType, setSelectedTicketType] =
     useState<TicketType>("single");
-  const [fromStation, setFromStation] = useState<string>("");
-  const [toStation, setToStation] = useState<string>("");
+  const [fromStation, setFromStation] = useState<number | null>(null);
+  const [toStation, setToStation] = useState<number | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedTicketInfo, setSelectedTicketInfo] =
     useState<TicketTypeResponse | null>(null);
@@ -46,61 +42,35 @@ const BuyTicketPage: React.FC = () => {
   const ticketTypesList = ticketTypes?.data?.data || [];
 
   const useCreateTicketType = useCreateTicketTypeMutation();
+  const useCreateTicketFareMatrix = useCreateTicketFareMatrixMutation();
 
-  const singleTicketPrices: SingleTicketPrice[] = [
-    // Từ BT
-    { from: "1", to: "2", price: 6000 },
-    { from: "1", to: "3", price: 6000 },
-    { from: "1", to: "4", price: 6000 },
-    { from: "1", to: "5", price: 6000 },
-    { from: "1", to: "6", price: 6000 },
-    { from: "1", to: "7", price: 6000 },
-    { from: "1", to: "8", price: 8000 },
-    { from: "1", to: "9", price: 9000 },
-    { from: "1", to: "10", price: 11000 },
-    { from: "1", to: "11", price: 13000 },
-    { from: "1", to: "12", price: 15000 },
-    { from: "1", to: "13", price: 17000 },
-    { from: "1", to: "14", price: 19000 },
+  const { data: fareMatrices } = useGetFareMatricesList();
+  const fareMatricesList = fareMatrices?.data.data || [];
 
-    // Từ NTPT
-    { from: "2", to: "1", price: 6000 },
-    { from: "2", to: "3", price: 6000 },
-    { from: "2", to: "4", price: 6000 },
-    { from: "2", to: "5", price: 6000 },
-    { from: "2", to: "6", price: 6000 },
-    { from: "2", to: "7", price: 6000 },
-    { from: "2", to: "8", price: 7000 },
-    { from: "2", to: "9", price: 9000 },
-    { from: "2", to: "10", price: 10000 },
-    { from: "2", to: "11", price: 12000 },
-    { from: "2", to: "12", price: 15000 },
-    { from: "2", to: "13", price: 16000 },
-    { from: "2", to: "14", price: 19000 },
-  ];
-
-  const getSingleTicketPrice = (from: string, to: string) => {
+  const getSingleTicketPrice = (from: number, to: number) => {
     if (!from || !to || from === to) return 0;
 
-    let priceData = singleTicketPrices.find(
-      (p) => p.from === from && p.to === to
+    let priceData = fareMatricesList.find(
+      (p) => p.startStationId === from && p.endStationId === to
     );
 
     if (!priceData) {
-      priceData = singleTicketPrices.find(
-        (p) => p.from === to && p.to === from
+      priceData = fareMatricesList.find(
+        (p) => p.startStationId === to && p.endStationId === from
       );
     }
 
-    return priceData?.price || 10000;
+    return priceData?.price || 0;
   };
 
   const calculatePrice = () => {
     if (selectedTicketType === "single") {
+      if (!fromStation || !toStation) return 0;
+
       const singlePrice = getSingleTicketPrice(fromStation, toStation);
       return singlePrice * quantity;
     } else if (selectedTicketInfo) {
-      return selectedTicketInfo.price * quantity;
+      return selectedTicketInfo.price;
     }
     return 0;
   };
@@ -122,20 +92,36 @@ const BuyTicketPage: React.FC = () => {
       let ticket;
 
       if (selectedTicketType === "single") {
-        console.log();
+        const fareMatrix = fareMatricesList.find(
+          (p) =>
+            (p.startStationId === fromStation &&
+              p.endStationId === toStation) ||
+            (p.startStationId === toStation && p.endStationId === fromStation)
+        );
+
+        const fareMatrixId = fareMatrix?.fareMatrixId;
+        if (!fareMatrixId) {
+          toast.error("Không tìm thấy thông tin giá vé");
+          return;
+        }
+        ticket = await useCreateTicketFareMatrix.mutateAsync(fareMatrixId);
+        console.log(ticket);
       } else {
         const ticketTypeId = selectedTicketInfo?.id;
         if (!ticketTypeId) {
           toast.error("Không tìm thấy loại vé hợp lệ");
           return;
         }
+
         ticket = await useCreateTicketType.mutateAsync(ticketTypeId);
       }
-      console.log(ticket);
-      const id = ticket?.data.data?.id;
-      if (id) {
+      const ticketId = ticket?.data?.data?.id;
+
+      if (ticketId) {
         toast.success("Đặt vé thành công!");
-        navigate(`/order/${id}`);
+        navigate(`/order/${ticketId}`);
+      } else {
+        toast.error("Không thể tạo vé, vui lòng thử lại");
       }
     } catch (error) {
       toast.error("Lỗi khi tạo vé");
@@ -162,8 +148,8 @@ const BuyTicketPage: React.FC = () => {
   const handleTabChange = (key: string) => {
     setSelectedTicketType(key as TicketType);
     if (key !== "single") {
-      setFromStation("");
-      setToStation("");
+      setFromStation(null);
+      setToStation(null);
     }
     if (key === "single") {
       resetTicketSelection();
@@ -221,8 +207,8 @@ const BuyTicketPage: React.FC = () => {
                         >
                           {stationsList.map((station) => (
                             <Option
-                              key={station.stationCode}
-                              value={station.stationCode}
+                              key={station.stationId}
+                              value={station.stationId}
                             >
                               {station.name}
                             </Option>
@@ -243,12 +229,12 @@ const BuyTicketPage: React.FC = () => {
                         >
                           {stationsList
                             .filter(
-                              (station) => station.stationCode !== fromStation
+                              (station) => station.stationId !== fromStation
                             )
                             .map((station) => (
                               <Option
-                                key={station.stationCode}
-                                value={station.stationCode}
+                                key={station.stationId}
+                                value={station.stationId}
                               >
                                 {station.name}
                               </Option>
@@ -278,13 +264,13 @@ const BuyTicketPage: React.FC = () => {
                           <span className="text-sm text-cyan-800">
                             {
                               stationsList.find(
-                                (s) => s.stationCode === fromStation
+                                (s) => s.stationId === fromStation
                               )?.name
                             }{" "}
                             →{" "}
                             {
                               stationsList.find(
-                                (s) => s.stationCode === toStation
+                                (s) => s.stationId === toStation
                               )?.name
                             }
                           </span>
@@ -411,14 +397,13 @@ const BuyTicketPage: React.FC = () => {
                         <span className="font-medium text-sm">
                           {
                             stationsList.find(
-                              (s) => s.stationCode === fromStation
+                              (s) => s.stationId === fromStation
                             )?.name
                           }{" "}
                           →{" "}
                           {
-                            stationsList.find(
-                              (s) => s.stationCode === toStation
-                            )?.name
+                            stationsList.find((s) => s.stationId === toStation)
+                              ?.name
                           }
                         </span>
                       </div>
@@ -462,6 +447,15 @@ const BuyTicketPage: React.FC = () => {
                   </div>
                 )}
 
+                <div className="border-t pt-4">
+                  <div className="flex items-center justify-between text-lg font-bold">
+                    <span>Tổng tiền:</span>
+                    <span className="text-2xl text-blue-600">
+                      {formatPrice(calculatePrice())}
+                    </span>
+                  </div>
+                </div>
+
                 <Button
                   type="primary"
                   size="large"
@@ -495,22 +489,6 @@ const BuyTicketPage: React.FC = () => {
                       *Giá vé khác nhau tùy theo cặp ga. Chọn ga để xem giá
                       chính xác.
                     </div>
-                  </div>
-                </div>
-
-                <div className="bg-green-50 p-3 rounded-lg">
-                  <div className="text-sm font-semibold text-cyan-800 mb-2">
-                    Vé theo thời gian
-                  </div>
-                  <div className="space-y-1 text-sm">
-                    {ticketTypesList.map((ticket) => (
-                      <div key={ticket.id} className="flex justify-between">
-                        <span>{ticket.name}</span>
-                        <span className="font-medium text-green-600">
-                          {formatPrice(ticket.price)}
-                        </span>
-                      </div>
-                    ))}
                   </div>
                 </div>
               </div>

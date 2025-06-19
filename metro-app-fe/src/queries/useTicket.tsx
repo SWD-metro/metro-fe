@@ -18,6 +18,23 @@ export const useCreateTicketTypeMutation = () => {
   });
 };
 
+export const useGetFareMatricesList = () => {
+  return useQuery({
+    queryKey: ["fare-matrices"],
+    queryFn: ticketsApiRequests.fareMatricesList,
+  });
+};
+
+export const useCreateTicketFareMatrixMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ticketsApiRequests.createTicketFareMatrix,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["fare-matrices"] });
+    },
+  });
+};
+
 export const useGetTicketById = ({ id }: { id: number }) => {
   return useQuery({
     queryKey: ["tickets", id],
