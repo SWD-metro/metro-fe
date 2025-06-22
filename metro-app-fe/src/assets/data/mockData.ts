@@ -1,11 +1,11 @@
 import { RouteWithStations } from "src/types/routes.type";
 import { StationsResponse } from "src/types/stations.type";
 import { TicketTypeResponse } from "src/types/tickets.type";
-import { AuthProvider } from "src/types/user.type";
+import { AuthProvider, User } from "src/types/user.type";
 
 const generateNumericId = () => Date.now() + Math.floor(Math.random() * 1000);
 
-export const initialUsers = [
+export const initialUsers: User[] = [
   {
     userId: generateNumericId(),
     name: "Admin A",
@@ -15,6 +15,7 @@ export const initialUsers = [
     isStudent: false,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+    username: "",
   },
   {
     userId: generateNumericId(),
@@ -25,6 +26,7 @@ export const initialUsers = [
     isStudent: false,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+    username: "",
   },
   {
     userId: generateNumericId(),
@@ -35,6 +37,7 @@ export const initialUsers = [
     isStudent: false,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+    username: "",
   },
 ];
 
