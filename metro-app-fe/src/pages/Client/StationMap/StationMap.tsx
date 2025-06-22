@@ -312,15 +312,14 @@ const StationMapPage: React.FC = () => {
                 </Card>
               </Col>
             </Row>
+            <StationInfoDrawer
+              open={drawerOpen}
+              onClose={() => setDrawerOpen(false)}
+              selectedStation={selectedStation}
+              sortedStations={sortedStations}
+            />
           </>
         )}
-
-        <StationInfoDrawer
-          open={drawerOpen}
-          onClose={() => setDrawerOpen(false)}
-          selectedStation={selectedStation}
-          sortedStations={sortedStations}
-        />
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useLoginMutation } from "src/queries/useAuth";
 import { LocalLoginRequest } from "src/types/auth.type";
 import { AppContext } from "src/contexts/app.context";
+import toast from "react-hot-toast";
 
 const { Title, Text } = Typography;
 const LoginPage: React.FC = () => {
@@ -16,17 +17,37 @@ const LoginPage: React.FC = () => {
   const { setIsAuthenticated, setProfile } = useContext(AppContext);
   const loginMutation = useLoginMutation();
 
+  const handleGoogleLogin = () => {
+    const googleLoginUrl = import.meta.env.VITE_GOOGLE_AUTHORIZED_URL;
+
+    if (googleLoginUrl) {
+      window.location.href = googleLoginUrl;
+    } else {
+      toast.error("Cannot find url gg login :))");
+    }
+  };
+
   const onFinish = async (data: LocalLoginRequest) => {
     if (loginMutation.isPending) return;
     try {
       const result = await loginMutation.mutateAsync(data);
       if (result?.data?.data) {
+        toast.success("Đăng nhập thành công!", {
+          duration: 3000,
+          style: {
+            borderRadius: "8px",
+            background: "#4BB543",
+            color: "#fff",
+            fontWeight: "500",
+          },
+        });
         setIsAuthenticated(true);
         setProfile(result.data.data);
         navigate("/");
       }
     } catch (error) {
       console.log(error);
+      toast.error("Đăng nhập thất bại!");
     }
   };
 
@@ -96,31 +117,32 @@ const LoginPage: React.FC = () => {
             {t("login.loginButton")}
           </Button>
         </Form.Item>
-
-        <Divider className="text-gray-400 !my-2">{t("login.divider")}</Divider>
-
-        <Button
-          icon={<GoogleOutlined className="me-2" />}
-          shape="round"
-          style={{ width: "70%", margin: "0 auto", display: "block" }}
-        >
-          {t("login.googleLogin")}
-        </Button>
-
-        <div className="text-center space-y-2 pt-5">
-          <div>
-            <Text className="text-gray-600">
-              {t("login.noAccount")}
-              <RouterLink
-                to={path.register}
-                className="text-blue-600 ms-3 hover:text-blue-800 font-medium no-underline"
-              >
-                {t("login.registerNow")}
-              </RouterLink>
-            </Text>
-          </div>
-        </div>
       </Form>
+
+      <Divider className="text-gray-400 !my-2">{t("login.divider")}</Divider>
+
+      <Button
+        icon={<GoogleOutlined className="me-2" />}
+        shape="round"
+        style={{ width: "70%", margin: "0 auto", display: "block" }}
+        onClick={handleGoogleLogin}
+      >
+        {t("login.googleLogin")}
+      </Button>
+
+      <div className="text-center space-y-2 pt-5">
+        <div>
+          <Text className="text-gray-600">
+            {t("login.noAccount")}
+            <RouterLink
+              to={path.register}
+              className="text-blue-600 ms-3 hover:text-blue-800 font-medium no-underline"
+            >
+              {t("login.registerNow")}
+            </RouterLink>
+          </Text>
+        </div>
+      </div>
     </>
   );
 };

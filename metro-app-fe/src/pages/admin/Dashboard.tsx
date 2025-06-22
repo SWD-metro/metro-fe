@@ -12,7 +12,6 @@ import {
   SettingOutlined,
   MoreOutlined
 } from '@ant-design/icons';
-import Sidebar from 'src/components/sidebar/Sidebar';
 import StatisticsCards from 'src/components/statisticsCards/StatisticsCards';
 import Charts from 'src/components/charts/Charts';
 

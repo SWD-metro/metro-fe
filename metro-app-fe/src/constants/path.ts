@@ -5,6 +5,8 @@ const path = {
   buyTicket: "/buy-ticket",
   stationMap: "/station-map",
   profile: "profile",
+  orderPage: "/order/:type/:slug",
+  paymentSuccess: "/payment-success",
 
   auth: "/auth",
   login: "/auth/login",
@@ -13,6 +15,7 @@ const path = {
   resetPassword: "/auth/reset-password",
   verifyOtp: "/auth/verify-otp",
   logout: "/logout",
+  oauth2: "/oauth2/redirect",
 
   admin: "/admin",
 } as const;

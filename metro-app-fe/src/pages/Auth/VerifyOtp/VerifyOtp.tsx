@@ -1,6 +1,7 @@
 import { MailOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Typography } from "antd";
 import React, { useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import path from "src/constants/path";
 import { AppContext } from "src/contexts/app.context";
@@ -29,7 +30,7 @@ const VerifyOtpPage: React.FC = () => {
 
   const onFinish = async (values: { otp: string }) => {
     if (!registerData) {
-      console.error("No data");
+      toast.error("Không có dữ liệu đăng ký");
       return;
     }
     if (verifyOtpMutation.isPending || registerMutation.isPending) return;
@@ -43,14 +44,22 @@ const VerifyOtpPage: React.FC = () => {
       const { status, message: verifyMessage } = verifyResponse?.data || {};
 
       if (status !== 200 || verifyMessage !== "Token verified") {
-        console.error("OTP failed");
+        toast.error("OTP failed");
         return;
       }
 
       const registerResponse = await registerMutation.mutateAsync(registerData);
 
       if (registerResponse?.data.data) {
-        console.log("Registration successful!");
+        toast.success("Đăng ký thành công!!!", {
+          duration: 3000,
+          style: {
+            borderRadius: "8px",
+            background: "#4BB543",
+            color: "#fff",
+            fontWeight: "500",
+          },
+        });
         navigate(path.login);
       }
     } catch (error) {
@@ -69,6 +78,15 @@ const VerifyOtpPage: React.FC = () => {
 
       setCountdown(60);
       form.resetFields(["otp"]);
+      toast.success("Mã OTP đã được gửi đến email!!!", {
+        duration: 3000,
+        style: {
+          borderRadius: "8px",
+          background: "#4BB543",
+          color: "#fff",
+          fontWeight: "500",
+        },
+      });
     } catch (error) {
       console.error(error);
     }

@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { useAccountMe } from "src/queries/useUser";
 import { RegisterRequest, User } from "src/types/user.type";
 import { getProfileFromLS, setProfileToLS } from "src/utils/utils";
 
@@ -37,6 +38,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     null
   );
 
+  const { data, isSuccess, isError } = useAccountMe();
+
   const handleSetProfile = (profile: User | null) => {
     setProfile(profile);
     setProfileToLS(profile);
@@ -48,6 +51,14 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     setProfile(null);
     setProfileToLS(null);
   };
+
+  useEffect(() => {
+    if (isSuccess && data?.data?.data) {
+      handleSetProfile(data.data.data);
+    } else if (isError) {
+      reset();
+    }
+  }, [isSuccess, isError, data]);
 
   return (
     <AppContext.Provider

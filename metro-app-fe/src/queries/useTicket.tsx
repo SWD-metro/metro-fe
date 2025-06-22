@@ -1,0 +1,86 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import ticketsApiRequests from "src/apis/ticket";
+
+export const useGetTicketTypeList = () => {
+  return useQuery({
+    queryKey: ["ticket-type"],
+    queryFn: ticketsApiRequests.ticketTypeList,
+  });
+};
+
+export const useCreateTicketTypeMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ticketsApiRequests.createTicketType,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["ticket-type"] });
+    },
+  });
+};
+
+export const useGetTicketTypeById = ({
+  id,
+  enabled,
+}: {
+  id: number;
+  enabled: boolean;
+}) => {
+  return useQuery({
+    queryKey: ["ticket-type", id],
+    queryFn: () => ticketsApiRequests.ticketTypeById(id),
+    enabled,
+  });
+};
+
+export const useGetFareMatricesList = () => {
+  return useQuery({
+    queryKey: ["fare-matrices"],
+    queryFn: ticketsApiRequests.fareMatricesList,
+  });
+};
+
+export const useCreateTicketFareMatrixMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ticketsApiRequests.createTicketFareMatrix,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["fare-matrices"] });
+    },
+  });
+};
+
+export const useGetFareMatrixById = ({
+  id,
+  enabled,
+}: {
+  id: number;
+  enabled: boolean;
+}) => {
+  return useQuery({
+    queryKey: ["fare-matrices", id],
+    queryFn: () => ticketsApiRequests.fareMatrixById(id),
+    enabled,
+  });
+};
+
+export const useGetTicketById = ({
+  id,
+  enabled,
+}: {
+  id: number;
+  enabled: boolean;
+}) => {
+  return useQuery({
+    queryKey: ["tickets", id],
+    queryFn: () => ticketsApiRequests.ticketById(id),
+    enabled,
+  });
+};
+
+export const useGetTicketQRCode = (ticketCode?: string) => {
+  return useQuery({
+    queryKey: ["tickets", ticketCode],
+    queryFn: () => ticketsApiRequests.generateQR(ticketCode as string),
+    enabled: !!ticketCode,
+  });
+};
