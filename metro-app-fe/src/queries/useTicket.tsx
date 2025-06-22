@@ -80,7 +80,7 @@ export const useGetTicketById = ({
 export const useGetTicketQRCode = (ticketCode?: string) => {
   return useQuery({
     queryKey: ["tickets", ticketCode],
-    queryFn: () => ticketsApiRequests.generateQR(ticketCode as string),
+    queryFn: () => ticketsApiRequests.generateQR(ticketCode),
     enabled: !!ticketCode,
   });
 };

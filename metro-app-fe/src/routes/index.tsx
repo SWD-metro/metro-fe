@@ -21,7 +21,7 @@ import PublicRoute from "./PublicRoute";
 import ProtectedRoute from "./ProtectedRoute";
 import OAuth2RedirectHandler from "src/pages/Auth/OAuth2";
 import OrderPage from "src/pages/Client/OrderPage";
-import PaymentSuccess from "src/pages/Client/PaymentSuccess";
+import PaymentResult from "src/pages/Client/PaymentResult";
 
 const RouteElements: React.FC = () => {
   const routeElements = useRoutes([
@@ -61,8 +61,8 @@ const RouteElements: React.FC = () => {
               element: <OrderPage />,
             },
             {
-              path: path.paymentSuccess,
-              element: <PaymentSuccess />,
+              path: path.paymentResult,
+              element: <PaymentResult />,
             },
           ],
         },

@@ -15,8 +15,8 @@ const paymentApiRequests = {
     http.get<ApiResponse<PaymentMethodResponse[]>>(
       "orders/payment-methods/get-all"
     ),
-  vnPayCallBack: () =>
-    http.get<ApiResponse<PaymentCallbackResponse>>("payment/callback"),
+  vnPayCallBack: (query: string) =>
+    http.get<ApiResponse<PaymentCallbackResponse>>(`payment/callback${query}`),
 };
 
 export default paymentApiRequests;
