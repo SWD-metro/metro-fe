@@ -5,7 +5,8 @@ const path = {
   buyTicket: "/buy-ticket",
   stationMap: "/station-map",
   profile: "profile",
-  orderPage: "/order/:id",
+  orderPage: "/order/:type/:slug",
+  paymentSuccess: "/payment-success",
 
   auth: "/auth",
   login: "/auth/login",

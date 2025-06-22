@@ -20,6 +20,8 @@ import BuyTicketPage from "src/pages/Client/Ticket";
 import PublicRoute from "./PublicRoute";
 import ProtectedRoute from "./ProtectedRoute";
 import OAuth2RedirectHandler from "src/pages/Auth/OAuth2";
+import OrderPage from "src/pages/Client/OrderPage";
+import PaymentSuccess from "src/pages/Client/PaymentSuccess";
 
 const RouteElements: React.FC = () => {
   const routeElements = useRoutes([
@@ -53,6 +55,14 @@ const RouteElements: React.FC = () => {
             {
               path: path.profile,
               element: <UserProfile />,
+            },
+            {
+              path: path.orderPage,
+              element: <OrderPage />,
+            },
+            {
+              path: path.paymentSuccess,
+              element: <PaymentSuccess />,
             },
           ],
         },

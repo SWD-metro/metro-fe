@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import toast from "react-hot-toast";
 import { Navigate, Outlet } from "react-router-dom";
 import path from "src/constants/path";
 import { AppContext } from "src/contexts/app.context";
@@ -15,6 +16,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const { isAuthenticated, profile } = useContext(AppContext);
 
   if (!isAuthenticated) {
+    toast.error("Vui lòng đăng nhập !!!");
     return <Navigate to={redirectPath} replace />;
   }
 

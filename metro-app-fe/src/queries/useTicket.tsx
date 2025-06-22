@@ -18,6 +18,20 @@ export const useCreateTicketTypeMutation = () => {
   });
 };
 
+export const useGetTicketTypeById = ({
+  id,
+  enabled,
+}: {
+  id: number;
+  enabled: boolean;
+}) => {
+  return useQuery({
+    queryKey: ["ticket-type", id],
+    queryFn: () => ticketsApiRequests.ticketTypeById(id),
+    enabled,
+  });
+};
+
 export const useGetFareMatricesList = () => {
   return useQuery({
     queryKey: ["fare-matrices"],
@@ -35,10 +49,31 @@ export const useCreateTicketFareMatrixMutation = () => {
   });
 };
 
-export const useGetTicketById = ({ id }: { id: number }) => {
+export const useGetFareMatrixById = ({
+  id,
+  enabled,
+}: {
+  id: number;
+  enabled: boolean;
+}) => {
+  return useQuery({
+    queryKey: ["fare-matrices", id],
+    queryFn: () => ticketsApiRequests.fareMatrixById(id),
+    enabled,
+  });
+};
+
+export const useGetTicketById = ({
+  id,
+  enabled,
+}: {
+  id: number;
+  enabled: boolean;
+}) => {
   return useQuery({
     queryKey: ["tickets", id],
     queryFn: () => ticketsApiRequests.ticketById(id),
+    enabled,
   });
 };
 

@@ -10,6 +10,8 @@ const ticketsApiRequests = {
     http.post<ApiResponse<TicketResponse>>("ts/tickets/ticket-type", {
       id: value,
     }),
+  ticketTypeById: (value: number) =>
+    http.get<ApiResponse<TicketTypeResponse>>(`ts/ticket-types/${value}`),
 
   fareMatricesList: () =>
     http.get<ApiResponse<FareMatrixResponse[]>>("ts/fare-matrices"),
@@ -17,6 +19,8 @@ const ticketsApiRequests = {
     http.post<ApiResponse<TicketResponse>>("ts/tickets/fare-matrix", {
       id: value,
     }),
+  fareMatrixById: (value: number) =>
+    http.get<ApiResponse<FareMatrixResponse>>(`ts/fare-matrices/${value}`),
 
   ticketById: (value: number) =>
     http.get<ApiResponse<TicketResponse>>(`ts/tickets/${value}`),

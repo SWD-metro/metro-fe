@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Card, Button, Select, Tabs, Row, Col, InputNumber, Radio } from "antd";
 import {
   CalendarOutlined,
@@ -17,16 +17,8 @@ import {
 import { TicketTypeResponse } from "src/types/tickets.type";
 import toast from "react-hot-toast";
 import { formatPrice } from "src/utils/utils";
-import {
-  useCreateOrderDaysMutation,
-  useCreateOrderSingleMutation,
-} from "src/queries/useOrder";
-import { useCreatePaymentMutation } from "src/queries/usePayment";
-import { AppContext } from "src/contexts/app.context";
-import {
-  OrderTicketDaysRequest,
-  OrderTicketSingleRequest,
-} from "src/types/orders.type";
+import { useNavigate } from "react-router-dom";
+import slugify from "slugify";
 
 type TicketType = "single" | "days";
 
@@ -41,18 +33,13 @@ const BuyTicketPage: React.FC = () => {
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedTicketInfo, setSelectedTicketInfo] =
     useState<TicketTypeResponse | null>(null);
-  const { profile } = useContext(AppContext);
+  const navigate = useNavigate();
 
   const { data: stations } = useGetStationList();
   const stationsList = stations?.data?.data || [];
 
   const { data: ticketTypes } = useGetTicketTypeList();
   const ticketTypesList = ticketTypes?.data?.data || [];
-
-  const useCreateOrderSingle = useCreateOrderSingleMutation();
-  const useCreateOrderDays = useCreateOrderDaysMutation();
-
-  const useCreatePayment = useCreatePaymentMutation();
 
   const { data: fareMatrices } = useGetFareMatricesList();
   const fareMatricesList = fareMatrices?.data.data || [];
@@ -86,10 +73,6 @@ const BuyTicketPage: React.FC = () => {
   };
 
   const handleBooking = async () => {
-    if (!profile) {
-      toast.error("Vui lòng đăng nhập để đặt vé.");
-      return;
-    }
     if (selectedTicketType === "single" && (!fromStation || !toStation)) {
       toast.error("Vui lòng chọn ga đi và ga đến");
       return;
@@ -100,11 +83,7 @@ const BuyTicketPage: React.FC = () => {
       return;
     }
 
-    if (useCreateOrderSingle.isPending) return;
-
     try {
-      let orderPayload: OrderTicketSingleRequest | OrderTicketDaysRequest;
-      let orderResponse;
       if (selectedTicketType === "single") {
         const fareMatrix = fareMatricesList.find(
           (p) =>
@@ -114,43 +93,55 @@ const BuyTicketPage: React.FC = () => {
         );
 
         const fareMatrixId = fareMatrix?.fareMatrixId;
-        if (!fareMatrixId) {
+        const price = fareMatrix?.price;
+
+        if (!fareMatrixId || !price) {
           toast.error("Không tìm thấy thông tin giá vé");
           return;
         }
-        orderPayload = {
-          userId: profile.userId,
-          fareMatrixId: { id: fareMatrixId },
-          paymentMethodId: 1,
-        };
-        orderResponse = await useCreateOrderSingle.mutateAsync(orderPayload);
+
+        const fromName =
+          stationsList.find((s) => s.stationId === fromStation)?.name || "";
+        const toName =
+          stationsList.find((s) => s.stationId === toStation)?.name || "";
+        const slug = slugify(`${fromName}-to-${toName}`, {
+          lower: true,
+          locale: "vi",
+          strict: true,
+        });
+
+        navigate(`/order/single/${slug}`, {
+          state: {
+            type: "single",
+            fareMatrixId,
+            quantity,
+          },
+        });
       } else {
         const ticketTypeId = selectedTicketInfo?.id;
-        if (!ticketTypeId) {
+        const price = selectedTicketInfo?.price;
+
+        if (!ticketTypeId || !price) {
           toast.error("Không tìm thấy loại vé hợp lệ");
           return;
         }
-        orderPayload = {
-          userId: profile.userId,
-          ticketId: { id: ticketTypeId },
-          paymentMethodId: 1,
-        };
-        orderResponse = await useCreateOrderDays.mutateAsync(orderPayload);
-      }
-      const ordersData = orderResponse.data.data;
-      if (ordersData) {
-        const paymentResponse = await useCreatePayment.mutateAsync(
-          ordersData.orderId
-        );
-        const redirectUrl = paymentResponse?.data?.data?.paymentUrl;
-        if (redirectUrl) {
-          window.location.href = redirectUrl;
-        } else {
-          toast.error("Không nhận được URL thanh toán.");
-        }
+
+        const slug = slugify(selectedTicketInfo.description, {
+          lower: true,
+          locale: "vi",
+          strict: true,
+        });
+
+        navigate(`/order/days/${slug}`, {
+          state: {
+            type: "days",
+            ticketTypeId,
+            quantity: 1,
+          },
+        });
       }
     } catch (error) {
-      toast.error("Lỗi khi tạo vé");
+      toast.error("Error");
       console.log(error);
     }
   };
@@ -264,6 +255,7 @@ const BuyTicketPage: React.FC = () => {
                           Số lượng vé
                         </label>
                         <InputNumber
+                          disabled
                           min={1}
                           value={quantity}
                           onChange={(value) => setQuantity(value || 1)}
@@ -449,7 +441,7 @@ const BuyTicketPage: React.FC = () => {
                     (selectedTicketType !== "single" && !selectedTicketInfo)
                   }
                 >
-                  Đặt vé ngay
+                  Mua vé ngay
                 </Button>
               </div>
 
