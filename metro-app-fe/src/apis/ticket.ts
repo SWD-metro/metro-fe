@@ -24,7 +24,7 @@ const ticketsApiRequests = {
 
   ticketById: (value: number) =>
     http.get<ApiResponse<TicketResponse>>(`ts/tickets/${value}`),
-  generateQR: (value: string) =>
+  generateQR: (value: string | undefined) =>
     http.get<ApiResponse>(`ts/tickets/generate-qr?ticketCode=${value}`),
 };
 
