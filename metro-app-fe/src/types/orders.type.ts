@@ -72,3 +72,25 @@ export interface TicketResponse {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface PaymentMethodResponse {
+  paymentMethodId: number;
+  paymentMethodName: string;
+  active: boolean;
+}
+
+export interface PaymentResponse {
+  amount: number;
+  paymentUrl: string;
+  transactionRef: string;
+}
+
+export interface PaymentCallbackResponse {
+  status: "success" | "failed" | "invalid";
+  message: string;
+  transactionId?: string;
+  amount?: number;
+  responseCode?: string;
+  transactionStatus?: string;
+  ticketId?: number;
+}

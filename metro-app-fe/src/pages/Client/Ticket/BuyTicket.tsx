@@ -11,14 +11,14 @@ import background from "src/assets/feature_section.png";
 import background2 from "src/assets/stats_section.jpg";
 import { useGetStationList } from "src/queries/useStation";
 import {
-  useCreateTicketFareMatrixMutation,
-  useCreateTicketTypeMutation,
   useGetFareMatricesList,
   useGetTicketTypeList,
 } from "src/queries/useTicket";
 import { TicketTypeResponse } from "src/types/tickets.type";
 import toast from "react-hot-toast";
+import { formatPrice } from "src/utils/utils";
 import { useNavigate } from "react-router-dom";
+import slugify from "slugify";
 
 type TicketType = "single" | "days";
 
@@ -40,9 +40,6 @@ const BuyTicketPage: React.FC = () => {
 
   const { data: ticketTypes } = useGetTicketTypeList();
   const ticketTypesList = ticketTypes?.data?.data || [];
-
-  const useCreateTicketType = useCreateTicketTypeMutation();
-  const useCreateTicketFareMatrix = useCreateTicketFareMatrixMutation();
 
   const { data: fareMatrices } = useGetFareMatricesList();
   const fareMatricesList = fareMatrices?.data.data || [];
@@ -86,11 +83,7 @@ const BuyTicketPage: React.FC = () => {
       return;
     }
 
-    if (useCreateTicketType.isPending) return;
-
     try {
-      let ticket;
-
       if (selectedTicketType === "single") {
         const fareMatrix = fareMatricesList.find(
           (p) =>
@@ -100,41 +93,57 @@ const BuyTicketPage: React.FC = () => {
         );
 
         const fareMatrixId = fareMatrix?.fareMatrixId;
-        if (!fareMatrixId) {
+        const price = fareMatrix?.price;
+
+        if (!fareMatrixId || !price) {
           toast.error("Không tìm thấy thông tin giá vé");
           return;
         }
-        ticket = await useCreateTicketFareMatrix.mutateAsync(fareMatrixId);
-        console.log(ticket);
+
+        const fromName =
+          stationsList.find((s) => s.stationId === fromStation)?.name || "";
+        const toName =
+          stationsList.find((s) => s.stationId === toStation)?.name || "";
+        const slug = slugify(`${fromName}-to-${toName}`, {
+          lower: true,
+          locale: "vi",
+          strict: true,
+        });
+
+        navigate(`/order/single/${slug}`, {
+          state: {
+            type: "single",
+            fareMatrixId,
+            quantity,
+          },
+        });
       } else {
         const ticketTypeId = selectedTicketInfo?.id;
-        if (!ticketTypeId) {
+        const price = selectedTicketInfo?.price;
+
+        if (!ticketTypeId || !price) {
           toast.error("Không tìm thấy loại vé hợp lệ");
           return;
         }
 
-        ticket = await useCreateTicketType.mutateAsync(ticketTypeId);
-      }
-      const ticketId = ticket?.data?.data?.id;
+        const slug = slugify(selectedTicketInfo.description, {
+          lower: true,
+          locale: "vi",
+          strict: true,
+        });
 
-      if (ticketId) {
-        toast.success("Đặt vé thành công!");
-        navigate(`/order/${ticketId}`);
-      } else {
-        toast.error("Không thể tạo vé, vui lòng thử lại");
+        navigate(`/order/days/${slug}`, {
+          state: {
+            type: "days",
+            ticketTypeId,
+            quantity: 1,
+          },
+        });
       }
     } catch (error) {
-      toast.error("Lỗi khi tạo vé");
+      toast.error("Error");
       console.log(error);
     }
-  };
-
-  const formatPrice = (price: number | undefined) => {
-    if (!price) return "0₫";
-    return new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(price);
   };
 
   const handleTicketSelection = (ticket: TicketTypeResponse) => {
@@ -246,8 +255,8 @@ const BuyTicketPage: React.FC = () => {
                           Số lượng vé
                         </label>
                         <InputNumber
+                          disabled
                           min={1}
-                          max={10}
                           value={quantity}
                           onChange={(value) => setQuantity(value || 1)}
                           className="w-full"
@@ -255,43 +264,6 @@ const BuyTicketPage: React.FC = () => {
                         />
                       </div>
                     </div>
-                    {fromStation && toStation && fromStation !== toStation && (
-                      <div className="bg-blue-50 p-4 rounded-lg">
-                        <h4 className="font-medium text-cyan-800 mb-2">
-                          Thông tin giá vé
-                        </h4>
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-cyan-800">
-                            {
-                              stationsList.find(
-                                (s) => s.stationId === fromStation
-                              )?.name
-                            }{" "}
-                            →{" "}
-                            {
-                              stationsList.find(
-                                (s) => s.stationId === toStation
-                              )?.name
-                            }
-                          </span>
-                          <span className="font-bold text-blue-600 text-lg">
-                            {formatPrice(
-                              getSingleTicketPrice(fromStation, toStation)
-                            )}
-                          </span>
-                        </div>
-                        {quantity > 1 && (
-                          <div className="flex justify-between items-center mt-2 pt-2 border-t border-blue-200">
-                            <span className="text-sm text-cyan-800">
-                              Tổng cộng ({quantity} vé):
-                            </span>
-                            <span className="font-bold text-blue-600 text-lg">
-                              {formatPrice(calculatePrice())}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    )}
                   </div>
                 </TabPane>
 
@@ -302,7 +274,7 @@ const BuyTicketPage: React.FC = () => {
                       Các loại vé khác
                     </span>
                   }
-                  key="day"
+                  key="days"
                 >
                   {selectedTicketInfo && (
                     <div className="flex justify-between items-center bg-blue-50 p-3 rounded-lg mb-4">
@@ -328,48 +300,50 @@ const BuyTicketPage: React.FC = () => {
                       className="w-full"
                     >
                       <div className="space-y-4">
-                        {ticketTypesList.map((ticket) => (
-                          <div key={ticket.id} className="relative">
-                            <Radio
-                              value={ticket.id}
-                              className="absolute top-4 right-4 z-10"
-                            ></Radio>
-                            <div
-                              className={`rounded-xl text-white p-6 shadow-lg cursor-pointer transition-all duration-200 ${
-                                selectedTicketInfo?.id === ticket.id
-                                  ? "ring-4 ring-blue-300 transform scale-105"
-                                  : "hover:transform hover:scale-102"
-                              }`}
-                              style={{
-                                backgroundImage: `url(${background})`,
-                                backgroundSize: "cover",
-                                backgroundPosition: "center",
-                              }}
-                              onClick={() => handleTicketSelection(ticket)}
-                            >
-                              {selectedTicketInfo?.id === ticket.id && (
-                                <div className="absolute top-2 left-2">
-                                  <CheckCircleOutlined className="text-2xl !text-green-400" />
+                        {ticketTypesList.map((ticket) =>
+                          ticket.price > 0 ? (
+                            <div key={ticket.id} className="relative">
+                              <Radio
+                                value={ticket.id}
+                                className="absolute top-4 right-4 z-10"
+                              />
+                              <div
+                                className={`rounded-xl text-white p-6 shadow-lg cursor-pointer transition-all duration-200 ${
+                                  selectedTicketInfo?.id === ticket.id
+                                    ? "ring-4 ring-blue-300 transform scale-105"
+                                    : "hover:transform hover:scale-102"
+                                }`}
+                                style={{
+                                  backgroundImage: `url(${background})`,
+                                  backgroundSize: "cover",
+                                  backgroundPosition: "center",
+                                }}
+                                onClick={() => handleTicketSelection(ticket)}
+                              >
+                                {selectedTicketInfo?.id === ticket.id && (
+                                  <div className="absolute top-2 left-2">
+                                    <CheckCircleOutlined className="text-2xl !text-green-400" />
+                                  </div>
+                                )}
+                                <div className="mb-3 ms-2">
+                                  <CalendarOutlined className="text-2xl" />
                                 </div>
-                              )}
-                              <div className="mb-3 ms-2">
-                                <CalendarOutlined className="text-2xl" />
-                              </div>
-                              <h3 className="text-xl font-bold">
-                                {ticket.name}
-                              </h3>
-                              <p className="mt-2">{ticket.description}</p>
-                              <div className="flex justify-between items-center mt-3">
-                                <p className="text-2xl font-bold text-green-400">
-                                  {formatPrice(ticket.price)}
-                                </p>
-                                <p className="text-2xl font-bold text-green-400">
-                                  Hiệu lực: {ticket.validityDuration} ngày
-                                </p>
+                                <h3 className="text-xl font-bold">
+                                  {ticket.name}
+                                </h3>
+                                <p className="mt-2">{ticket.description}</p>
+                                <div className="flex justify-between items-center mt-3">
+                                  <p className="text-2xl font-bold text-green-400">
+                                    {formatPrice(ticket.price)}
+                                  </p>
+                                  <p className="text-2xl font-bold text-green-400">
+                                    Hiệu lực: {ticket.validityDuration} ngày
+                                  </p>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        ))}
+                          ) : null
+                        )}
                       </div>
                     </Radio.Group>
                   </div>
@@ -467,7 +441,7 @@ const BuyTicketPage: React.FC = () => {
                     (selectedTicketType !== "single" && !selectedTicketInfo)
                   }
                 >
-                  Đặt vé ngay
+                  Mua vé ngay
                 </Button>
               </div>
 
