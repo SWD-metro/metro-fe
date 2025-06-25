@@ -1,7 +1,6 @@
 export enum OrderStatus {
   PENDING = "PENDING",
-  COMPLETED = "COMPLETED",
-  CANCELLED = "CANCELLED",
+  SUCCESSFUL = "SUCCESSFUL",
   FAILED = "FAILED",
 }
 
@@ -14,9 +13,8 @@ export enum TicketStatus {
 
 export enum TransactionStatus {
   PENDING = "PENDING",
-  SUCCESS = "SUCCESS",
+  SUCCESSFUL = "SUCCESSFUL",
   FAILED = "FAILED",
-  CANCELLED = "CANCELLED",
 }
 
 export interface TicketType {
