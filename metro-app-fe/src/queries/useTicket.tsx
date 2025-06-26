@@ -14,6 +14,10 @@ export const useCreateTicketTypeMutation = () => {
     mutationFn: ticketsApiRequests.createTicketType,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ticket-type"] });
+      console.log("Ticket type created successfully!");
+    },
+    onError: (error) => {
+      console.error("Error creating ticket type:", error);
     },
   });
 };

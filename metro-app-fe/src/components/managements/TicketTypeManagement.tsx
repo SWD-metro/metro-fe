@@ -25,6 +25,7 @@ import {
     useDeleteTicketTypeMutation,
 } from 'src/queries/useTicket';
 import { TicketTypeRequest, TicketTypeResponse } from 'src/types/tickets.type';
+import toast from 'react-hot-toast';
 
 const VALIDITY_DURATIONS = [
     { value: 'SINGLE', label: 'Vé đơn' },
@@ -47,7 +48,7 @@ const TicketTypeManagement = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [form] = Form.useForm();
-    const { modal, message } = AntdApp.useApp();
+    const { modal } = AntdApp.useApp();
 
     const handleOpenModal = () => {
         form.resetFields();
@@ -76,12 +77,12 @@ const TicketTypeManagement = () => {
 
         createTicketTypeMutation.mutate(payload, {
             onSuccess: () => {
-                message.success('Thêm loại vé thành công!');
+                toast.success('Thêm loại vé thành công!');
                 handleCancel();
             },
             onError: (error: any) => {
                 const errorMessage = error?.response?.data?.message || error.message || 'Lỗi không xác định';
-                message.error(`Thêm loại vé thất bại: ${errorMessage}`);
+                toast.error(`Thêm loại vé thất bại: ${errorMessage}`);
             },
         });
     };
@@ -101,11 +102,11 @@ const TicketTypeManagement = () => {
             onOk: () => {
                 deleteTicketTypeMutation.mutate(ticketTypeId, {
                     onSuccess: () => {
-                        message.success('Xóa loại vé thành công!');
+                        toast.success('Xóa loại vé thành công!');
                     },
                     onError: (error: any) => {
                         const errorMessage = error?.response?.data?.message || error.message || 'Lỗi không xác định';
-                        message.error(`Xóa loại vé thất bại: ${errorMessage}`);
+                        toast.error(`Xóa loại vé thất bại: ${errorMessage}`);
                     },
                 });
             },
