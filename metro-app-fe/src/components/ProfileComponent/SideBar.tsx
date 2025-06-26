@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Menu, Avatar } from "antd";
-import { UserOutlined, SafetyOutlined } from "@ant-design/icons";
+import { UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import path from "src/constants/path";
 import { AppContext } from "src/contexts/app.context";
@@ -51,19 +51,6 @@ const ProfileSidebar: React.FC = () => {
               className="font-medium text-gray-700 group-hover:text-blue-600 transition-colors duration-300"
             >
               Tài khoản
-            </Link>
-          </Menu.Item>
-
-          <Menu.Item
-            key="password"
-            icon={<SafetyOutlined className="!text-green-500" />}
-            className="!mx-2 !my-1 !rounded-xl hover:!bg-green-50 transition-all duration-300 group"
-          >
-            <Link
-              to={path.changePassword}
-              className="font-medium text-gray-700 group-hover:text-green-600 transition-colors duration-300"
-            >
-              Mật khẩu & Bảo mật
             </Link>
           </Menu.Item>
 

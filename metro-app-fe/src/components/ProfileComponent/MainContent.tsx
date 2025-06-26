@@ -1,43 +1,20 @@
-import React, { useContext, useState } from "react";
-import {
-  Typography,
-  Tabs,
-  Form,
-  Input,
-  Button,
-  Card,
-  Row,
-  Col,
-  Divider,
-} from "antd";
+import React, { useContext } from "react";
+import { Typography, Tabs, Form, Input, Card, Row, Col, Divider } from "antd";
 import {
   UserOutlined,
   MailOutlined,
-  EditOutlined,
-  SaveOutlined,
-  CloseOutlined,
   CheckCircleOutlined,
   CalendarOutlined,
 } from "@ant-design/icons";
 import { AppContext } from "src/contexts/app.context";
+import { formatDDMMYY } from "src/utils/utils";
 
 const { Title, Text } = Typography;
 
 const MainContent: React.FC = () => {
-  const [isEdit, setIsEdit] = useState(false);
   const { profile } = useContext(AppContext);
 
   const [form] = Form.useForm();
-
-  const handleEdit = () => {
-    setIsEdit(true);
-  };
-
-  const handleCancel = () => {
-    setIsEdit(false);
-    form.resetFields();
-  };
-  const handleSave = () => {};
 
   return (
     <div className="p-6">
@@ -81,7 +58,10 @@ const MainContent: React.FC = () => {
                   <Title level={5} className="!mb-1 !text-purple-700">
                     Thành viên
                   </Title>
-                  <Text className="text-purple-600 text-sm">Từ 15/03/2023</Text>
+                  <Text className="text-purple-600 text-sm">
+                    Từ{" "}
+                    {profile?.createdAt ? formatDDMMYY(profile.createdAt) : ""}
+                  </Text>
                 </Card>
               </Col>
             </Row>
@@ -110,23 +90,14 @@ const MainContent: React.FC = () => {
                     <Form.Item
                       label={
                         <span className="text-gray-700 font-semibold">
-                          <UserOutlined className="mr-2 text-blue-500" />
                           Tên đầy đủ
                         </span>
                       }
                       name="name"
-                      rules={[
-                        { required: true, message: "Vui lòng nhập họ và tên!" },
-                      ]}
                     >
                       <Input
-                        placeholder="Nhập tên đầy đủ"
-                        disabled={!isEdit}
-                        className={`!h-12 !rounded-xl transition-all duration-300 ${
-                          isEdit
-                            ? "!border-blue-300 hover:!border-blue-400 focus:!border-blue-500 !shadow-lg"
-                            : "!bg-gray-50 !border-gray-200"
-                        }`}
+                        className="!h-12 !rounded-xl transition-all duration-300 
+                            !border-blue-300 hover:!border-blue-400 focus:!border-blue-500 !shadow-lg"
                         prefix={<UserOutlined className="text-gray-400" />}
                       />
                     </Form.Item>
@@ -136,54 +107,19 @@ const MainContent: React.FC = () => {
                     <Form.Item
                       label={
                         <span className="text-gray-700 font-semibold">
-                          <MailOutlined className="mr-2 text-red-500" />
                           Email
                         </span>
                       }
                       name="email"
-                      rules={[
-                        { type: "email", message: "Email không hợp lệ!" },
-                      ]}
                     >
                       <Input
-                        disabled
-                        className="!h-12 !rounded-xl !bg-gray-50 !border-gray-200"
+                        className="!h-12 !rounded-xl transition-all duration-300 
+                            !border-blue-300 hover:!border-blue-400 focus:!border-blue-500 !shadow-lg"
                         prefix={<MailOutlined className="text-gray-400" />}
                       />
                     </Form.Item>
                   </Col>
                 </Row>
-
-                <div className="flex justify-end gap-4 pt-6 border-t border-gray-100">
-                  {isEdit ? (
-                    <>
-                      <Button
-                        onClick={handleCancel}
-                        className="!h-12 !px-6 !rounded-xl !border-gray-300 hover:!border-gray-400 !text-gray-700 hover:!text-gray-800 !font-medium transition-all duration-300"
-                        icon={<CloseOutlined />}
-                      >
-                        Hủy bỏ
-                      </Button>
-                      <Button
-                        type="primary"
-                        onClick={handleSave}
-                        className="!h-12 !px-6 !rounded-xl !bg-gradient-to-r !from-blue-500 !to-purple-600 hover:!from-blue-600 hover:!to-purple-700 !border-none !font-medium !shadow-lg hover:!shadow-xl hover:!scale-105 transition-all duration-300"
-                        icon={<SaveOutlined />}
-                      >
-                        Lưu thay đổi
-                      </Button>
-                    </>
-                  ) : (
-                    <Button
-                      type="primary"
-                      onClick={handleEdit}
-                      className="!h-12 !px-6 !rounded-xl !bg-gradient-to-r !from-blue-500 !to-purple-600 hover:!from-blue-600 hover:!to-purple-700 !border-none !font-medium !shadow-lg hover:!shadow-xl hover:!scale-105 transition-all duration-300"
-                      icon={<EditOutlined />}
-                    >
-                      Cập nhật thông tin
-                    </Button>
-                  )}
-                </div>
               </Form>
             </Card>
           </div>

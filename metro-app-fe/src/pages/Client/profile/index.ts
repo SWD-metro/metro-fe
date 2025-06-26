@@ -1,3 +1,3 @@
-import UserProfile from "./UserProfile";
+import ProfileLayout from "./ProfileLayout";
 
-export default UserProfile;
+export default ProfileLayout;

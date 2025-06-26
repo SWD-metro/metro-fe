@@ -86,6 +86,7 @@ const RegisterPage: React.FC = () => {
         <Title level={3} className="!text-cyan-800 mb-2">
           {t("register.title")}
         </Title>
+        <div className="w-16 h-1 bg-gradient-to-r from-cyan-500 to-blue-500 mx-auto rounded-full"></div>
       </div>
 
       <Form
@@ -113,7 +114,7 @@ const RegisterPage: React.FC = () => {
               <Input
                 prefix={<UserOutlined className="text-gray-400" />}
                 placeholder={t("register.username.placeholder")}
-                className="rounded-lg h-12"
+                className="!rounded-xl !h-12 !border-gray-200 hover:!border-cyan-400 focus:!border-cyan-500 !transition-colors !duration-200 !shadow-sm"
               />
             </Form.Item>
           </Col>
@@ -130,7 +131,7 @@ const RegisterPage: React.FC = () => {
               <Input
                 prefix={<UserOutlined className="text-gray-400" />}
                 placeholder={t("register.name.placeholder")}
-                className="rounded-lg h-12"
+                className="!rounded-xl !h-12 !border-gray-200 hover:!border-cyan-400 focus:!border-cyan-500 !transition-colors !duration-200 !shadow-sm"
               />
             </Form.Item>
           </Col>
@@ -150,7 +151,7 @@ const RegisterPage: React.FC = () => {
               <Input
                 prefix={<MailOutlined className="text-gray-400" />}
                 placeholder={t("register.email.placeholder")}
-                className="rounded-lg h-12"
+                className="!rounded-xl !h-12 !border-gray-200 hover:!border-cyan-400 focus:!border-cyan-500 !transition-colors !duration-200 !shadow-sm"
               />
             </Form.Item>
           </Col>
@@ -173,7 +174,7 @@ const RegisterPage: React.FC = () => {
               <Input.Password
                 prefix={<LockOutlined className="text-gray-400" />}
                 placeholder={t("register.password.placeholder")}
-                className="rounded-lg h-12"
+                className="!rounded-xl !h-12 !border-gray-200 hover:!border-cyan-400 focus:!border-cyan-500 !transition-colors !duration-200 !shadow-sm"
               />
             </Form.Item>
           </Col>
@@ -207,7 +208,7 @@ const RegisterPage: React.FC = () => {
               <Input.Password
                 prefix={<LockOutlined className="text-gray-400" />}
                 placeholder={t("register.confirmPassword.placeholder")}
-                className="rounded-lg h-12"
+                className="!rounded-xl !h-12 !border-gray-200 hover:!border-cyan-400 focus:!border-cyan-500 !transition-colors !duration-200 !shadow-sm"
               />
             </Form.Item>
           </Col>
@@ -236,9 +237,8 @@ const RegisterPage: React.FC = () => {
               <Button
                 type="primary"
                 htmlType="submit"
-                shape="round"
                 disabled={!agreementChecked}
-                style={{ width: "70%", margin: "0 auto", display: "block" }}
+                className="w-full !h-12 !bg-gradient-to-r !from-cyan-500 !to-blue-600 hover:!from-cyan-600 hover:!to-blue-700 !border-none !rounded-xl !font-semibold !text-white !shadow-lg hover:!shadow-xl !transform hover:!-translate-y-0.5 !transition-all !duration-200"
               >
                 {sendOtpMutation.isPending
                   ? "Đang xử lý..."

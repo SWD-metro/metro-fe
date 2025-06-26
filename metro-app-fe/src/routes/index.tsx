@@ -13,7 +13,7 @@ import ResetPassword from "src/pages/Auth/ResetPassword";
 import VerifyOtpPage from "src/pages/Auth/VerifyOtp";
 import AboutUsPage from "src/pages/Client/AboutUs";
 import HomePage from "src/pages/Client/HomePage";
-import UserProfile from "src/pages/Client/profile";
+import ProfileLayout from "src/pages/Client/profile";
 import ServicePage from "src/pages/Client/Services";
 import StationMapPage from "src/pages/Client/StationMap";
 import BuyTicketPage from "src/pages/Client/Ticket";
@@ -56,7 +56,7 @@ const RouteElements: React.FC = () => {
           element: <ProtectedRoute allowedRoles={["ROLE_CUSTOMER"]} />,
           children: [
             {
-              element: <UserProfile />,
+              element: <ProfileLayout />,
               children: [
                 {
                   path: path.profile,
@@ -131,7 +131,7 @@ const RouteElements: React.FC = () => {
             },
             {
               path: "profile",
-              element: <UserProfile />,
+              element: <MainContent />,
             },
             {
               path: "manage",

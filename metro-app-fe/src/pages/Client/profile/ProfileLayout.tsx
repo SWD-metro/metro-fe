@@ -5,7 +5,7 @@ import ProfileSidebar from "src/components/ProfileComponent/SideBar";
 import background from "src/assets/stats_section.jpg";
 const { Sider, Content } = Layout;
 
-const UserProfile: React.FC = () => {
+const ProfileLayout: React.FC = () => {
   return (
     <>
       <div
@@ -33,4 +33,4 @@ const UserProfile: React.FC = () => {
   );
 };
 
-export default UserProfile;
+export default ProfileLayout;
