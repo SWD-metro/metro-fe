@@ -14,9 +14,33 @@ export const useCreateTicketTypeMutation = () => {
     mutationFn: ticketsApiRequests.createTicketType,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ticket-type"] });
+      console.log("Ticket type created successfully!");
+    },
+    onError: (error) => {
+      console.error("Error creating ticket type:", error);
     },
   });
 };
+
+export const useUpdateTicketTypeMutation = () => {
+  // const queryClient = useQueryClient();
+  // return useMutation({
+  //   mutationFn: ticketsApiRequests.updateTicketType,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["ticket-type"] });
+  //   },
+  // });
+}
+
+export const useDeleteTicketTypeMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ticketsApiRequests.deleteTicketType,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["ticket-type"] });
+    },
+  });
+}
 
 export const useGetTicketTypeById = ({
   id,
