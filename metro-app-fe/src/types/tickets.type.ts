@@ -1,9 +1,10 @@
 import { FareMatrixResponse } from "./fares.type";
 
 export enum TicketStatus {
-  ACTIVE = "ACTIVE",
   USED = "USED",
+  NOT_USED = "NOT_USED",
   EXPIRED = "EXPIRED",
+  PENDING = "PENDING",
   CANCELLED = "CANCELLED",
 }
 

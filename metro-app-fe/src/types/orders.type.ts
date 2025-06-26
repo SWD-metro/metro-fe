@@ -1,14 +1,9 @@
+import { TicketResponse } from "./tickets.type";
+
 export enum OrderStatus {
   PENDING = "PENDING",
   SUCCESSFUL = "SUCCESSFUL",
   FAILED = "FAILED",
-}
-
-export enum TicketStatus {
-  ACTIVE = "ACTIVE",
-  EXPIRED = "EXPIRED",
-  USED = "USED",
-  CANCELLED = "CANCELLED",
 }
 
 export enum TransactionStatus {
@@ -57,18 +52,12 @@ export interface OrderResponse {
   transaction?: TransactionResponse;
 }
 
-export interface TicketResponse {
-  id: number;
-  fareMatrixId: number;
-  ticketTypeId: number;
-  name: string;
-  ticketCode: string;
-  actualPrice: number;
-  validFrom: string;
-  validUntil: string;
-  status: TicketStatus;
-  createdAt: string;
-  updatedAt: string;
+export interface OrderDetailResponse {
+  orderId: number;
+  userId: number;
+  status: OrderStatus;
+  amount: number;
+  ticket: TicketResponse;
 }
 
 export interface PaymentMethodResponse {

@@ -1,5 +1,6 @@
 import { ApiResponse } from "src/types/api.type";
 import { FareMatrixResponse } from "src/types/fares.type";
+import { OrderDetailResponse } from "src/types/orders.type";
 import { TicketResponse, TicketTypeResponse } from "src/types/tickets.type";
 import http from "src/utils/http";
 
@@ -26,6 +27,9 @@ const ticketsApiRequests = {
     http.get<ApiResponse<TicketResponse>>(`ts/tickets/${value}`),
   generateQR: (value: string | undefined) =>
     http.get<ApiResponse>(`ts/tickets/generate-qr?ticketCode=${value}`),
+
+  ticketByUser: () =>
+    http.get<ApiResponse<OrderDetailResponse[]>>("orders/user/details"),
 };
 
 export default ticketsApiRequests;
