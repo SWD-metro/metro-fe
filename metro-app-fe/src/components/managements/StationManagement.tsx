@@ -35,6 +35,7 @@ import {
   useAddStationMutation,
   useDeleteStationMutation,
 } from 'src/queries/useStation';
+import toast from 'react-hot-toast';
 
 const StationManagement = () => {
   const {
@@ -50,7 +51,7 @@ const StationManagement = () => {
   const [selectedRouteId, setSelectedRouteId] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
-  const { modal, message } = AntdApp.useApp();
+  const { modal } = AntdApp.useApp();
 
   const filteredStations = useMemo(() => {
     if (!stations?.data?.data) return [];
@@ -64,12 +65,10 @@ const StationManagement = () => {
   const handleOpenModal = () => {
     form.resetFields();
     form.setFieldsValue({
-      // Dữ liệu mặc định cho form
-      latitude: 10.7769, // Tọa độ trung tâm TP.HCM
+      latitude: 10.7769,
       longitude: 106.7009,
       sequenceOrder: filteredStations.length + 1,
       routeId: selectedRouteId,
-      // Không cần set 'status' vì nó không có trong form và không được gửi đi
     });
     setIsModalOpen(true);
   };
@@ -79,9 +78,7 @@ const StationManagement = () => {
     form.resetFields();
   };
 
-  // --- HÀM ADD STATION ĐÃ ĐƯỢC VIẾT LẠI ---
   const onFinish = (formValues: any) => {
-    // Tường minh xây dựng payload chỉ với các trường yêu cầu từ param
     const newStationPayload: StationsRequest = {
       routeId: formValues.routeId,
       stationCode: formValues.stationCode,
@@ -91,19 +88,16 @@ const StationManagement = () => {
       longitude: formValues.longitude,
       sequenceOrder: formValues.sequenceOrder,
     };
-
-    // Log payload để kiểm tra trước khi gửi, rất hữu ích cho việc debug
     console.log('Submitting payload to create station:', newStationPayload);
 
     addStationMutation.mutate(newStationPayload, {
       onSuccess: () => {
-        message.success('Thêm ga thành công!');
+        toast.success('Thêm ga thành công!');
         handleCancel();
       },
       onError: (error: any) => {
-        // Hiển thị thông báo lỗi chi tiết hơn từ API
         const errorMessage = error?.response?.data?.message || error.message || 'Lỗi không xác định';
-        message.error(`Thêm ga thất bại: ${errorMessage}`);
+        toast.error(`Thêm ga thất bại: ${errorMessage}`);
       }
     });
   };
@@ -118,11 +112,11 @@ const StationManagement = () => {
       onOk: () => {
         deleteStationMutation.mutate(stationId, {
           onSuccess: () => {
-            message.success('Xóa ga thành công!');
+            toast.success('Xóa ga thành công!');
           },
           onError: (error: any) => {
             const errorMessage = error?.response?.data?.message || error.message || 'Lỗi không xác định';
-            message.error(`Xóa ga thất bại: ${errorMessage}`);
+            toast.error(`Xóa ga thất bại: ${errorMessage}`);
           }
         });
       },
@@ -228,7 +222,6 @@ const StationManagement = () => {
 
   return (
     <div className="bg-white rounded-xl shadow-md p-4 sm:p-6">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
         <div className="flex-1 mb-4 sm:mb-0">
           <h2 className="text-xl font-semibold text-slate-800 mb-2">Sơ đồ Tuyến Metro</h2>
@@ -263,8 +256,6 @@ const StationManagement = () => {
           Thêm Ga
         </Button>
       </div>
-
-      {/* Thông tin tuyến */}
       {selectedRoute && (
         <Card className="mb-6" style={{ borderColor: selectedRoute.color }}>
           <div className="flex items-center gap-3">
@@ -283,8 +274,6 @@ const StationManagement = () => {
           </div>
         </Card>
       )}
-
-      {/* Sơ đồ ga */}
       <div className="bg-gray-50 rounded-lg p-4">
         <Typography.Title level={5} className="mb-4 text-center">
           Sơ đồ các ga trên tuyến
@@ -308,8 +297,6 @@ const StationManagement = () => {
           </div>
         )}
       </div>
-
-      {/* Modal thêm ga */}
       <Modal
         title="Thêm Ga mới"
         open={isModalOpen}

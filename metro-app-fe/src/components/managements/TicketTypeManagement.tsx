@@ -19,22 +19,12 @@ import {
 import type { TableProps } from 'antd';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 
-// Import React Query hooks
 import {
     useGetTicketTypeList,
     useCreateTicketTypeMutation,
     useDeleteTicketTypeMutation,
 } from 'src/queries/useTicket';
 import { TicketTypeRequest, TicketTypeResponse } from 'src/types/tickets.type';
-
-// Cấu trúc param yêu cầu
-// {
-//   "name": "string",
-//   "description": "string",
-//   "price": 0,
-//   "isActive": true,
-//   "validityDuration": "ONE_DAY"
-// }
 
 const VALIDITY_DURATIONS = [
     { value: 'SINGLE', label: 'Vé đơn' },
@@ -62,9 +52,9 @@ const TicketTypeManagement = () => {
     const handleOpenModal = () => {
         form.resetFields();
         form.setFieldsValue({
-            isActive: true, // Giá trị mặc định khi mở modal
+            isActive: true,
             price: 0,
-            validityDuration: 'ONE_DAY', // Sửa giá trị mặc định khớp với param
+            validityDuration: 'ONE_DAY',
         });
         setIsModalOpen(true);
     };
@@ -73,19 +63,16 @@ const TicketTypeManagement = () => {
         setIsModalOpen(false);
         form.resetFields();
     };
-
-    // SỬA ĐỔI TẠI ĐÂY: Điều chỉnh hàm onFinish để khớp với param yêu cầu
     const onFinish = (values: any) => {
-        // Tạo payload mới dựa trên cấu trúc param yêu cầu
         const payload: TicketTypeRequest = {
             name: values.name,
-            description: values.description || '', // Đảm bảo description là string
+            description: values.description || '', 
             price: values.price,
             isActive: values.isActive,
-            validityDuration: values.validityDuration, // Lấy giá trị trực tiếp từ form
+            validityDuration: values.validityDuration,
         };
 
-        console.log('Submitting payload:', payload); // Dùng để debug
+        console.log('Submitting payload:', payload); 
 
         createTicketTypeMutation.mutate(payload, {
             onSuccess: () => {
@@ -231,7 +218,6 @@ const TicketTypeManagement = () => {
 
     return (
         <div className="bg-white rounded-xl shadow-md p-4 sm:p-6">
-            {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
                 <div>
                     <h2 className="text-xl font-semibold text-slate-800 mb-2">Quản lý Loại Vé Metro</h2>
@@ -248,8 +234,6 @@ const TicketTypeManagement = () => {
                     Thêm Loại Vé
                 </Button>
             </div>
-
-            {/* Statistics Cards */}
             <Row gutter={16} className="mb-6">
                 <Col xs={24} sm={8}>
                     <Card className="text-center">
@@ -276,8 +260,6 @@ const TicketTypeManagement = () => {
                     </Card>
                 </Col>
             </Row>
-
-            {/* Ticket Types Table */}
             <div className="overflow-x-auto">
                 <Table
                     columns={columns}
@@ -295,8 +277,6 @@ const TicketTypeManagement = () => {
                     loading={isLoadingTicketTypes || createTicketTypeMutation.isPending || deleteTicketTypeMutation.isPending}
                 />
             </div>
-
-            {/* Add Modal */}
             <Modal
                 title={'Thêm Loại Vé mới'}
                 open={isModalOpen}
