@@ -13,7 +13,7 @@ import ResetPassword from "src/pages/Auth/ResetPassword";
 import VerifyOtpPage from "src/pages/Auth/VerifyOtp";
 import AboutUsPage from "src/pages/Client/AboutUs";
 import HomePage from "src/pages/Client/HomePage";
-import UserProfile from "src/pages/Client/profile/UserProfile";
+import ProfileLayout from "src/pages/Client/profile";
 import ServicePage from "src/pages/Client/Services";
 import StationMapPage from "src/pages/Client/StationMap";
 import BuyTicketPage from "src/pages/Client/Ticket";
@@ -22,6 +22,9 @@ import ProtectedRoute from "./ProtectedRoute";
 import OAuth2RedirectHandler from "src/pages/Auth/OAuth2";
 import OrderPage from "src/pages/Client/OrderPage";
 import PaymentResult from "src/pages/Client/PaymentResult";
+import MainContent from "src/components/ProfileComponent/MainContent";
+import MyTicket from "src/pages/Client/MyTicket";
+import OrderHistory from "src/pages/Client/OrderHistory/OrderHistory";
 
 const RouteElements: React.FC = () => {
   const routeElements = useRoutes([
@@ -53,8 +56,21 @@ const RouteElements: React.FC = () => {
           element: <ProtectedRoute allowedRoles={["ROLE_CUSTOMER"]} />,
           children: [
             {
-              path: path.profile,
-              element: <UserProfile />,
+              element: <ProfileLayout />,
+              children: [
+                {
+                  path: path.profile,
+                  element: <MainContent />,
+                },
+                {
+                  path: path.myTicket,
+                  element: <MyTicket />,
+                },
+                {
+                  path: path.orderHistory,
+                  element: <OrderHistory />,
+                },
+              ],
             },
             {
               path: path.orderPage,
@@ -115,7 +131,7 @@ const RouteElements: React.FC = () => {
             },
             {
               path: "profile",
-              element: <UserProfile />,
+              element: <MainContent />,
             },
             {
               path: "manage",

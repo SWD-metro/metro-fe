@@ -108,3 +108,10 @@ export const useGetTicketQRCode = (ticketCode?: string) => {
     enabled: !!ticketCode,
   });
 };
+
+export const useGetTicketByUser = () => {
+  return useQuery({
+    queryKey: ["tickets"],
+    queryFn: ticketsApiRequests.ticketByUser,
+  });
+};

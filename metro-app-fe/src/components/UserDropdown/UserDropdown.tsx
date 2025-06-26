@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import { Dropdown, Avatar } from "antd";
-import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "src/contexts/app.context";
 import { useLogoutMutation } from "src/queries/useAuth";
+import path from "src/constants/path";
+import { LogOutIcon, TicketIcon, User2 } from "lucide-react";
 
 const UserDropdown: React.FC = () => {
   const { profile, reset } = useContext(AppContext);
@@ -65,13 +66,20 @@ const UserDropdown: React.FC = () => {
     },
     {
       key: "profile",
-      icon: <UserOutlined />,
+      icon: <User2 size={18} />,
       label: "Hồ sơ",
-      onClick: () => navigate("/profile"),
+      onClick: () => navigate(path.profile),
+    },
+    {
+      key: "my ticket",
+      icon: <TicketIcon size={18} />,
+      label: "Vé của tôi",
+      onClick: () => navigate(path.myTicket),
+      className: "text-red-600 hover:text-red-700",
     },
     {
       key: "logout",
-      icon: <LogoutOutlined />,
+      icon: <LogOutIcon size={18} />,
       label: "Đăng xuất",
       onClick: handleLogout,
       className: "text-red-600 hover:text-red-700",

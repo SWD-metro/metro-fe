@@ -7,6 +7,9 @@ const path = {
   profile: "profile",
   orderPage: "/order/:type/:slug",
   paymentResult: "/payment-result",
+  myTicket: "/my-tickets",
+  orderHistory: "/order-history",
+  changePassword: "/change-password",
 
   auth: "/auth",
   login: "/auth/login",

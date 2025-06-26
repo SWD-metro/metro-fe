@@ -12,6 +12,10 @@ const orderApiRequests = {
 
   createOrderDays: (body: OrderTicketDaysRequest) =>
     http.post<ApiResponse<OrderResponse>>("orders/create/days", body),
+
+  orderByUser: (value: number) => {
+    return http.get<ApiResponse<OrderResponse[]>>(`orders/user/${value}`);
+  },
 };
 
 export default orderApiRequests;

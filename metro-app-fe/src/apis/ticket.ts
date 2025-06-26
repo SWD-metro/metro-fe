@@ -1,8 +1,11 @@
-// src/apis/ticket.ts
 import { ApiResponse } from "src/types/api.type";
 import { FareMatrixResponse } from "src/types/fares.type";
-// Assuming TicketResponse and TicketTypeResponse are defined in src/types/tickets.type
-import { TicketResponse, TicketTypeRequest, TicketTypeResponse } from "src/types/tickets.type";
+import { OrderDetailResponse } from "src/types/orders.type";
+import {
+  TicketResponse,
+  TicketTypeRequest,
+  TicketTypeResponse,
+} from "src/types/tickets.type";
 import http from "src/utils/http";
 
 const ticketsApiRequests = {
@@ -10,16 +13,18 @@ const ticketsApiRequests = {
     http.get<ApiResponse<TicketTypeResponse[]>>("ts/ticket-types"),
 
   createTicketType: (data: TicketTypeRequest) =>
-    http.post<ApiResponse<TicketTypeResponse>>("ts/ticket-types", data), 
+    http.post<ApiResponse<TicketTypeResponse>>("ts/ticket-types", data),
 
   ticketTypeById: (value: number) =>
     http.get<ApiResponse<TicketTypeResponse>>(`ts/ticket-types/${value}`),
 
-  updateTicketType: (id: number, data: Omit<TicketTypeResponse, 'id' | 'createdAt' | 'updatedAt'>) =>
-    http.put<ApiResponse<TicketTypeResponse>>(`ts/ticket-types/${id}`, data),
+  updateTicketType: (
+    id: number,
+    data: Omit<TicketTypeResponse, "id" | "createdAt" | "updatedAt">
+  ) => http.put<ApiResponse<TicketTypeResponse>>(`ts/ticket-types/${id}`, data),
 
   deleteTicketType: (id: number) =>
-    http.delete<ApiResponse<any>>(`ts/ticket-types/${id}`),
+    http.delete<ApiResponse>(`ts/ticket-types/${id}`),
 
   fareMatricesList: () =>
     http.get<ApiResponse<FareMatrixResponse[]>>("ts/fare-matrices"),
@@ -34,6 +39,9 @@ const ticketsApiRequests = {
     http.get<ApiResponse<TicketResponse>>(`ts/tickets/${value}`),
   generateQR: (value: string | undefined) =>
     http.get<ApiResponse>(`ts/tickets/generate-qr?ticketCode=${value}`),
+
+  ticketByUser: () =>
+    http.get<ApiResponse<OrderDetailResponse[]>>("orders/user/details"),
 };
 
 export default ticketsApiRequests;
