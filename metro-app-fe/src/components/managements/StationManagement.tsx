@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 
-// Mock data cho các tuyến
 const initialRoutes = [
   { routeId: 1, routeName: 'Tuyến số 1 (Bến Thành - Suối Tiên)', description: 'Tuyến Metro đầu tiên của TP.HCM', color: '#1890ff' },
   { routeId: 2, routeName: 'Tuyến số 2 (Bến Thành - Tham Lương)', description: 'Tuyến Metro thứ hai của TP.HCM', color: '#52c41a' },
@@ -53,7 +52,6 @@ const StationManagement = () => {
   const [form] = Form.useForm();
   const { modal, message } = AntdApp.useApp();
 
-  // Lọc và sắp xếp ga theo tuyến được chọn
   const filteredStations = useMemo(() => {
     if (!stations?.data?.data) return [];
     return stations.data.data

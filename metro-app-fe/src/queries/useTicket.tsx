@@ -18,6 +18,26 @@ export const useCreateTicketTypeMutation = () => {
   });
 };
 
+export const useUpdateTicketTypeMutation = () => {
+  // const queryClient = useQueryClient();
+  // return useMutation({
+  //   mutationFn: ticketsApiRequests.updateTicketType,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["ticket-type"] });
+  //   },
+  // });
+}
+
+export const useDeleteTicketTypeMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ticketsApiRequests.deleteTicketType,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["ticket-type"] });
+    },
+  });
+}
+
 export const useGetTicketTypeById = ({
   id,
   enabled,

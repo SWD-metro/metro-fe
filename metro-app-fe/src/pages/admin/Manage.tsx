@@ -2,6 +2,7 @@ import { Col, Layout, Row } from "antd";
 import RouteManagement from "src/components/managements/RouteManagement";
 import StationManagement from "src/components/managements/StationManagement";
 import TicketManagement from "src/components/managements/TicketManagement";
+import TicketTypeManagement from "src/components/managements/TicketTypeManagement";
 import UserManagement from "src/components/managements/UserManagement";
 
 const { Content } = Layout;
@@ -30,11 +31,17 @@ const Manage: React.FC = () => {
         `}
       </style>
       <Content className="p-4 sm:p-6 lg:p-8">
-        <Row gutter={[24, 24]}>
+        {/* <Row gutter={[24, 24]}>
           <Col xs={24}>
             <UserManagement />
           </Col>
-        </Row>
+          </Row> */}
+          
+          <Row gutter={[24, 24]} className="mt-6">
+            <Col xs={24}>
+              <TicketTypeManagement />
+            </Col>
+          </Row>
 
         <Row gutter={[24, 24]} className="mt-6">
           <Col xs={24}>
@@ -42,14 +49,6 @@ const Manage: React.FC = () => {
           </Col>
         </Row>
 
-        <Row gutter={[24, 24]} className="mt-6">
-          <Col xs={24} lg={12}>
-            <TicketManagement />
-          </Col>
-           <Col xs={24} lg={12}>
-            <RouteManagement />
-          </Col>
-        </Row>
 
       </Content>
     </Layout>
