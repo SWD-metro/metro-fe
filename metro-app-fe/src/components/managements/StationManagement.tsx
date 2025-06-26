@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 
+// Giả sử đây là dữ liệu tĩnh hoặc được fetch từ nơi khác
 const initialRoutes = [
   { routeId: 1, routeName: 'Tuyến số 1 (Bến Thành - Suối Tiên)', description: 'Tuyến Metro đầu tiên của TP.HCM', color: '#1890ff' },
   { routeId: 2, routeName: 'Tuyến số 2 (Bến Thành - Tham Lương)', description: 'Tuyến Metro thứ hai của TP.HCM', color: '#52c41a' },
@@ -24,10 +25,9 @@ import {
   Row,
   Col,
   Card,
-  Divider,
   Badge,
 } from 'antd';
-import { EditOutlined, DeleteOutlined, PlusOutlined, EnvironmentOutlined } from '@ant-design/icons';
+import { DeleteOutlined, PlusOutlined, EnvironmentOutlined } from '@ant-design/icons';
 
 // Import React Query hooks
 import {
@@ -35,6 +35,7 @@ import {
   useAddStationMutation,
   useDeleteStationMutation,
 } from 'src/queries/useStation';
+import toast from 'react-hot-toast';
 
 const StationManagement = () => {
   const {
@@ -50,7 +51,7 @@ const StationManagement = () => {
   const [selectedRouteId, setSelectedRouteId] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
-  const { modal, message } = AntdApp.useApp();
+  const { modal } = AntdApp.useApp();
 
   const filteredStations = useMemo(() => {
     if (!stations?.data?.data) return [];
@@ -61,17 +62,13 @@ const StationManagement = () => {
 
   const selectedRoute = initialRoutes.find(route => route.routeId === selectedRouteId);
 
-  const getRouteName = (routeId: number) => 
-    initialRoutes.find(r => r.routeId === routeId)?.routeName || 'Không xác định';
-
   const handleOpenModal = () => {
     form.resetFields();
     form.setFieldsValue({
-      latitude: 10.7,
-      longitude: 106.6,
+      latitude: 10.7769,
+      longitude: 106.7009,
       sequenceOrder: filteredStations.length + 1,
       routeId: selectedRouteId,
-      status: 'under_construction',
     });
     setIsModalOpen(true);
   };
@@ -81,36 +78,45 @@ const StationManagement = () => {
     form.resetFields();
   };
 
-  const onFinish = (formValues: StationsRequest) => {
+  const onFinish = (formValues: any) => {
     const newStationPayload: StationsRequest = {
-      ...formValues,
+      routeId: formValues.routeId,
+      stationCode: formValues.stationCode,
+      name: formValues.name,
+      address: formValues.address,
+      latitude: formValues.latitude,
+      longitude: formValues.longitude,
+      sequenceOrder: formValues.sequenceOrder,
     };
+    console.log('Submitting payload to create station:', newStationPayload);
 
     addStationMutation.mutate(newStationPayload, {
       onSuccess: () => {
-        message.success('Thêm ga thành công!');
+        toast.success('Thêm ga thành công!');
         handleCancel();
       },
       onError: (error: any) => {
-        message.error(`Thêm ga thất bại: ${error.message || 'Lỗi không xác định'}`);
+        const errorMessage = error?.response?.data?.message || error.message || 'Lỗi không xác định';
+        toast.error(`Thêm ga thất bại: ${errorMessage}`);
       }
     });
   };
 
-  const handleDelete = (stationId: number) => {
+  const handleDelete = (stationId: number, stationName: string) => {
     modal.confirm({
-      title: 'Bạn có chắc chắn muốn xóa ga này?',
-      content: 'Hành động này không thể hoàn tác.',
+      title: `Bạn có chắc chắn muốn xóa ga "${stationName}"?`,
+      content: 'Hành động này không thể hoàn tác và sẽ xóa vĩnh viễn ga khỏi hệ thống.',
       okText: 'Xóa',
       okType: 'danger',
       cancelText: 'Hủy',
       onOk: () => {
         deleteStationMutation.mutate(stationId, {
           onSuccess: () => {
-            message.success('Xóa ga thành công!');
+            toast.success('Xóa ga thành công!');
           },
           onError: (error: any) => {
-            message.error(`Xóa ga thất bại: ${error.message || 'Lỗi không xác định'}`);
+            const errorMessage = error?.response?.data?.message || error.message || 'Lỗi không xác định';
+            toast.error(`Xóa ga thất bại: ${errorMessage}`);
           }
         });
       },
@@ -133,16 +139,15 @@ const StationManagement = () => {
     return <Tag color={color}>{text}</Tag>;
   };
 
-  // Component hiển thị một ga trong sơ đồ
   const StationNode = ({ station, isLast }: { station: StationsResponse; isLast: boolean }) => (
     <div className="flex items-center mb-4">
       <div className="flex flex-col items-center mr-4">
-        <div 
+        <div
           className="w-4 h-4 rounded-full border-2 flex items-center justify-center"
-          style={{ 
+          style={{
             borderColor: selectedRoute?.color || '#1890ff',
-            backgroundColor: station.status === 'open' || station.status === 'operational' 
-              ? selectedRoute?.color || '#1890ff' 
+            backgroundColor: station.status === 'open' || station.status === 'operational'
+              ? selectedRoute?.color || '#1890ff'
               : '#fff'
           }}
         >
@@ -151,13 +156,13 @@ const StationManagement = () => {
           )}
         </div>
         {!isLast && (
-          <div 
+          <div
             className="w-0.5 h-16 mt-1"
             style={{ backgroundColor: selectedRoute?.color || '#1890ff' }}
           ></div>
         )}
       </div>
-      <Card 
+      <Card
         className="flex-1 shadow-sm hover:shadow-md transition-shadow"
         bodyStyle={{ padding: '12px 16px' }}
       >
@@ -184,11 +189,11 @@ const StationManagement = () => {
             </div>
           </div>
           <Space>
-            <Button 
-              type="text" 
-              danger 
-              icon={<DeleteOutlined />} 
-              onClick={() => handleDelete(station.stationId)}
+            <Button
+              type="text"
+              danger
+              icon={<DeleteOutlined />}
+              onClick={() => handleDelete(station.stationId, station.name)}
               size="small"
             >
               Xóa
@@ -217,7 +222,6 @@ const StationManagement = () => {
 
   return (
     <div className="bg-white rounded-xl shadow-md p-4 sm:p-6">
-      {/* Header với selector tuyến */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
         <div className="flex-1 mb-4 sm:mb-0">
           <h2 className="text-xl font-semibold text-slate-800 mb-2">Sơ đồ Tuyến Metro</h2>
@@ -232,8 +236,8 @@ const StationManagement = () => {
               {initialRoutes.map(route => (
                 <Select.Option key={route.routeId} value={route.routeId}>
                   <div className="flex items-center gap-2">
-                    <div 
-                      className="w-3 h-3 rounded-full" 
+                    <div
+                      className="w-3 h-3 rounded-full"
                       style={{ backgroundColor: route.color }}
                     ></div>
                     {route.routeName}
@@ -243,22 +247,20 @@ const StationManagement = () => {
             </Select>
           </div>
         </div>
-        <Button 
-          type="primary" 
-          icon={<PlusOutlined />} 
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
           onClick={handleOpenModal}
           size="large"
         >
           Thêm Ga
         </Button>
       </div>
-
-      {/* Thông tin tuyến được chọn */}
       {selectedRoute && (
         <Card className="mb-6" style={{ borderColor: selectedRoute.color }}>
           <div className="flex items-center gap-3">
-            <div 
-              className="w-6 h-6 rounded-full" 
+            <div
+              className="w-6 h-6 rounded-full"
               style={{ backgroundColor: selectedRoute.color }}
             ></div>
             <div>
@@ -272,13 +274,11 @@ const StationManagement = () => {
           </div>
         </Card>
       )}
-
-      {/* Sơ đồ ga */}
       <div className="bg-gray-50 rounded-lg p-4">
         <Typography.Title level={5} className="mb-4 text-center">
           Sơ đồ các ga trên tuyến
         </Typography.Title>
-        
+
         {filteredStations.length === 0 ? (
           <div className="text-center py-8">
             <Typography.Text type="secondary">
@@ -286,7 +286,7 @@ const StationManagement = () => {
             </Typography.Text>
           </div>
         ) : (
-          <div className="max-h-96 overflow-y-auto pr-2">
+          <div className="max-h-[500px] overflow-y-auto pr-2">
             {filteredStations.map((station, index) => (
               <StationNode
                 key={station.stationId}
@@ -297,8 +297,6 @@ const StationManagement = () => {
           </div>
         )}
       </div>
-
-      {/* Modal thêm ga */}
       <Modal
         title="Thêm Ga mới"
         open={isModalOpen}
@@ -312,43 +310,43 @@ const StationManagement = () => {
           form={form}
           layout="vertical"
           onFinish={onFinish}
-          className="mt-6 space-y-4"
+          className="mt-6"
         >
-          <Form.Item 
-            name="name" 
-            label={<span className="font-semibold text-slate-700">Tên Ga</span>} 
+          <Form.Item
+            name="name"
+            label={<span className="font-semibold text-slate-700">Tên Ga</span>}
             rules={[{ required: true, message: 'Vui lòng nhập tên ga!' }]}
           >
             <Input placeholder="VD: Ga Bến Thành" />
           </Form.Item>
-          
-          <Form.Item 
-            name="stationCode" 
-            label={<span className="font-semibold text-slate-700">Mã Ga</span>} 
+
+          <Form.Item
+            name="stationCode"
+            label={<span className="font-semibold text-slate-700">Mã Ga</span>}
             rules={[{ required: true, message: 'Vui lòng nhập mã ga!' }]}
           >
             <Input placeholder="VD: BT01" />
           </Form.Item>
-          
-          <Form.Item 
-            name="address" 
-            label={<span className="font-semibold text-slate-700">Địa chỉ</span>} 
+
+          <Form.Item
+            name="address"
+            label={<span className="font-semibold text-slate-700">Địa chỉ</span>}
             rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' }]}
           >
             <Input.TextArea rows={2} placeholder="Nhập địa chỉ chi tiết của ga" />
           </Form.Item>
-          
-          <Form.Item 
-            name="routeId" 
-            label={<span className="font-semibold text-slate-700">Thuộc Tuyến</span>} 
+
+          <Form.Item
+            name="routeId"
+            label={<span className="font-semibold text-slate-700">Thuộc Tuyến</span>}
             rules={[{ required: true, message: 'Vui lòng chọn tuyến!' }]}
           >
             <Select placeholder="Chọn tuyến đường">
               {initialRoutes.map(route => (
                 <Select.Option key={route.routeId} value={route.routeId}>
                   <div className="flex items-center gap-2">
-                    <div 
-                      className="w-3 h-3 rounded-full" 
+                    <div
+                      className="w-3 h-3 rounded-full"
                       style={{ backgroundColor: route.color }}
                     ></div>
                     {route.routeName}
@@ -357,31 +355,31 @@ const StationManagement = () => {
               ))}
             </Select>
           </Form.Item>
-          
+
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item 
-                name="latitude" 
-                label={<span className="font-semibold text-slate-700">Vĩ độ</span>} 
+              <Form.Item
+                name="latitude"
+                label={<span className="font-semibold text-slate-700">Vĩ độ</span>}
                 rules={[{ required: true, type: 'number', message: 'Vui lòng nhập vĩ độ hợp lệ!' }]}
               >
                 <InputNumber className="w-full" step={0.0001} placeholder="10.7xxx" />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item 
-                name="longitude" 
-                label={<span className="font-semibold text-slate-700">Kinh độ</span>} 
+              <Form.Item
+                name="longitude"
+                label={<span className="font-semibold text-slate-700">Kinh độ</span>}
                 rules={[{ required: true, type: 'number', message: 'Vui lòng nhập kinh độ hợp lệ!' }]}
               >
                 <InputNumber className="w-full" step={0.0001} placeholder="106.6xxx" />
               </Form.Item>
             </Col>
           </Row>
-          
-          <Form.Item 
-            name="sequenceOrder" 
-            label={<span className="font-semibold text-slate-700">Thứ tự trên tuyến</span>} 
+
+          <Form.Item
+            name="sequenceOrder"
+            label={<span className="font-semibold text-slate-700">Thứ tự trên tuyến</span>}
             rules={[{ required: true, type: 'number', min: 1, message: 'Vui lòng nhập thứ tự hợp lệ (tối thiểu 1)!' }]}
           >
             <InputNumber min={1} className="w-full" />
