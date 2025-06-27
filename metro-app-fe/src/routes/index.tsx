@@ -25,6 +25,7 @@ import PaymentResult from "src/pages/Client/PaymentResult";
 import MainContent from "src/components/ProfileComponent/MainContent";
 import MyTicket from "src/pages/Client/MyTicket";
 import OrderHistory from "src/pages/Client/OrderHistory/OrderHistory";
+import UserManagement from "src/components/managements/UserManagement";
 
 const RouteElements: React.FC = () => {
   const routeElements = useRoutes([
@@ -131,7 +132,7 @@ const RouteElements: React.FC = () => {
             },
             {
               path: "profile",
-              element: <MainContent />,
+              element: <UserManagement />,
             },
             {
               path: "manage",
