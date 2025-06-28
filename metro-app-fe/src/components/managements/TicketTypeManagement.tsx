@@ -17,7 +17,7 @@ import {
     Switch,
 } from 'antd';
 import type { TableProps } from 'antd';
-import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 
 import {
     useGetTicketTypeList,
@@ -125,74 +125,69 @@ const TicketTypeManagement = () => {
     };
 
     const columns: TableProps<TicketTypeResponse>['columns'] = [
-        {
-            title: 'Tên loại vé',
-            dataIndex: 'name',
-            key: 'name',
-            width: 200,
-            render: (text, record) => (
-                <div>
-                    <div className="font-medium text-slate-800">{text}</div>
-                    <div className="text-sm text-slate-500">{record.description}</div>
-                </div>
-            )
-        },
-        {
-            title: 'Giá',
-            dataIndex: 'price',
-            key: 'price',
-            width: 120,
-            render: (price) => `${price.toLocaleString('vi-VN')} VNĐ`,
-            align: 'right',
-        },
-        {
-            title: 'Thời hạn',
-            dataIndex: 'validityDuration',
-            key: 'validityDuration',
-            render: renderValidityDuration,
-            width: 120,
-            align: 'center',
-        },
-        {
-            title: 'Trạng thái',
-            dataIndex: 'isActive',
-            key: 'isActive',
-            render: renderIsActive,
-            width: 120,
-            align: 'center',
-        },
-        {
-            title: 'Ngày tạo',
-            dataIndex: 'createdAt',
-            key: 'createdAt',
-            render: (date) => date ? new Date(date).toLocaleDateString('vi-VN') : '-',
-            width: 120,
-        },
-        {
-            title: 'Ngày cập nhật',
-            dataIndex: 'updatedAt',
-            key: 'updatedAt',
-            render: (date) => date ? new Date(date).toLocaleDateString('vi-VN') : '-',
-            width: 120,
-        },
-        {
-            title: 'Hành động',
-            key: 'action',
-            align: 'right',
-            width: 100,
-            render: (_, record) => (
+    {
+        title: 'Tên Loại Vé',
+        dataIndex: 'name',
+        key: 'name',
+        width: 200,
+        render: (text) => <span className="font-medium text-slate-800">{text}</span>,
+    },
+    {
+        title: 'Mô tả',
+        dataIndex: 'description',
+        key: 'description',
+        width: 250,
+        ellipsis: true,
+        render: (text) => <span className="text-slate-600">{text}</span>,
+    },
+    {
+        title: 'Giá (VNĐ)',
+        dataIndex: 'price',
+        key: 'price',
+        width: 120,
+        align: 'right',
+        render: (price) => <span className="text-slate-600">{price.toLocaleString('vi-VN')}</span>,
+    },
+    {
+        title: 'Trạng thái',
+        dataIndex: 'isActive',
+        key: 'isActive',
+        width: 150, // Tăng độ rộng
+        align: 'center',
+        render: (isActive: boolean) => (
+            <Tag color={isActive ? 'green' : 'red'}>
+                {isActive ? 'Đang hoạt động' : 'Ngưng hoạt động'}
+            </Tag>
+        ),
+    },
+    {
+        title: 'Hành động',
+        key: 'action',
+        align: 'right',
+        width: 180, 
+        render: (_, record) => (
+            <Space size="middle">
+                <Button
+                    type="link"
+                    icon={<EditOutlined />}
+                    // onClick={() => handleOpenModal(record)}
+                    className="text-indigo-600"
+                >
+                    Sửa
+                </Button>
                 <Button
                     type="link"
                     danger
                     icon={<DeleteOutlined />}
                     onClick={() => handleDelete(record.id, record.name)}
-                    size="small"
                 >
                     Xóa
                 </Button>
-            ),
-        },
-    ];
+            </Space>
+        ),
+    },
+];
+
 
     if (isLoadingTicketTypes) {
         return (

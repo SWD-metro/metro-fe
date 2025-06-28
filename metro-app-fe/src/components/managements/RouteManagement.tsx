@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { initialRoutes } from 'src/assets/data/mockData'; 
 import { RouteWithStations, RoutesResponse, RoutesRequest } from 'src/types/routes.type'; 
-import { Table, Modal, Form, Input, InputNumber, Select, Button, Space, Tag, App as AntdApp } from 'antd'; 
+import { Table, Modal, Form, Input, InputNumber, Select, Button, Space, Tag, App as AntdApp, Row, Col } from 'antd'; 
 import type { TableProps } from 'antd'; 
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons'; 
 
@@ -119,5 +119,15 @@ const RouteManagement = () => {
     </div>
   );
 };
+
+// const RoutesManagementPage = () => {
+//   return (
+//     <Row gutter={[24, 24]} className="mt-6">
+//             <Col xs={24}>
+//               <StationManagement />
+//             </Col>
+//           </Row>
+//   );
+// }
 
 export default RouteManagement;

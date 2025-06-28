@@ -68,7 +68,7 @@ const UserManagement = () => {
 
   return (
     <Content className="p-4 sm:p-6 lg:p-8">
-      <div className="bg-white rounded-xl shadow-md p-4 sm:p-6">
+      <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 h-screen">
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-slate-800">Danh sách Người dùng</h2>
           <p className="text-slate-500 mt-1">Dưới đây là danh sách tất cả người dùng trong hệ thống.</p>

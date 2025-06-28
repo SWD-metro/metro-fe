@@ -1,10 +1,12 @@
 import {
   BellOutlined,
   DashboardOutlined,
+  ForkOutlined,
   LoginOutlined,
   TableOutlined,
   UserAddOutlined,
   UserOutlined,
+  WalletOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import logo from "src/assets/HCMC_Metro_Logo.png";
@@ -40,30 +42,13 @@ const Sidebar = () => {
 
           {
             key: "3",
-            icon: <TableOutlined />,
-            label: <Link to="/admin/manage">Manage</Link>,
+            icon: <WalletOutlined />,
+            label: <Link to="/admin/ticket">Ticket</Link>,
           },
           {
             key: "4",
-            icon: <BellOutlined />,
-            label: <Link to="/admin/notifications">Notifications</Link>,
-          },
-          {
-            key: "auth",
-            label: "AUTH PAGES",
-            type: "group",
-            children: [
-              {
-                key: "5",
-                icon: <LoginOutlined />,
-                label: <Link to="/auth/login">Sign In</Link>,
-              },
-              {
-                key: "6",
-                icon: <UserAddOutlined />,
-                label: <Link to="/auth/register">Sign Up</Link>,
-              },
-            ],
+            icon: <ForkOutlined />,
+            label: <Link to="/admin/routes">Routes</Link>,
           },
         ]}
       />

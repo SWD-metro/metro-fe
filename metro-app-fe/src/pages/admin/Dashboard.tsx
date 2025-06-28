@@ -196,7 +196,7 @@ const OrdersOverview = () => {
 const Dashboard = () => {
   return (
       <Layout>
-        <Content className="p-6 bg-gray-50">
+        <Content className="p-6 bg-gray-50 h-screen">
           <StatisticsCards />
           <Charts />
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

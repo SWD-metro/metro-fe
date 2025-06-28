@@ -13,6 +13,7 @@ import {
 import { useGetRouteList, useAddRouteMutation, useDeleteRouteMutation } from 'src/queries/useRoute';
 import toast from 'react-hot-toast';
 import { AddStationModal, AddRouteModal, StationNode } from './StationComponents';
+import { Content } from 'antd/es/layout/layout';
 
 const ROUTE_COLORS = ['#1890ff', '#52c41a', '#fa8c16', '#eb2f96', '#722ed1', '#f5222d'];
 
@@ -136,109 +137,106 @@ const StationManagement = () => {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-4 sm:p-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-        <div className="flex-1 mb-4 sm:mb-0">
-          <h2 className="text-xl font-semibold text-slate-800 mb-2">Quản lý các Ga trên Tuyến</h2>
-          <div className="flex items-center gap-4">
-            <Typography.Text>Chọn tuyến:</Typography.Text>
-            <Select
-              value={selectedRouteId}
-              onChange={(value) => setSelectedRouteId(value)}
-              style={{ minWidth: 300 }}
-              size="large"
-              placeholder="Vui lòng chọn một tuyến"
-              dropdownRender={(menu) => (
-                <>
-                  {menu}
-                  <Divider style={{ margin: '8px 0' }} />
-                  <Button type="text" icon={<PlusOutlined />} block onClick={handleOpenRouteModal}>Thêm Tuyến mới</Button>
-                </>
-              )}
-            >
-              {routes.map((route, index) => (
-                <Select.Option key={route.routeId} value={route.routeId}>
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: ROUTE_COLORS[index % ROUTE_COLORS.length] }}></div>
-                    {route.routeCode}
-                  </div>
-                </Select.Option>
-              ))}
-            </Select>
-          </div>
-        </div>
-        <Button type="primary" icon={<PlusOutlined />} onClick={handleOpenStationModal} size="large" disabled={!selectedRouteId}>
-          Thêm Ga
-        </Button>
-      </div>
-
-      {selectedRoute && (
-        <Card className="mb-6" style={{ borderColor: selectedRoute.color }}>
-          <div className="flex justify-between items-center gap-3">
-            <div className="flex items-center gap-3 flex-1">
-              <div className="w-6 h-6 rounded-full" style={{ backgroundColor: selectedRoute.color }}></div>
-              <div>
-                <Typography.Title level={4} className="mb-1">{selectedRoute.routeCode}</Typography.Title>
-                <Typography.Text type="secondary">{selectedRoute.description} • {filteredStations.length} ga</Typography.Text>
-              </div>
+    <Content className="p-4 sm:p-6 lg:p-8 w-screen h-screen">
+      <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 h-full ">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+          <div className="flex-1 mb-4 sm:mb-0">
+            <h2 className="text-xl font-semibold text-slate-800 mb-2">Quản lý các Ga trên Tuyến</h2>
+            <div className="flex items-center gap-4">
+              <Typography.Text>Chọn tuyến:</Typography.Text>
+              <Select
+                value={selectedRouteId}
+                onChange={(value) => setSelectedRouteId(value)}
+                style={{ minWidth: 300 }}
+                size="large"
+                placeholder="Vui lòng chọn một tuyến"
+                dropdownRender={(menu) => (
+                  <>
+                    {menu}
+                    <Divider style={{ margin: '8px 0' }} />
+                    <Button type="text" icon={<PlusOutlined />} block onClick={handleOpenRouteModal}>Thêm Tuyến mới</Button>
+                  </>
+                )}
+              >
+                {routes.map((route, index) => (
+                  <Select.Option key={route.routeId} value={route.routeId}>
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: ROUTE_COLORS[index % ROUTE_COLORS.length] }}></div>
+                      {route.routeCode}
+                    </div>
+                  </Select.Option>
+                ))}
+              </Select>
             </div>
-            <Space>
-              <Button icon={<EditOutlined />} onClick={handleOpenEditRouteModal}>Sửa</Button>
-              <Button icon={<DeleteOutlined />} danger onClick={() => handleDeleteRoute(selectedRoute.routeId, selectedRoute.routeName)}>Xóa</Button>
-            </Space>
           </div>
-        </Card>
-      )}
+          <Button type="primary" icon={<PlusOutlined />} onClick={handleOpenStationModal} size="large" disabled={!selectedRouteId}>
+            Thêm Ga
+          </Button>
+        </div>
 
-      <div className="bg-gray-50 rounded-lg p-4">
-        <Typography.Title level={5} className="mb-4 text-center">Sơ đồ các ga trên tuyến</Typography.Title>
-        {filteredStations.length === 0 ? (
-          <div className="text-center py-8">
-            <Typography.Text type="secondary">Chưa có ga nào trên tuyến này. Hãy thêm ga mới!</Typography.Text>
-          </div>
-        ) : (
-          <div className="max-h-[500px] overflow-y-auto pr-2">
-            {filteredStations.map((station, index) => (
-              <StationNode
-                key={station.stationId}
-                station={station}
-                isLast={index === filteredStations.length - 1}
-                color={selectedRoute?.color || '#1890ff'}
-                onDelete={handleDeleteStation}
-              />
-            ))}
-          </div>
+        {selectedRoute && (
+          <Card className="mb-6" style={{ borderColor: selectedRoute.color }}>
+            <div className="flex justify-between items-center gap-3">
+              <div className="flex items-center gap-3 flex-1">
+                <div className="w-6 h-6 rounded-full" style={{ backgroundColor: selectedRoute.color }}></div>
+                <div>
+                  <Typography.Title level={4} className="mb-1">{selectedRoute.routeCode}</Typography.Title>
+                  <Typography.Text type="secondary">{selectedRoute.description} • {filteredStations.length} ga</Typography.Text>
+                </div>
+              </div>
+              <Space>
+                <Button icon={<EditOutlined />} onClick={handleOpenEditRouteModal}>Sửa</Button>
+                <Button icon={<DeleteOutlined />} danger onClick={() => handleDeleteRoute(selectedRoute.routeId, selectedRoute.routeName)}>Xóa</Button>
+              </Space>
+            </div>
+          </Card>
         )}
+
+        <div className="bg-gray-50 rounded-lg p-4 ">
+          <Typography.Title level={5} className="mb-4 text-center">Sơ đồ các ga trên tuyến</Typography.Title>
+          {filteredStations.length === 0 ? (
+            <div className="text-center py-8">
+              <Typography.Text type="secondary">Chưa có ga nào trên tuyến này. Hãy thêm ga mới!</Typography.Text>
+            </div>
+          ) : (
+            <div className="max-h-[700px] overflow-y-auto pr-2">
+              {filteredStations.map((station, index) => (
+                <StationNode
+                  key={station.stationId}
+                  station={station}
+                  isLast={index === filteredStations.length - 1}
+                  color={selectedRoute?.color || '#1890ff'}
+                  onDelete={handleDeleteStation}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        <AddStationModal
+          open={isStationModalOpen}
+          onCancel={handleCancelStationModal}
+          onFinish={onFinishAddStation}
+          isPending={addStationMutation.isPending}
+          routes={routes}
+          initialValues={{
+            latitude: 10.7769,
+            longitude: 106.7009,
+            sequenceOrder: filteredStations.length + 1,
+            routeId: selectedRouteId,
+          }}
+        />
+
+        <AddRouteModal
+          open={isRouteModalOpen}
+          onCancel={handleCancelRouteModal}
+          onFinish={onFinishAddRoute}
+          isPending={addRouteMutation.isPending}
+        />
       </div>
-
-      <AddStationModal
-        open={isStationModalOpen}
-        onCancel={handleCancelStationModal}
-        onFinish={onFinishAddStation}
-        isPending={addStationMutation.isPending}
-        routes={routes}
-        initialValues={{
-          latitude: 10.7769,
-          longitude: 106.7009,
-          sequenceOrder: filteredStations.length + 1,
-          routeId: selectedRouteId,
-        }}
-      />
-
-      <AddRouteModal
-        open={isRouteModalOpen}
-        onCancel={handleCancelRouteModal}
-        onFinish={onFinishAddRoute}
-        isPending={addRouteMutation.isPending}
-      />
-    </div>
+    </Content>
   );
 };
 
-const StationManagementPage = () => (
-  <AntdApp>
-    <StationManagement />
-  </AntdApp>
-);
 
-export default StationManagementPage;
+export default StationManagement;
