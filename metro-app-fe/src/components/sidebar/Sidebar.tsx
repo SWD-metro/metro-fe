@@ -1,28 +1,62 @@
+import React, { useContext } from "react"; 
 import {
-  BellOutlined,
   DashboardOutlined,
   ForkOutlined,
-  LoginOutlined,
-  TableOutlined,
-  UserAddOutlined,
+  LogoutOutlined,
   UserOutlined,
   WalletOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import { Menu } from "antd";
+import { Menu, App as AntdApp } from "antd";
 import logo from "src/assets/HCMC_Metro_Logo.png";
 import Sider from "antd/es/layout/Sider";
-import { Link } from "react-router-dom";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useLogoutMutation } from "src/queries/useAuth";
+import { AppContext } from "src/contexts/app.context"; 
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+  const logoutMutation = useLogoutMutation();
+  const { modal } = AntdApp.useApp();
+  const { reset } = useContext(AppContext); 
+
+  const handleLogout = () => {
+    modal.confirm({
+      title: 'Bạn có chắc chắn muốn đăng xuất?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Bạn sẽ cần đăng nhập lại để tiếp tục sử dụng hệ thống.',
+      okText: 'Đăng xuất',
+      okType: 'danger',
+      cancelText: 'Hủy',
+      onOk() {
+        logoutMutation.mutate(undefined, {
+          onSuccess: () => {
+            toast.success("Đăng xuất thành công!");
+            setTimeout(() => {
+              reset(); 
+              navigate("/");
+            }, 500); 
+          },
+          onError: (error: any) => {
+            toast.error(`Lỗi khi đăng xuất: ${error.message || "Vui lòng thử lại."}`);
+            console.error("Error logging out:", error);
+          },
+        });
+      },
+      onCancel() {
+      },
+    });
+  };
+
   return (
     <Sider width={200} className="!bg-white shadow-sm ">
       <div className="p-4 ">
-      <div className="text-center flex flex-col items-center">
-            <NavLink to="/">
-              <img src={logo} alt="Logo" className="w-[120px]" />
-            </NavLink>
-          </div>
+        <div className="text-center flex flex-col items-center">
+          <NavLink to="/">
+            <img src={logo} alt="Logo" className="w-[120px]" />
+          </NavLink>
+        </div>
       </div>
       <Menu
         mode="inline"
@@ -49,6 +83,29 @@ const Sidebar = () => {
             key: "4",
             icon: <ForkOutlined />,
             label: <Link to="/admin/routes">Routes</Link>,
+          },
+          {
+            key: "auth",
+            label: "AUTH",
+            type: "group",
+            children: [
+              {
+                key: "5",
+                icon: <LogoutOutlined />,
+                label: (
+                  <span
+                    onClick={handleLogout}
+                    style={{
+                      pointerEvents: logoutMutation.isPending ? 'none' : 'auto',
+                      opacity: logoutMutation.isPending ? 0.6 : 1,
+                    }}
+                  >
+                    Log out
+                  </span>
+                ),
+                disabled: logoutMutation.isPending,
+              },
+            ],
           },
         ]}
       />
