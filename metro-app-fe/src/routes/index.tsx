@@ -130,6 +130,10 @@ const RouteElements: React.FC = () => {
           children: [
             {
               index: true,
+              element: <MainContent />,
+            },
+            {
+              path: "dashboard",
               element: <Dashboard />,
             },
             {
