@@ -26,8 +26,8 @@ import MainContent from "src/components/ProfileComponent/MainContent";
 import MyTicket from "src/pages/Client/MyTicket";
 import OrderHistory from "src/pages/Client/OrderHistory/OrderHistory";
 import UserManagement from "src/components/managements/UserManagement";
-import RouteManagement from "src/components/managements/RouteManagement";
 import StationManagement from "src/components/managements/StationManagement";
+import ScheduleManagement from "src/components/managements/ScheduleManagement";
 
 const RouteElements: React.FC = () => {
   const routeElements = useRoutes([
@@ -143,6 +143,11 @@ const RouteElements: React.FC = () => {
             {
               path: "routes",
               element: <StationManagement />,
+            },
+            {},
+            {
+              path: "schedule",
+              element: <ScheduleManagement />,
             },
           ],
         },

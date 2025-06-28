@@ -1,7 +1,4 @@
 import { Col, Layout, Row } from "antd";
-import RouteManagement from "src/components/managements/RouteManagement";
-import StationManagement from "src/components/managements/StationManagement";
-import TicketManagement from "src/components/managements/TicketManagement";
 import { App as AntdApp } from 'antd'
 import TicketTypeManagement from "src/components/managements/TicketTypeManagement";
 import UserManagement from "src/components/managements/UserManagement";
@@ -42,7 +39,6 @@ const Manage: React.FC = () => {
 
           <Row gutter={[24, 24]} className="mt-6">
             <Col xs={24}>
-              {/* <StationManagement /> */}
               <FareManagement/>
             </Col>
           </Row>

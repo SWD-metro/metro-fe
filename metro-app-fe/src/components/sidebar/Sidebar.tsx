@@ -1,4 +1,4 @@
-import React, { useContext } from "react"; 
+import React, { useContext } from "react";
 import {
   DashboardOutlined,
   ForkOutlined,
@@ -6,6 +6,7 @@ import {
   UserOutlined,
   WalletOutlined,
   ExclamationCircleOutlined,
+  ScheduleOutlined,
 } from "@ant-design/icons";
 import { Menu, App as AntdApp } from "antd";
 import logo from "src/assets/HCMC_Metro_Logo.png";
@@ -13,13 +14,13 @@ import Sider from "antd/es/layout/Sider";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useLogoutMutation } from "src/queries/useAuth";
-import { AppContext } from "src/contexts/app.context"; 
+import { AppContext } from "src/contexts/app.context";
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const logoutMutation = useLogoutMutation();
   const { modal } = AntdApp.useApp();
-  const { reset } = useContext(AppContext); 
+  const { reset } = useContext(AppContext);
 
   const handleLogout = () => {
     modal.confirm({
@@ -34,9 +35,9 @@ const Sidebar = () => {
           onSuccess: () => {
             toast.success("Đăng xuất thành công!");
             setTimeout(() => {
-              reset(); 
+              reset();
               navigate("/");
-            }, 500); 
+            }, 500);
           },
           onError: (error: any) => {
             toast.error(`Lỗi khi đăng xuất: ${error.message || "Vui lòng thử lại."}`);
@@ -85,12 +86,17 @@ const Sidebar = () => {
             label: <Link to="/admin/routes">Routes</Link>,
           },
           {
+            key: "5",
+            icon: <ScheduleOutlined />,
+            label: <Link to="/admin/schedule">Schedule</Link>,
+          },
+          {
             key: "auth",
             label: "AUTH",
             type: "group",
             children: [
               {
-                key: "5",
+                key: "6",
                 icon: <LogoutOutlined />,
                 label: (
                   <span

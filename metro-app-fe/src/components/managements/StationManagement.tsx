@@ -199,7 +199,7 @@ const StationManagement = () => {
               <Typography.Text type="secondary">Chưa có ga nào trên tuyến này. Hãy thêm ga mới!</Typography.Text>
             </div>
           ) : (
-            <div className="max-h-[700px] overflow-y-auto pr-2">
+            <div className="max-h-[600px] overflow-y-auto pr-2">
               {filteredStations.map((station, index) => (
                 <StationNode
                   key={station.stationId}
