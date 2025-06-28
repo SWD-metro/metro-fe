@@ -1,13 +1,15 @@
 import React from "react";
 import { Card, Layout } from "antd";
 import Sidebar from "src/components/sidebar/Sidebar";
+import { App } from 'antd';
 import { Outlet } from "react-router-dom";
 
 const { Content } = Layout;
 
 // AdminLayout.tsx
 const AdminLayout: React.FC = () => {
-    return (
+  return (
+    <App>
       <Layout className="min-h-screen">
         <Layout className="site-layout">
           <Content
@@ -16,14 +18,15 @@ const AdminLayout: React.FC = () => {
           >
             <Card className="mb-6 overflow-hidden relative rounded-lg">
               <Layout className="min-h-screen">
-                <Sidebar /> 
-                <Outlet />  
+                <Sidebar />
+                <Outlet />
               </Layout>
             </Card>
           </Content>
         </Layout>
       </Layout>
-    );
-  };
+    </App>
+  );
+};
 
 export default AdminLayout;

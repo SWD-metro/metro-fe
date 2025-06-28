@@ -1,5 +1,5 @@
 import { ApiResponse } from "src/types/api.type";
-import { FareMatrixResponse } from "src/types/fares.type";
+import { FareMatrixRequest, FareMatrixResponse } from "src/types/fares.type";
 import { OrderDetailResponse } from "src/types/orders.type";
 import {
   TicketResponse,
@@ -28,10 +28,11 @@ const ticketsApiRequests = {
 
   fareMatricesList: () =>
     http.get<ApiResponse<FareMatrixResponse[]>>("ts/fare-matrices"),
-  createTicketFareMatrix: (value: number | undefined) =>
-    http.post<ApiResponse<TicketResponse>>("ts/tickets/fare-matrix", {
-      id: value,
-    }),
+  createTicketFareMatrix: (data: FareMatrixRequest) =>
+    http.post<ApiResponse<TicketResponse>>("ts/fare-matrices/create", data),
+  deleteTicketFareMatrix: (id: number) =>
+    http.delete<ApiResponse>(`ts/fare-matrices/delete/${id}`),
+
   fareMatrixById: (value: number) =>
     http.get<ApiResponse<FareMatrixResponse>>(`ts/fare-matrices/${value}`),
 

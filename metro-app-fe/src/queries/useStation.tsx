@@ -24,7 +24,6 @@ export const useAddStationMutation = () => {
     mutationFn: stationApiRequests.addStation,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["stations"] });
-      console.log("Station added successfully!");
     },
     onError: (error) => {
       console.error("Error adding station:", error)

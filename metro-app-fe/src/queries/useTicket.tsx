@@ -73,6 +73,26 @@ export const useCreateTicketFareMatrixMutation = () => {
   });
 };
 
+export const useUpdateTicketFareMatrixMutation = () => {
+  // const queryClient = useQueryClient();
+  // return useMutation({
+  //   mutationFn: ticketsApiRequests.updateTicketFareMatrix,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["fare-matrices"] });
+  //   },
+  // });
+};
+
+export const useDeleteTicketFareMatrixMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ticketsApiRequests.deleteTicketFareMatrix,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["fare-matrices"] });
+    },
+  });
+}
+
 export const useGetFareMatrixById = ({
   id,
   enabled,
