@@ -131,7 +131,7 @@ const RouteElements: React.FC = () => {
               element: <Dashboard />,
             },
             {
-              path: "profile",
+              path: "user",
               element: <UserManagement />,
             },
             {
