@@ -10,6 +10,7 @@ const path = {
   myTicket: "/my-tickets",
   orderHistory: "/order-history",
   changePassword: "/change-password",
+  studentRequest: "/student-request",
 
   auth: "/auth",
   login: "/auth/login",

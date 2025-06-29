@@ -71,9 +71,10 @@ export interface RegisterRequest {
 }
 
 export interface RequestCreationRequest {
-  content?: string;
+  content: string;
   studentCardImage: string;
   citizenIdentityCardImage: string;
+  endDate: string;
 }
 
 export interface Feedback {

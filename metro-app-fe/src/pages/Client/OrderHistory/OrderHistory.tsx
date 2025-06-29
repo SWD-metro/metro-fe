@@ -23,7 +23,7 @@ const OrderHistory: React.FC = () => {
   const userId = profile?.userId;
 
   const { data: ordersData, isLoading } = useGetOrderByUserId({
-    id: userId || 0,
+    id: userId as number,
     enabled: !!userId,
   });
 
