@@ -29,6 +29,7 @@ import UserManagement from "src/components/managements/UserManagement";
 import StationManagement from "src/components/managements/StationManagement";
 import ScheduleManagement from "src/components/managements/ScheduleManagement";
 import StudentRequestPage from "src/pages/Client/StudentRequest";
+import VerifyStudentRequest from "src/pages/admin/VerityStudentRequest";
 
 const RouteElements: React.FC = () => {
   const routeElements = useRoutes([
@@ -153,7 +154,11 @@ const RouteElements: React.FC = () => {
               path: "routes",
               element: <StationManagement />,
             },
-            {},
+            {
+              path: "verify-student-request",
+              element: <VerifyStudentRequest />,
+            },
+
             {
               path: "schedule",
               element: <ScheduleManagement />,

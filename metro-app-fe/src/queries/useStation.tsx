@@ -1,7 +1,6 @@
 // src/queries/useStation.ts
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import stationApiRequests from "src/apis/stations"; 
-import { StationsRequest } from "src/types/stations.type"; 
+import stationApiRequests from "src/apis/stations";
 
 export const useGetStationList = () => {
   return useQuery({
@@ -26,8 +25,8 @@ export const useAddStationMutation = () => {
       queryClient.invalidateQueries({ queryKey: ["stations"] });
     },
     onError: (error) => {
-      console.error("Error adding station:", error)
-    }
+      console.error("Error adding station:", error);
+    },
   });
 };
 
@@ -56,6 +55,6 @@ export const useDeleteStationMutation = () => {
     },
     onError: (error) => {
       console.error("Error deleting station:", error);
-    }
+    },
   });
 };

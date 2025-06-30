@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useContext } from "react";
 import {
   DashboardOutlined,
@@ -16,6 +17,7 @@ import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useLogoutMutation } from "src/queries/useAuth";
 import { AppContext } from "src/contexts/app.context";
+import { FormInputIcon } from "lucide-react";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -39,6 +41,9 @@ const Sidebar = () => {
     }
     if (pathname.startsWith("/admin/schedule")) {
       return "5";
+    }
+    if (pathname.startsWith("/admin/verify-student-request")) {
+      return "6";
     }
     return undefined;
   };
@@ -72,8 +77,7 @@ const Sidebar = () => {
           },
         });
       },
-      onCancel() {
-      },
+      onCancel() {},
     });
   };
 
@@ -132,12 +136,19 @@ const Sidebar = () => {
             label: <Link to="/admin/schedule">Schedule</Link>,
           },
           {
+            key: "6",
+            icon: <FormInputIcon />,
+            label: (
+              <Link to="/admin/verify-student-request">Student Request</Link>
+            ),
+          },
+          {
             key: "auth",
             label: "AUTH",
             type: "group",
             children: [
               {
-                key: "6",
+                key: "7",
                 icon: <LogoutOutlined />,
                 label: (
                   <span
