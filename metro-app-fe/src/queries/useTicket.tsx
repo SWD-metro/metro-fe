@@ -14,6 +14,30 @@ export const useCreateTicketTypeMutation = () => {
     mutationFn: ticketsApiRequests.createTicketType,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ticket-type"] });
+      console.log("Ticket type created successfully!");
+    },
+    onError: (error) => {
+      console.error("Error creating ticket type:", error);
+    },
+  });
+};
+
+export const useUpdateTicketTypeMutation = () => {
+  // const queryClient = useQueryClient();
+  // return useMutation({
+  //   mutationFn: ticketsApiRequests.updateTicketType,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["ticket-type"] });
+  //   },
+  // });
+};
+
+export const useDeleteTicketTypeMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ticketsApiRequests.deleteTicketType,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["ticket-type"] });
     },
   });
 };
@@ -43,6 +67,26 @@ export const useCreateTicketFareMatrixMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ticketsApiRequests.createTicketFareMatrix,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["fare-matrices"] });
+    },
+  });
+};
+
+export const useUpdateTicketFareMatrixMutation = () => {
+  // const queryClient = useQueryClient();
+  // return useMutation({
+  //   mutationFn: ticketsApiRequests.updateTicketFareMatrix,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["fare-matrices"] });
+  //   },
+  // });
+};
+
+export const useDeleteTicketFareMatrixMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ticketsApiRequests.deleteTicketFareMatrix,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["fare-matrices"] });
     },
@@ -80,7 +124,14 @@ export const useGetTicketById = ({
 export const useGetTicketQRCode = (ticketCode?: string) => {
   return useQuery({
     queryKey: ["tickets", ticketCode],
-    queryFn: () => ticketsApiRequests.generateQR(ticketCode as string),
+    queryFn: () => ticketsApiRequests.generateQR(ticketCode),
     enabled: !!ticketCode,
+  });
+};
+
+export const useGetTicketByUser = () => {
+  return useQuery({
+    queryKey: ["tickets"],
+    queryFn: ticketsApiRequests.ticketByUser,
   });
 };

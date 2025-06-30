@@ -13,7 +13,7 @@ import ResetPassword from "src/pages/Auth/ResetPassword";
 import VerifyOtpPage from "src/pages/Auth/VerifyOtp";
 import AboutUsPage from "src/pages/Client/AboutUs";
 import HomePage from "src/pages/Client/HomePage";
-import UserProfile from "src/pages/Client/profile/UserProfile";
+import ProfileLayout from "src/pages/Client/profile";
 import ServicePage from "src/pages/Client/Services";
 import StationMapPage from "src/pages/Client/StationMap";
 import BuyTicketPage from "src/pages/Client/Ticket";
@@ -21,7 +21,15 @@ import PublicRoute from "./PublicRoute";
 import ProtectedRoute from "./ProtectedRoute";
 import OAuth2RedirectHandler from "src/pages/Auth/OAuth2";
 import OrderPage from "src/pages/Client/OrderPage";
-import PaymentSuccess from "src/pages/Client/PaymentSuccess";
+import PaymentResult from "src/pages/Client/PaymentResult";
+import MainContent from "src/components/ProfileComponent/MainContent";
+import MyTicket from "src/pages/Client/MyTicket";
+import OrderHistory from "src/pages/Client/OrderHistory/OrderHistory";
+import UserManagement from "src/components/managements/UserManagement";
+import StationManagement from "src/components/managements/StationManagement";
+import ScheduleManagement from "src/components/managements/ScheduleManagement";
+import StudentRequestPage from "src/pages/Client/StudentRequest";
+import VerifyStudentRequest from "src/pages/admin/VerityStudentRequest";
 
 const RouteElements: React.FC = () => {
   const routeElements = useRoutes([
@@ -53,16 +61,33 @@ const RouteElements: React.FC = () => {
           element: <ProtectedRoute allowedRoles={["ROLE_CUSTOMER"]} />,
           children: [
             {
-              path: path.profile,
-              element: <UserProfile />,
+              element: <ProfileLayout />,
+              children: [
+                {
+                  path: path.profile,
+                  element: <MainContent />,
+                },
+                {
+                  path: path.myTicket,
+                  element: <MyTicket />,
+                },
+                {
+                  path: path.orderHistory,
+                  element: <OrderHistory />,
+                },
+                {
+                  path: path.studentRequest,
+                  element: <StudentRequestPage />,
+                },
+              ],
             },
             {
               path: path.orderPage,
               element: <OrderPage />,
             },
             {
-              path: path.paymentSuccess,
-              element: <PaymentSuccess />,
+              path: path.paymentResult,
+              element: <PaymentResult />,
             },
           ],
         },
@@ -111,15 +136,32 @@ const RouteElements: React.FC = () => {
           children: [
             {
               index: true,
+              element: <MainContent />,
+            },
+            {
+              path: "dashboard",
               element: <Dashboard />,
             },
             {
-              path: "profile",
-              element: <UserProfile />,
+              path: "user",
+              element: <UserManagement />,
             },
             {
-              path: "manage",
+              path: "ticket",
               element: <Manage />,
+            },
+            {
+              path: "routes",
+              element: <StationManagement />,
+            },
+            {
+              path: "verify-student-request",
+              element: <VerifyStudentRequest />,
+            },
+
+            {
+              path: "schedule",
+              element: <ScheduleManagement />,
             },
           ],
         },

@@ -1,329 +1,242 @@
-import React, { useState } from 'react';
-import { initialRoutes } from 'src/assets/data/mockData'; 
-import { StationsRequest, StationsResponse } from 'src/types/stations.type'; 
-
-// Import Ant Design components
+import React, { useState, useMemo, useEffect } from 'react';
 import {
-  Table,
-  Modal,
-  Form,
-  Input,
-  InputNumber,
-  Select,
-  Button,
-  Space,
-  Tag,
-  App as AntdApp,
-  Typography,
-  Row,
-  Col,
+  Select, Button, Space, App as AntdApp, Typography, Card, Divider,
 } from 'antd';
-import type { TableProps } from 'antd';
-import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons'; 
+import { DeleteOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons';
+import { StationsRequest, StationsResponse } from 'src/types/stations.type';
+import { RoutesResponse, RoutesRequest } from 'src/types/routes.type';
+import {
+  useGetStationList,
+  useAddStationMutation,
+  useDeleteStationMutation,
+} from 'src/queries/useStation';
+import { useGetRouteList, useAddRouteMutation, useDeleteRouteMutation } from 'src/queries/useRoute';
+import toast from 'react-hot-toast';
+import { AddStationModal, AddRouteModal, StationNode } from './StationComponents';
+import { Content } from 'antd/es/layout/layout';
 
-interface ApiResponse<T> {
-  data: T[];
-  message: string;
-}
-
-const useGetStationList = () => {
-  const [data, setData] = useState<ApiResponse<StationsResponse> | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
-
-  React.useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-      setData({
-        data: initialStations,
-        message: "Stations fetched successfully"
-      });
-    }, 500);
-  }, []);
-
-  return { data, isLoading, isError, error };
-};
-
-
-const initialStations: StationsResponse[] = [
-  { stationId: 1, stationCode: 'NHTP', name: 'Ga Nhà hát Thành phố', address: '123 Đồng Khởi, Q1', latitude: 10.7766, longitude: 106.7023, sequenceOrder: 1, status: 'under_construction', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), routeId: 1 },
-  { stationId: 2, stationCode: 'BAS', name: 'Ga Ba Son', address: '2 Tôn Đức Thắng, Q1', latitude: 10.7801, longitude: 106.7098, sequenceOrder: 2, status: 'under_construction', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), routeId: 1 },
-  { stationId: 3, stationCode: 'TD', name: 'Ga Tao Đàn', address: '56 Trương Định, Q3', latitude: 10.7725, longitude: 106.6925, sequenceOrder: 1, status: 'operational', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), routeId: 2 },
-  { stationId: 4, stationCode: 'DC', name: 'Ga Dân Chủ', address: '32 CMT8, Q3', latitude: 10.7828, longitude: 106.6833, sequenceOrder: 2, status: 'operational', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), routeId: 2 },
-];
-
-
-const useAddStationMutation = () => {
-  const [isPending, setIsPending] = useState(false);
-
-  const mutate = (data: StationsRequest, callbacks: { onSuccess: () => void; onError: (error: any) => void }) => {
-    setIsPending(true);
-    setTimeout(() => {
-      setIsPending(false);
-      if (Math.random() > 0.1) { 
-        callbacks.onSuccess();
-      } else {
-        callbacks.onError(new Error('Failed to add station (simulated error)'));
-      }
-    }, 1000);
-  };
-  return { mutate, isPending };
-};
-
-const useUpdateStationMutation = () => {
-  const [isPending, setIsPending] = useState(false);
-
-  const mutate = (data: StationsResponse, callbacks: { onSuccess: () => void; onError: (error: any) => void }) => {
-    setIsPending(true);
-    setTimeout(() => {
-      setIsPending(false);
-      if (Math.random() > 0.1) {
-        callbacks.onSuccess();
-      } else {
-        callbacks.onError(new Error('Failed to update station (simulated error)'));
-      }
-    }, 1000);
-  };
-  return { mutate, isPending };
-};
-
-const useDeleteStationMutation = () => {
-  const [isPending, setIsPending] = useState(false);
-
-  const mutate = (stationId: number, callbacks: { onSuccess: () => void; onError: (error: any) => void }) => {
-    setIsPending(true);
-    setTimeout(() => {
-      setIsPending(false);
-      if (Math.random() > 0.1) {
-        callbacks.onSuccess();
-      } else {
-        callbacks.onError(new Error('Failed to delete station (simulated error)'));
-      }
-    }, 1000);
-  };
-  return { mutate, isPending };
-};
-
+const ROUTE_COLORS = ['#1890ff', '#52c41a', '#fa8c16', '#eb2f96', '#722ed1', '#f5222d'];
 
 const StationManagement = () => {
-  const { data: stationsApiResponse, isLoading: isLoadingStations, isError: isErrorStations, error: stationError } = useGetStationList();
+  const { data: routesApiResponse, isLoading: isLoadingRoutes, isError: isErrorRoutes, error: routeError } = useGetRouteList();
+  const { data: stationsData, isLoading: isLoadingStations, isError: isErrorStations, error: stationError } = useGetStationList();
+
   const addStationMutation = useAddStationMutation();
-  const updateStationMutation = useUpdateStationMutation(); 
-  const deleteStationMutation = useDeleteStationMutation(); 
+  const deleteStationMutation = useDeleteStationMutation();
+  const addRouteMutation = useAddRouteMutation();
+  const deleteRouteMutation = useDeleteRouteMutation();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingStation, setEditingStation] = useState<StationsResponse | null>(null);
-  const [form] = Form.useForm();
-  const { modal, message } = AntdApp.useApp(); 
+  const [selectedRouteId, setSelectedRouteId] = useState<number | undefined>();
+  const [isStationModalOpen, setIsStationModalOpen] = useState(false);
+  const [isRouteModalOpen, setIsRouteModalOpen] = useState(false);
+  const { modal } = AntdApp.useApp();
 
-  const getRouteName = (routeId: number) => initialRoutes.find(r => r.routeId === routeId)?.routeName || 'Không xác định';
+  const routes = useMemo(() => routesApiResponse?.data?.data ?? [], [routesApiResponse]);
 
-  const handleOpenModal = (station: StationsResponse | null = null) => {
-    setEditingStation(station);
-    if (station) {
-      form.setFieldsValue({ ...station });
-    } else {
-      form.resetFields(); 
+  useEffect(() => {
+    if (routes.length > 0 && !selectedRouteId) {
+      setSelectedRouteId(routes[0].routeId);
     }
-    setIsModalOpen(true);
+  }, [routes, selectedRouteId]);
+
+  const filteredStations = useMemo(() => {
+    if (!stationsData?.data?.data || !selectedRouteId) return [];
+    return stationsData.data.data
+      .filter(station => station.routeId === selectedRouteId)
+      .sort((a, b) => a.sequenceOrder - b.sequenceOrder);
+  }, [stationsData, selectedRouteId]);
+
+  const selectedRoute = useMemo(() => {
+    if (!selectedRouteId) return null;
+    const routeInfo = routes.find(r => r.routeId === selectedRouteId);
+    if (!routeInfo) return null;
+
+    return {
+      ...routeInfo,
+      color: ROUTE_COLORS[routes.indexOf(routeInfo) % ROUTE_COLORS.length],
+      description: `Tuyến ${routeInfo.routeCode} với quãng đường ${routeInfo.distanceInKm} km`,
+    };
+  }, [routes, selectedRouteId]);
+
+  const handleOpenStationModal = () => setIsStationModalOpen(true);
+  const handleCancelStationModal = () => setIsStationModalOpen(false);
+  const onFinishAddStation = (formValues: StationsRequest) => {
+    addStationMutation.mutate(formValues, {
+      onSuccess: () => {
+        toast.success('Thêm ga thành công!');
+        handleCancelStationModal();
+      },
+      onError: (error: any) => {
+        const errorMessage = error?.response?.data?.message || 'Thêm ga thất bại';
+        toast.error(errorMessage);
+      }
+    });
   };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-    setEditingStation(null);
-    form.resetFields();
-  };
-
-  const onFinish = (formValues: StationsRequest) => {
-
-    if (editingStation) {
-      const updatedStation: StationsResponse = {
-        ...editingStation, 
-        ...formValues,
-        updatedAt: new Date().toISOString(),
-        status: (formValues as any).status || editingStation.status
-      };
-
-      updateStationMutation.mutate(updatedStation, {
-        onSuccess: () => {
-          message.success('Cập nhật ga thành công!');
-          handleCancel();
-        },
-        onError: (error: any) => {
-          message.error(`Cập nhật ga thất bại: ${error.message || 'Lỗi không xác định'}`);
-        }
-      });
-    } else {
-      const newStation: StationsRequest & { status: string } = {
-        ...formValues,
-        status: 'under_construction',
-      };
-      addStationMutation.mutate(newStation, {
-        onSuccess: () => {
-          message.success('Thêm ga thành công!');
-          handleCancel();
-
-        },
-        onError: (error: any) => {
-          message.error(`Thêm ga thất bại: ${error.message || 'Lỗi không xác định'}`);
-        }
-      });
-    }
-  };
-
-  const handleDelete = (stationId: number) => {
+  const handleDeleteStation = (stationId: number, stationName: string) => {
     modal.confirm({
-      title: 'Bạn có chắc chắn muốn xóa ga này?',
+      title: `Bạn có chắc chắn muốn xóa ga "${stationName}"?`,
       content: 'Hành động này không thể hoàn tác.',
       okText: 'Xóa', okType: 'danger', cancelText: 'Hủy',
       onOk: () => {
         deleteStationMutation.mutate(stationId, {
-          onSuccess: () => {
-            message.success('Xóa ga thành công!');
-          },
+          onSuccess: () => toast.success('Xóa ga thành công!'),
           onError: (error: any) => {
-            message.error(`Xóa ga thất bại: ${error.message || 'Lỗi không xác định'}`);
+            const errorMessage = error?.response?.data?.message || 'Xóa ga thất bại';
+            toast.error(errorMessage);
           }
         });
       },
     });
   };
 
-  const columns: TableProps<StationsResponse>['columns'] = [
-    { title: 'Mã Ga', dataIndex: 'stationCode', key: 'stationCode', render: (text) => <span className="text-slate-600">{text}</span> },
-    { title: 'Tên Ga', dataIndex: 'name', key: 'name', render: (text) => <span className="font-medium text-slate-800">{text}</span> },
-    { title: 'Địa chỉ', dataIndex: 'address', key: 'address', render: (text) => <span className="text-slate-600">{text}</span>, width: 250 },
-    { title: 'Tuyến', dataIndex: 'routeId', key: 'routeId', render: (routeId) => <span className="text-slate-600">{getRouteName(routeId)}</span> },
-    {
-      title: 'Trạng Thái', dataIndex: 'status', key: 'status',
-      render: (status: 'operational' | 'under_construction') => ( 
-        <Tag color={status === 'operational' ? 'success' : 'processing'}>
-          {status === 'operational' ? 'Hoạt động' : 'Đang xây dựng'}
-        </Tag>
-      ),
-    },
-    { title: 'Thứ tự', dataIndex: 'sequenceOrder', key: 'sequenceOrder', render: (text) => <span className="text-slate-600">{text}</span> },
-    {
-      title: 'Hành động', key: 'action', align: 'right',
-      render: (_, record) => (
-        <Space size="middle">
-          <Button type="link" icon={<EditOutlined />} onClick={() => handleOpenModal(record)} className="text-indigo-600">Sửa</Button>
-          <Button type="link" danger icon={<DeleteOutlined />} onClick={() => handleDelete(record.stationId)}>Xóa</Button>
-        </Space>
-      ),
-    },
-  ];
+  const handleOpenRouteModal = () => setIsRouteModalOpen(true);
+  const handleCancelRouteModal = () => setIsRouteModalOpen(false);
+  const onFinishAddRoute = (formValues: RoutesRequest) => {
+    addRouteMutation.mutate(formValues as any, {
+      onSuccess: () => {
+        toast.success('Thêm tuyến thành công!');
+        handleCancelRouteModal();
+      },
+      onError: (error: any) => {
+        const errorMessage = error?.response?.data?.message || 'Thêm tuyến thất bại';
+        toast.error(errorMessage);
+      }
+    });
+  };
+  const handleOpenEditRouteModal = () => { };
+  const handleDeleteRoute = (routeId: number, routeName: string) => {
+    const stationsOnThisRoute = stationsData?.data?.data?.some((station: StationsResponse) => station.routeId === routeId);
+    if (stationsOnThisRoute) {
+      toast.error('Không thể xóa tuyến này vì vẫn còn ga trên tuyến. Vui lòng xóa hết các ga trước.');
+      return;
+    }
+    modal.confirm({
+      title: `Bạn có chắc chắn muốn xóa tuyến "${routeName}"?`,
+      content: 'Hành động này không thể hoàn tác.',
+      okText: 'Xóa Tuyến', okType: 'danger', cancelText: 'Hủy',
+      onOk: () => {
+        deleteRouteMutation.mutate(routeId, {
+          onSuccess: () => {
+            toast.success(`Xóa tuyến "${routeName}" thành công!`);
+          },
+          onError: (error: any) => {
+            const errorMessage = error?.response?.data?.message || 'Xóa tuyến thất bại';
+            toast.error(errorMessage);
+          }
+        });
+      },
+    });
+  };
 
-  if (isLoadingStations) {
-    return (
-      <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 text-center">
-        <Typography.Text>Đang tải danh sách ga...</Typography.Text>
-      </div>
-    );
+  if (isLoadingStations || isLoadingRoutes) {
+    return <div className="bg-white rounded-xl shadow-md p-6 text-center"><Typography.Text>Đang tải dữ liệu...</Typography.Text></div>;
   }
-
-  if (isErrorStations) {
-    return (
-      <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 text-center text-red-600">
-        <Typography.Text>Lỗi khi tải danh sách ga: {stationError?.message || "Lỗi không xác định"}</Typography.Text>
-      </div>
-    );
+  if (isErrorStations || isErrorRoutes) {
+    const errorMsg = (stationError || routeError)?.message || "Lỗi không xác định";
+    return <div className="bg-white rounded-xl shadow-md p-6 text-center text-red-600"><Typography.Text>Lỗi khi tải dữ liệu: {errorMsg}</Typography.Text></div>;
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-4 sm:p-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-        <h2 className="text-xl font-semibold text-slate-800 mb-2 sm:mb-0">Quản lý Ga</h2>
-        <Button type="primary" icon={<PlusOutlined />} onClick={() => handleOpenModal()}>Thêm Ga</Button>
-      </div>
-      <div className="overflow-x-auto">
-        <Table
-          columns={columns}
-          dataSource={stationsApiResponse?.data || []}
-          rowKey="stationId"
-          pagination={{ pageSize: 5, className: 'mt-4' }}
-          className="ant-table-custom"
-          loading={isLoadingStations || addStationMutation.isPending || updateStationMutation.isPending || deleteStationMutation.isPending}
+    <Content className="p-4 sm:p-6 lg:p-8 w-screen h-screen">
+      <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 h-full ">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+          <div className="flex-1 mb-4 sm:mb-0">
+            <h2 className="text-xl font-semibold text-slate-800 mb-2">Quản lý các Ga trên Tuyến</h2>
+            <div className="flex items-center gap-4">
+              <Typography.Text>Chọn tuyến:</Typography.Text>
+              <Select
+                value={selectedRouteId}
+                onChange={(value) => setSelectedRouteId(value)}
+                style={{ minWidth: 300 }}
+                size="large"
+                placeholder="Vui lòng chọn một tuyến"
+                dropdownRender={(menu) => (
+                  <>
+                    {menu}
+                    <Divider style={{ margin: '8px 0' }} />
+                    <Button type="text" icon={<PlusOutlined />} block onClick={handleOpenRouteModal}>Thêm Tuyến mới</Button>
+                  </>
+                )}
+              >
+                {routes.map((route, index) => (
+                  <Select.Option key={route.routeId} value={route.routeId}>
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: ROUTE_COLORS[index % ROUTE_COLORS.length] }}></div>
+                      {route.routeCode}
+                    </div>
+                  </Select.Option>
+                ))}
+              </Select>
+            </div>
+          </div>
+          <Button type="primary" icon={<PlusOutlined />} onClick={handleOpenStationModal} size="large" disabled={!selectedRouteId}>
+            Thêm Ga
+          </Button>
+        </div>
+
+        {selectedRoute && (
+          <Card className="mb-6" style={{ borderColor: selectedRoute.color }}>
+            <div className="flex justify-between items-center gap-3">
+              <div className="flex items-center gap-3 flex-1">
+                <div className="w-6 h-6 rounded-full" style={{ backgroundColor: selectedRoute.color }}></div>
+                <div>
+                  <Typography.Title level={4} className="mb-1">{selectedRoute.routeCode}</Typography.Title>
+                  <Typography.Text type="secondary">{selectedRoute.description} • {filteredStations.length} ga</Typography.Text>
+                </div>
+              </div>
+              <Space>
+                <Button icon={<EditOutlined />} onClick={handleOpenEditRouteModal}>Sửa</Button>
+                <Button icon={<DeleteOutlined />} danger onClick={() => handleDeleteRoute(selectedRoute.routeId, selectedRoute.routeName)}>Xóa</Button>
+              </Space>
+            </div>
+          </Card>
+        )}
+
+        <div className="bg-gray-50 rounded-lg p-4 ">
+          <Typography.Title level={5} className="mb-4 text-center">Sơ đồ các ga trên tuyến</Typography.Title>
+          {filteredStations.length === 0 ? (
+            <div className="text-center py-8">
+              <Typography.Text type="secondary">Chưa có ga nào trên tuyến này. Hãy thêm ga mới!</Typography.Text>
+            </div>
+          ) : (
+            <div className="max-h-[600px] overflow-y-auto pr-2">
+              {filteredStations.map((station, index) => (
+                <StationNode
+                  key={station.stationId}
+                  station={station}
+                  isLast={index === filteredStations.length - 1}
+                  color={selectedRoute?.color || '#1890ff'}
+                  onDelete={handleDeleteStation}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        <AddStationModal
+          open={isStationModalOpen}
+          onCancel={handleCancelStationModal}
+          onFinish={onFinishAddStation}
+          isPending={addStationMutation.isPending}
+          routes={routes}
+          initialValues={{
+            latitude: 10.7769,
+            longitude: 106.7009,
+            sequenceOrder: filteredStations.length + 1,
+            routeId: selectedRouteId,
+          }}
+        />
+
+        <AddRouteModal
+          open={isRouteModalOpen}
+          onCancel={handleCancelRouteModal}
+          onFinish={onFinishAddRoute}
+          isPending={addRouteMutation.isPending}
         />
       </div>
-      <Modal
-        title={editingStation ? 'Chỉnh sửa Ga' : 'Thêm Ga mới'}
-        open={isModalOpen}
-        onCancel={handleCancel}
-        footer={null}
-        centered
-        destroyOnClose 
-      >
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={onFinish}
-          className="mt-6 space-y-4"
-          initialValues={{
-            latitude: 10.7, 
-            longitude: 106.6, 
-            sequenceOrder: 1, 
-            ...(editingStation ? { status: editingStation.status } : { status: 'under_construction' }),
-          }}
-        >
-          <Form.Item name="name" label={<span className="font-semibold text-slate-700">Tên Ga</span>} rules={[{ required: true, message: 'Vui lòng nhập tên ga!' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="stationCode" label={<span className="font-semibold text-slate-700">Mã Ga</span>} rules={[{ required: true, message: 'Vui lòng nhập mã ga!' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="address" label={<span className="font-semibold text-slate-700">Địa chỉ</span>} rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="routeId" label={<span className="font-semibold text-slate-700">Thuộc Tuyến</span>} rules={[{ required: true, message: 'Vui lòng chọn tuyến!' }]}>
-            <Select placeholder="Chọn tuyến đường">
-              {initialRoutes.map(route => (
-                <Select.Option key={route.routeId} value={route.routeId}>{route.routeName}</Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item name="latitude" label={<span className="font-semibold text-slate-700">Vĩ độ</span>} rules={[{ required: true, type: 'number', message: 'Vui lòng nhập vĩ độ hợp lệ!' }]}>
-                <InputNumber className="w-full" step={0.0001} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item name="longitude" label={<span className="font-semibold text-slate-700">Kinh độ</span>} rules={[{ required: true, type: 'number', message: 'Vui lòng nhập kinh độ hợp lệ!' }]}>
-                <InputNumber className="w-full" step={0.0001} />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Form.Item name="sequenceOrder" label={<span className="font-semibold text-slate-700">Thứ tự trên tuyến</span>} rules={[{ required: true, type: 'number', min: 1, message: 'Vui lòng nhập thứ tự hợp lệ (tối thiểu 1)!' }]}>
-            <InputNumber min={1} className="w-full" />
-          </Form.Item>
-
-          {editingStation && ( 
-            <Form.Item name="status" label={<span className="font-semibold text-slate-700">Trạng Thái</span>} rules={[{ required: true, message: 'Vui lòng chọn trạng thái!' }]}>
-              <Select placeholder="Chọn trạng thái">
-                <Select.Option value="operational">Hoạt động</Select.Option>
-                <Select.Option value="under_construction">Đang xây dựng</Select.Option>
-              </Select>
-            </Form.Item>
-          )}
-
-          <div className="text-right pt-2">
-            <Space>
-              <Button onClick={handleCancel}>Hủy</Button>
-              <Button
-                type="primary"
-                htmlType="submit"
-                loading={addStationMutation.isPending || updateStationMutation.isPending} 
-              >
-                {editingStation ? 'Lưu thay đổi' : 'Thêm Ga'}
-              </Button>
-            </Space>
-          </div>
-        </Form>
-      </Modal>
-    </div>
+    </Content>
   );
 };
+
 
 export default StationManagement;

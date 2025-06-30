@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import orderApiRequests from "src/apis/orders";
 
 export const useCreateOrderSingleMutation = () => {
@@ -18,5 +18,19 @@ export const useCreateOrderDaysMutation = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["orders"] });
     },
+  });
+};
+
+export const useGetOrderByUserId = ({
+  id,
+  enabled,
+}: {
+  id: number;
+  enabled: boolean;
+}) => {
+  return useQuery({
+    queryKey: ["orders", id],
+    queryFn: () => orderApiRequests.orderByUser(id),
+    enabled,
   });
 };

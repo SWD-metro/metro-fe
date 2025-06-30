@@ -99,8 +99,8 @@ const HeroSection: React.FC = () => {
       <style dangerouslySetInnerHTML={{ __html: fadeInUpKeyframes }} />
 
       <div
-        className={`relative overflow-hidden rounded-b-[40px] ${
-          isHome ? "h-[50vh]" : "h-[12vh]"
+        className={`relative overflow-hidden ${
+          isHome ? "h-[50vh] rounded-b-[40px]" : "h-[11vh]"
         }`}
       >
         <Carousel autoplay effect="fade" dots={false} speed={1000}>

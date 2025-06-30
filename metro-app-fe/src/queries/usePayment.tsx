@@ -11,10 +11,11 @@ export const useCreateVNPayMutation = () => {
   });
 };
 
-export const useGetVNPayCallback = () => {
+export const useGetVNPayCallback = (search: string) => {
   return useQuery({
-    queryKey: ["vnpay"],
-    queryFn: paymentApiRequests.vnPayCallBack,
+    queryKey: ["vnpay", search],
+    queryFn: () => paymentApiRequests.vnPayCallBack(search),
+    enabled: !!search,
   });
 };
 

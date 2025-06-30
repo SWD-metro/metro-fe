@@ -6,7 +6,11 @@ const path = {
   stationMap: "/station-map",
   profile: "profile",
   orderPage: "/order/:type/:slug",
-  paymentSuccess: "/payment-success",
+  paymentResult: "/payment-result",
+  myTicket: "/my-tickets",
+  orderHistory: "/order-history",
+  changePassword: "/change-password",
+  studentRequest: "/student-request",
 
   auth: "/auth",
   login: "/auth/login",
