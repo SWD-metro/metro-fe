@@ -115,18 +115,10 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
     }
 
     try {
-      const studentCardImageBase64 = studentCardBase64.split(",")[1];
-      const citizenIdImageBase64 = citizenIdBase64.split(",")[1];
-
-      if (!studentCardImageBase64 || !citizenIdImageBase64) {
-        toast.error("Lỗi xử lý hình ảnh, vui lòng tải lại!");
-        return;
-      }
-
       const requestData = {
         content: values.content?.trim() || "",
-        studentCardImage: studentCardImageBase64,
-        citizenIdentityCardImage: citizenIdImageBase64,
+        studentCardImage: studentCardBase64,
+        citizenIdentityCardImage: citizenIdBase64,
         endDate: formatDDMMYY(values.endDate),
       };
 

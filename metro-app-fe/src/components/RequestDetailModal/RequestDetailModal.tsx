@@ -79,7 +79,7 @@ const RequestDetailModal: React.FC<DetailModalProps> = ({
                     </div>
                     <div className="relative group">
                       <Image
-                        src={`data:image/jpeg;base64,${data.studentCardImage}`}
+                        src={data.studentCardImage}
                         alt="Thẻ sinh viên"
                         className="!rounded-xl !border-2 !border-gray-200 shadow-lg group-hover:shadow-xl transition-shadow duration-300"
                         width="100%"
@@ -107,7 +107,7 @@ const RequestDetailModal: React.FC<DetailModalProps> = ({
                     </div>
                     <div className="relative group">
                       <Image
-                        src={`data:image/jpeg;base64,${data.citizenIdentityCardImage}`}
+                        src={data.citizenIdentityCardImage}
                         alt="CCCD"
                         className="!rounded-xl !border-2 !border-gray-200 shadow-lg group-hover:shadow-xl transition-shadow duration-300"
                         width="100%"
