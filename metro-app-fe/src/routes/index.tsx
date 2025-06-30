@@ -28,6 +28,7 @@ import OrderHistory from "src/pages/Client/OrderHistory/OrderHistory";
 import UserManagement from "src/components/managements/UserManagement";
 import StationManagement from "src/components/managements/StationManagement";
 import ScheduleManagement from "src/components/managements/ScheduleManagement";
+import StudentRequestPage from "src/pages/Client/StudentRequest";
 
 const RouteElements: React.FC = () => {
   const routeElements = useRoutes([
@@ -72,6 +73,10 @@ const RouteElements: React.FC = () => {
                 {
                   path: path.orderHistory,
                   element: <OrderHistory />,
+                },
+                {
+                  path: path.studentRequest,
+                  element: <StudentRequestPage />,
                 },
               ],
             },

@@ -79,6 +79,18 @@ const ProfileSidebar: React.FC = () => {
               Lịch sử giao dịch
             </Link>
           </Menu.Item>
+          <Menu.Item
+            key="requests"
+            icon={<ListOrderedIcon className="!text-orange-500 !pt-2" />}
+            className="!mx-2 !my-1 !rounded-xl hover:!bg-orange-50 transition-all duration-300 group"
+          >
+            <Link
+              to={path.studentRequest}
+              className="font-medium text-gray-700 group-hover:text-orange-600 transition-colors duration-300"
+            >
+              Request
+            </Link>
+          </Menu.Item>
         </Menu>
       </div>
     </div>

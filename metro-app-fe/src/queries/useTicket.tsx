@@ -30,7 +30,7 @@ export const useUpdateTicketTypeMutation = () => {
   //     queryClient.invalidateQueries({ queryKey: ["ticket-type"] });
   //   },
   // });
-}
+};
 
 export const useDeleteTicketTypeMutation = () => {
   const queryClient = useQueryClient();
@@ -40,7 +40,7 @@ export const useDeleteTicketTypeMutation = () => {
       queryClient.invalidateQueries({ queryKey: ["ticket-type"] });
     },
   });
-}
+};
 
 export const useGetTicketTypeById = ({
   id,
@@ -91,7 +91,7 @@ export const useDeleteTicketFareMatrixMutation = () => {
       queryClient.invalidateQueries({ queryKey: ["fare-matrices"] });
     },
   });
-}
+};
 
 export const useGetFareMatrixById = ({
   id,
