@@ -8,6 +8,20 @@ export const useAccountMe = () => {
   });
 };
 
+export const useGetUserByUserId = ({
+  id,
+  enabled,
+}: {
+  id: number;
+  enabled: boolean;
+}) => {
+  return useQuery({
+    queryKey: ["users", id],
+    queryFn: () => userApiRequests.userByUserId(id),
+    enabled,
+  });
+};
+
 export const useGetRequestListByUser = ({
   id,
   enabled,
@@ -26,6 +40,23 @@ export const useCreateStudentRequestMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: userApiRequests.request,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["requests"] });
+    },
+  });
+};
+
+export const useGetRequestsList = () => {
+  return useQuery({
+    queryKey: ["requests"],
+    queryFn: userApiRequests.requestList,
+  });
+};
+
+export const useVerifyRequestMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: userApiRequests.verifyRequest,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["requests"] });
     },

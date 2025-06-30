@@ -11,7 +11,12 @@ export enum RequestStatus {
   REJECTED = "REJECTED",
 }
 
-// Request DTOs
+export interface VerifyRequestParams {
+  requestId: number;
+  isApproved: boolean;
+  rejectionReason: string;
+}
+
 export interface BlogRequest {
   id: string;
   category: string;
@@ -94,6 +99,7 @@ export interface RequestDto {
   studentCardImage: string;
   citizenIdentityCardImage: string;
   requestStatus: RequestStatus;
+  rejectionReason: string;
   startDate?: string;
   endDate?: string;
   userId: number;
