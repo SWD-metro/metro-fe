@@ -30,6 +30,8 @@ import StationManagement from "src/components/managements/StationManagement";
 import ScheduleManagement from "src/components/managements/ScheduleManagement";
 import StudentRequestPage from "src/pages/Client/StudentRequest";
 import VerifyStudentRequest from "src/pages/admin/VerityStudentRequest";
+import FeedbackPage from "src/pages/Client/Feedback";
+import ManageFeedbackPage from "src/pages/admin/ManageFeedback";
 
 const RouteElements: React.FC = () => {
   const routeElements = useRoutes([
@@ -78,6 +80,10 @@ const RouteElements: React.FC = () => {
                 {
                   path: path.studentRequest,
                   element: <StudentRequestPage />,
+                },
+                {
+                  path: path.feedback,
+                  element: <FeedbackPage />,
                 },
               ],
             },
@@ -158,10 +164,13 @@ const RouteElements: React.FC = () => {
               path: "verify-student-request",
               element: <VerifyStudentRequest />,
             },
-
             {
               path: "schedule",
               element: <ScheduleManagement />,
+            },
+            {
+              path: "feedbacks",
+              element: <ManageFeedbackPage />,
             },
           ],
         },

@@ -62,3 +62,34 @@ export const useVerifyRequestMutation = () => {
     },
   });
 };
+
+export const useCreateFeedbackMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: userApiRequests.createFeedback,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["feedbacks"] });
+    },
+  });
+};
+
+export const useGetFeedbackListByUser = ({
+  id,
+  enabled,
+}: {
+  id: number;
+  enabled: boolean;
+}) => {
+  return useQuery({
+    queryKey: ["feedbacks", id],
+    queryFn: () => userApiRequests.feedbackListByUser(id),
+    enabled,
+  });
+};
+
+export const useGetFeedbacksList = () => {
+  return useQuery({
+    queryKey: ["feedbacks"],
+    queryFn: userApiRequests.feedbackList,
+  });
+};
