@@ -17,7 +17,7 @@ import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useLogoutMutation } from "src/queries/useAuth";
 import { AppContext } from "src/contexts/app.context";
-import { FormInputIcon } from "lucide-react";
+import { FormInputIcon, MessageCircleIcon } from "lucide-react";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -118,29 +118,36 @@ const Sidebar = () => {
           {
             key: "2",
             icon: <UserOutlined />,
-            label: <Link to="/admin/user">User</Link>,
+            label: <Link to="/admin/user">Người dùng</Link>,
           },
           {
             key: "3",
             icon: <WalletOutlined />,
-            label: <Link to="/admin/ticket">Ticket</Link>,
+            label: <Link to="/admin/ticket">Quản lí vé</Link>,
           },
           {
             key: "4",
             icon: <ForkOutlined />,
-            label: <Link to="/admin/routes">Routes</Link>,
+            label: <Link to="/admin/routes">Tuyến đường</Link>,
           },
           {
             key: "5",
             icon: <ScheduleOutlined />,
-            label: <Link to="/admin/schedule">Schedule</Link>,
+            label: <Link to="/admin/schedule">Lịch trình</Link>,
           },
           {
             key: "6",
             icon: <FormInputIcon />,
             label: (
-              <Link to="/admin/verify-student-request">Student Request</Link>
+              <Link to="/admin/verify-student-request">
+                Yêu cầu của sinh viên
+              </Link>
             ),
+          },
+          {
+            key: "7",
+            icon: <MessageCircleIcon />,
+            label: <Link to="/admin/feedbacks">Đánh giá</Link>,
           },
           {
             key: "auth",
@@ -148,7 +155,7 @@ const Sidebar = () => {
             type: "group",
             children: [
               {
-                key: "7",
+                key: "8",
                 icon: <LogoutOutlined />,
                 label: (
                   <span

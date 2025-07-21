@@ -4,7 +4,12 @@ import { UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import path from "src/constants/path";
 import { AppContext } from "src/contexts/app.context";
-import { ListOrderedIcon, TicketIcon } from "lucide-react";
+import {
+  ListOrderedIcon,
+  MessageCircleIcon,
+  TicketIcon,
+  UserCheckIcon,
+} from "lucide-react";
 
 const ProfileSidebar: React.FC = () => {
   const { profile } = useContext(AppContext);
@@ -81,14 +86,26 @@ const ProfileSidebar: React.FC = () => {
           </Menu.Item>
           <Menu.Item
             key="requests"
-            icon={<ListOrderedIcon className="!text-orange-500 !pt-2" />}
+            icon={<UserCheckIcon className="!text-blue-500 !pt-2" />}
             className="!mx-2 !my-1 !rounded-xl hover:!bg-orange-50 transition-all duration-300 group"
           >
             <Link
               to={path.studentRequest}
               className="font-medium text-gray-700 group-hover:text-orange-600 transition-colors duration-300"
             >
-              Request
+              Xác nhận sinh viên
+            </Link>
+          </Menu.Item>
+          <Menu.Item
+            key="feedbacks"
+            icon={<MessageCircleIcon className="!text-green-500 !pt-2" />}
+            className="!mx-2 !my-1 !rounded-xl hover:!bg-orange-50 transition-all duration-300 group"
+          >
+            <Link
+              to={path.feedback}
+              className="font-medium text-gray-700 group-hover:text-orange-600 transition-colors duration-300"
+            >
+              Đánh giá
             </Link>
           </Menu.Item>
         </Menu>
