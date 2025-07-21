@@ -11,6 +11,7 @@ const path = {
   orderHistory: "/order-history",
   changePassword: "/change-password",
   studentRequest: "/student-request",
+  feedback: "/feedback",
 
   auth: "/auth",
   login: "/auth/login",
