@@ -8,6 +8,26 @@ export interface StationsRequest {
   sequenceOrder: number;
 }
 
+export interface StationUsageStatistic {
+  id: number;
+  stationId: number;
+  stationName: string;
+  usageDate: string;
+  entryCount: number;
+  exitCount: number;
+  createdAt: string;
+}
+
+export interface HourUsageStatistic {
+  id: number;
+  usageDate: string;
+  startHour: number;
+  endHour: number;
+  entryCount: number;
+  exitCount: number;
+  createdAt: string;
+}
+
 export interface StationsResponse {
   stationId: number;
   stationCode: string;
