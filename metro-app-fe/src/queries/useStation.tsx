@@ -58,3 +58,11 @@ export const useDeleteStationMutation = () => {
     },
   });
 };
+
+export const useGetStationRoutesById = (routeId: number | undefined) => {
+  return useQuery({
+    queryKey: ["stations", routeId],
+    queryFn: () => stationApiRequests.stationRoutesById(routeId!),
+    enabled: !!routeId,
+  });
+};

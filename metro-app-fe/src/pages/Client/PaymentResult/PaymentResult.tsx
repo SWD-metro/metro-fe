@@ -23,14 +23,14 @@ import { useGetTicketById, useGetTicketQRCode } from "src/queries/useTicket";
 import { useLocation, useNavigate } from "react-router-dom";
 import path from "src/constants/path";
 import background from "src/assets/feature_section.png";
-import { formatPrice } from "src/utils/utils";
+import { formatDDMMYY, formatPrice } from "src/utils/utils";
 const { Title, Text } = Typography;
 
 const PaymentResult: React.FC = () => {
   const navigate = useNavigate();
   const { search } = useLocation();
 
-  const { data: vnpayRes, isLoading, isError } = useGetVNPayCallback(search);
+  const { data: vnpayRes, isLoading } = useGetVNPayCallback(search);
   const payment = vnpayRes?.data.data;
   const ticketId = payment?.ticketId;
 
@@ -58,7 +58,7 @@ const PaymentResult: React.FC = () => {
     );
   }
 
-  if (isError || !payment) {
+  if (payment?.status === "failed") {
     return (
       <Result
         status="error"
@@ -68,7 +68,7 @@ const PaymentResult: React.FC = () => {
     );
   }
 
-  if (payment.status === "invalid") {
+  if (payment?.status === "invalid") {
     return (
       <Result
         status="warning"
@@ -95,7 +95,9 @@ const PaymentResult: React.FC = () => {
           <h1 className="text-5xl font-bold text-white mb-4 drop-shadow-lg">
             Thanh toán thành công!
           </h1>
-          <p className="text-blue-100 text-xl font-medium">{payment.message}</p>
+          <p className="text-blue-100 text-xl font-medium">
+            {payment?.message}
+          </p>
         </div>
 
         <Card className="rounded-3xl shadow-2xl border-0 overflow-hidden mb-8 backdrop-blur-sm">
@@ -121,7 +123,7 @@ const PaymentResult: React.FC = () => {
                         </Text>
                         <div className="flex items-center space-x-2">
                           <Text className="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg font-mono text-sm font-semibold border border-blue-200">
-                            {payment.transactionId}
+                            {payment?.transactionId}
                           </Text>
                         </div>
                       </div>
@@ -135,7 +137,7 @@ const PaymentResult: React.FC = () => {
                         </Text>
                         <div className="flex items-center space-x-2">
                           <Text className="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg font-mono text-sm font-semibold border border-blue-200">
-                            {formatPrice(payment.amount)}
+                            {formatPrice(payment?.amount)}
                           </Text>
                         </div>
                       </div>
@@ -220,12 +222,12 @@ const PaymentResult: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="bg-white/70 backdrop-blur-sm p-4 rounded-xl border border-blue-200/50">
                         <Text className="text-lg font-bold text-blue-700 block">
-                          {ticket.validFrom}
+                          {formatDDMMYY(ticket.validFrom)}
                         </Text>
                       </div>
                       <div className="bg-white/70 backdrop-blur-sm p-4 rounded-xl border border-blue-200/50">
                         <Text className="text-lg font-bold text-blue-700 block">
-                          {ticket.validUntil}
+                          {formatDDMMYY(ticket.validUntil)}
                         </Text>
                       </div>
                     </div>
