@@ -58,6 +58,8 @@ const LoginPage: React.FC = () => {
         setIsAuthenticated(true);
         setProfile(result.data.data);
         navigate("/");
+      } else {
+        toast.error("Tài khoản và mật khẩu không đúng!");
       }
     } catch (error) {
       console.log(error);
