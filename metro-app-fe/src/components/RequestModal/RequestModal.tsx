@@ -117,6 +117,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
     try {
       const requestData = {
         content: values.content?.trim() || "",
+        citizenIdNumber: values.citizenIdNumber?.trim() || "",
         studentCardImage: studentCardBase64,
         citizenIdentityCardImage: citizenIdBase64,
         endDate: formatDDMMYY(values.endDate),
@@ -186,13 +187,27 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
         </Form.Item>
 
         <Form.Item
-          name="endDate"
-          label="Ngày cần có giấy xác nhận (tùy chọn)"
-          required
+          name="citizenIdNumber"
+          label="Số CCCD/CMND"
+          rules={[
+            { required: true, message: "Vui lòng nhập số CCCD/CMND." },
+            {
+              pattern: /^\d{12}$/,
+              message: "Số CCCD phải gồm đúng 12 chữ số.",
+            },
+          ]}
         >
+          <Input
+            placeholder="Nhập số CCCD (12 chữ số)"
+            className="!rounded-lg"
+            maxLength={12}
+          />
+        </Form.Item>
+
+        <Form.Item name="endDate" label="Ngày hết hạn thẻ sinh viên" required>
           <DatePicker
             size="large"
-            placeholder="Chọn ngày cần có giấy"
+            placeholder="Chọn ngày"
             className="!w-full !rounded-lg"
             disabledDate={(current) =>
               current && current < dayjs().endOf("day")

@@ -77,6 +77,7 @@ export interface RegisterRequest {
 
 export interface RequestCreationRequest {
   content: string;
+  citizenIdNumber: string;
   studentCardImage: string;
   citizenIdentityCardImage: string;
   endDate: string;
@@ -119,4 +120,9 @@ export interface User {
   studentExpiredDate?: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface FeedbackReply {
+  feedbackId: number;
+  content: string;
 }
