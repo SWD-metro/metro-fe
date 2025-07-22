@@ -93,3 +93,13 @@ export const useGetFeedbacksList = () => {
     queryFn: userApiRequests.feedbackList,
   });
 };
+
+export const useFeedbackReplyMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: userApiRequests.feedbackReply,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["feedbacks"] });
+    },
+  });
+};

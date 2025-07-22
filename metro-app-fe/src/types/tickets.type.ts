@@ -74,6 +74,7 @@ export interface TicketTypeResponse {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+  forStudent: boolean;
 }
 
 export interface UpdateTicketTypeRequest {

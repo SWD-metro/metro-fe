@@ -1,5 +1,9 @@
 import { ApiResponse } from "src/types/api.type";
-import { StationsResponse, StationsRequest } from "src/types/stations.type";
+import {
+  StationsResponse,
+  StationsRequest,
+  StationRouteResponse,
+} from "src/types/stations.type";
 import http from "src/utils/http";
 
 const stationApiRequests = {
@@ -15,7 +19,12 @@ const stationApiRequests = {
     http.put<ApiResponse<StationsResponse>>(`stations/${stationId}`, body),
 
   deleteStation: (stationId: number) =>
-    http.delete<ApiResponse<void>>(`stations/${stationId}`), 
+    http.delete<ApiResponse<void>>(`stations/${stationId}`),
+
+  stationRoutesById: (routeId: number) =>
+    http.get<ApiResponse<StationRouteResponse[]>>(
+      `station-routes/route/${routeId}`
+    ),
 };
 
 export default stationApiRequests;

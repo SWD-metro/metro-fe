@@ -30,7 +30,10 @@ import {
   Calendar,
   Search,
 } from "lucide-react";
-import { useGetFeedbacksList } from "src/queries/useUser";
+import {
+  useFeedbackReplyMutation,
+  useGetFeedbacksList,
+} from "src/queries/useUser";
 import { Feedback } from "src/types/user.type";
 
 const { Title, Text } = Typography;
@@ -50,6 +53,8 @@ const ManageFeedbackPage: React.FC = () => {
 
   const { data: feedbacksData, isLoading } = useGetFeedbacksList();
   const feedbacks = feedbacksData?.data?.data || [];
+
+  const feedbackReplyMutation = useFeedbackReplyMutation();
 
   const filteredFeedbacks = feedbacks.filter((feedback) => {
     const matchesSearch =
@@ -78,14 +83,17 @@ const ManageFeedbackPage: React.FC = () => {
       return;
     }
 
+    if (!selectedFeedback) {
+      message.error("Không tìm thấy phản hồi để trả lời.");
+      return;
+    }
+
     setIsSubmitting(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      if (selectedFeedback) {
-        selectedFeedback.reply = replyText;
-        selectedFeedback.updatedAt = new Date().toISOString();
-      }
+      await feedbackReplyMutation.mutateAsync({
+        feedbackId: selectedFeedback.feedbackId,
+        content: replyText.trim(),
+      });
 
       message.success("Phản hồi đã được gửi thành công!");
       setIsModalVisible(false);

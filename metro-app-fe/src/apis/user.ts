@@ -2,6 +2,7 @@ import { ApiResponse } from "src/types/api.type";
 import {
   Feedback,
   FeedbackCreationRequest,
+  FeedbackReply,
   RequestCreationRequest,
   RequestDto,
   User,
@@ -27,6 +28,9 @@ const userApiRequests = {
   feedbackListByUser: (values: number) =>
     http.get<ApiResponse<Feedback[]>>(`users/feedbacks/${values}`),
   feedbackList: () => http.get<ApiResponse<Feedback[]>>("users/feedbacks"),
+
+  feedbackReply: (body: FeedbackReply) =>
+    http.post<ApiResponse<Feedback>>("users/feedbacks/reply", body),
 };
 
 export default userApiRequests;

@@ -41,3 +41,29 @@ export interface StationsResponse {
   updatedAt: string;
   routeId: number;
 }
+
+export interface Station {
+  stationId: number;
+  stationCode: string;
+  name: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  isDeleted: boolean;
+}
+
+export interface StationRouteResponse {
+  id: number;
+  RouteId: number;
+  sequenceOrder: number;
+  stationsResponse: Station;
+  status: Status;
+  isDeleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type Status = "active" | "decommissioned" | "maintenance";

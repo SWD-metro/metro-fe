@@ -19,12 +19,6 @@ import RequestDetailModal from "src/components/RequestDetailModal";
 
 const { Title, Text } = Typography;
 
-export interface RequestCreationRequest {
-  content?: string;
-  studentCardImage: string;
-  citizenIdentityCardImage: string;
-  endDate?: string;
-}
 const StudentRequestPage: React.FC = () => {
   const { profile } = useContext(AppContext);
   const userId = profile?.userId;
