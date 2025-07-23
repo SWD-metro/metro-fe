@@ -8,7 +8,6 @@ import {
 } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { AppContext } from "src/contexts/app.context";
-import { formatDDMMYY } from "src/utils/utils";
 
 const { Title, Text } = Typography;
 
@@ -66,7 +65,7 @@ const MainContent: React.FC = () => {
                   </Title>
                   <Text className="text-purple-600 text-sm">
                     {t("mainContent.verification.memberSince")}{" "}
-                    {profile?.createdAt ? formatDDMMYY(profile.createdAt) : ""}
+                    {profile?.createdAt}
                   </Text>
                 </Card>
               </Col>
