@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Button, Card, Typography, List, Empty, Tag } from "antd";
 import { MessageCircle, Clock, CheckCircle, Plus } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { AppContext } from "src/contexts/app.context";
 import { useGetFeedbackListByUser } from "src/queries/useUser";
 import FeedbackModal from "src/components/FeedbackModal/FeedbackModal";
@@ -8,6 +9,7 @@ import FeedbackModal from "src/components/FeedbackModal/FeedbackModal";
 const { Title, Text } = Typography;
 
 const FeedbackPage = () => {
+  const { t } = useTranslation("profile");
   const { profile } = useContext(AppContext);
   const [showModal, setShowModal] = useState(false);
 
@@ -28,7 +30,7 @@ const FeedbackPage = () => {
           <div className="flex justify-between items-center">
             <Title level={2} className="!mb-2 !text-gray-800">
               <MessageCircle className="inline-block w-8 h-8 mr-3 text-blue-600" />
-              Góp ý & Phản hồi
+              {t("feedback.title")}
             </Title>
             <Button
               type="primary"
@@ -37,7 +39,7 @@ const FeedbackPage = () => {
               onClick={() => setShowModal(true)}
               className="!bg-gradient-to-r !from-blue-600 !to-indigo-600 !border-none !h-12 !rounded-xl !shadow-lg hover:!shadow-xl !transition-all"
             >
-              Gửi phản hồi
+              {t("feedback.sendFeedback")}
             </Button>
           </div>
         </div>
@@ -49,7 +51,9 @@ const FeedbackPage = () => {
                 <Clock className="w-6 h-6 text-white" />
               </div>
               <div className="ml-4">
-                <Text className="text-gray-600 block">Đang chờ phản hồi</Text>
+                <Text className="text-gray-600 block">
+                  {t("feedback.stats.pending")}
+                </Text>
                 <Title level={3} className="!my-0 !text-orange-600">
                   {pendingCount}
                 </Title>
@@ -62,7 +66,9 @@ const FeedbackPage = () => {
                 <CheckCircle className="w-6 h-6 text-white" />
               </div>
               <div className="ml-4">
-                <Text className="text-gray-600 block">Đã phản hồi</Text>
+                <Text className="text-gray-600 block">
+                  {t("feedback.stats.replied")}
+                </Text>
                 <Title level={3} className="!my-0 !text-green-600">
                   {repliedCount}
                 </Title>
@@ -75,7 +81,9 @@ const FeedbackPage = () => {
                 <MessageCircle className="w-6 h-6 text-white" />
               </div>
               <div className="ml-4">
-                <Text className="text-gray-600 block">Tổng phản hồi</Text>
+                <Text className="text-gray-600 block">
+                  {t("feedback.stats.totalFeedback")}
+                </Text>
                 <Title level={3} className="!my-0 !text-blue-600">
                   {totalCount}
                 </Title>
@@ -86,7 +94,7 @@ const FeedbackPage = () => {
 
         <Card className="!border-0 !shadow-lg !rounded-2xl">
           <Title level={3} className="!mb-6 !text-gray-800">
-            Danh sách phản hồi
+            {t("feedback.listTitle")}
           </Title>
           {feedbacks.length > 0 ? (
             <List
@@ -112,12 +120,12 @@ const FeedbackPage = () => {
                         />
                       )}
                       <Text className="text-xs text-gray-500 block mt-2">
-                        Gửi lúc: {fb.createdAt}
+                        {t("feedback.sentAt")} {fb.createdAt}
                       </Text>
                       {fb.reply && (
                         <div className="mt-3 border-l-4 border-green-400 pl-3">
                           <p className="text-green-700 font-medium">
-                            Phản hồi từ admin:
+                            {t("feedback.adminReply")}
                           </p>
                           <Text>{fb.reply}</Text>
                         </div>
@@ -127,14 +135,19 @@ const FeedbackPage = () => {
                       color={fb.reply ? "green" : "orange"}
                       className="!px-4 !py-1 !rounded-full !font-medium"
                     >
-                      {fb.reply ? "Đã phản hồi" : "Đang chờ"}
+                      {fb.reply
+                        ? t("feedback.status.replied")
+                        : t("feedback.status.pending")}
                     </Tag>
                   </div>
                 </Card>
               )}
             />
           ) : (
-            <Empty description="Chưa có phản hồi nào" className="!py-12" />
+            <Empty
+              description={t("feedback.emptyMessage")}
+              className="!py-12"
+            />
           )}
         </Card>
 

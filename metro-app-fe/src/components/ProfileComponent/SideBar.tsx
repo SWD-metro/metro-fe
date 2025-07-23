@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Menu, Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import path from "src/constants/path";
 import { AppContext } from "src/contexts/app.context";
 import {
@@ -12,6 +13,7 @@ import {
 } from "lucide-react";
 
 const ProfileSidebar: React.FC = () => {
+  const { t } = useTranslation("profile");
   const { profile } = useContext(AppContext);
 
   const getAvatarText = (): string => {
@@ -55,7 +57,7 @@ const ProfileSidebar: React.FC = () => {
               to={path.profile}
               className="font-medium text-gray-700 group-hover:text-blue-600 transition-colors duration-300"
             >
-              Tài khoản
+              {t("sidebar.account")}
             </Link>
           </Menu.Item>
 
@@ -68,7 +70,7 @@ const ProfileSidebar: React.FC = () => {
               to={path.myTicket}
               className="font-medium text-gray-700 group-hover:text-purple-600 transition-colors duration-300"
             >
-              Vé của tôi
+              {t("sidebar.myTickets")}
             </Link>
           </Menu.Item>
 
@@ -81,7 +83,7 @@ const ProfileSidebar: React.FC = () => {
               to={path.orderHistory}
               className="font-medium text-gray-700 group-hover:text-orange-600 transition-colors duration-300"
             >
-              Lịch sử giao dịch
+              {t("sidebar.orderHistory")}
             </Link>
           </Menu.Item>
           <Menu.Item
@@ -93,7 +95,7 @@ const ProfileSidebar: React.FC = () => {
               to={path.studentRequest}
               className="font-medium text-gray-700 group-hover:text-orange-600 transition-colors duration-300"
             >
-              Xác nhận sinh viên
+              {t("sidebar.studentVerification")}
             </Link>
           </Menu.Item>
           <Menu.Item
@@ -105,7 +107,7 @@ const ProfileSidebar: React.FC = () => {
               to={path.feedback}
               className="font-medium text-gray-700 group-hover:text-orange-600 transition-colors duration-300"
             >
-              Đánh giá
+              {t("sidebar.feedback")}
             </Link>
           </Menu.Item>
         </Menu>

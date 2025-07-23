@@ -1,0 +1,101 @@
+{
+  "myTicket": {
+    "title": "My Tickets",
+    "description": "Manage and track all your tickets here",
+    "ticketName": "Ticket Name",
+    "ticketCode": "Ticket Code",
+    "action": "Action",
+    "upgrade": "Upgrade",
+    "tabs": {
+      "notUsed": "Not Used",
+      "used": "Used",
+      "expired": "Expired"
+    },
+    "emptyMessages": {
+      "notUsed": "All your tickets have been used or expired",
+      "used": "You haven't used any tickets yet",
+      "expired": "No expired tickets"
+    }
+  },
+  "orderHistory": {
+    "title": "Transaction History",
+    "transactionCode": "Transaction Code",
+    "amount": "Amount",
+    "orderDate": "Order Date",
+    "paymentMethod": "Payment Method",
+    "status": "Status",
+    "action": "Action",
+    "payment": "Pay",
+    "paymentError": "Could not get payment URL.",
+    "unknown": "Unknown",
+    "stats": {
+      "totalOrders": "Total Orders",
+      "completed": "Completed",
+      "totalSpent": "Total Spent"
+    },
+    "emptyMessage": "No transactions found"
+  },
+  "studentRequest": {
+    "title": "Student Verification - HCMC Metro Ticket",
+    "newRequest": "New Verification Request",
+    "stats": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "totalRequests": "Total Requests"
+    },
+    "listTitle": "Student Verification Request List",
+    "details": "Details",
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "unknown": "Unknown"
+    },
+    "createdAt": "Created:",
+    "deadline": "Deadline:",
+    "emptyMessage": "No requests yet"
+  },
+  "feedback": {
+    "title": "Feedback & Suggestions",
+    "sendFeedback": "Send Feedback",
+    "stats": {
+      "pending": "Awaiting Reply",
+      "replied": "Replied",
+      "totalFeedback": "Total Feedback"
+    },
+    "listTitle": "Feedback List",
+    "sentAt": "Sent at:",
+    "adminReply": "Admin Reply:",
+    "status": {
+      "replied": "Replied",
+      "pending": "Pending"
+    },
+    "emptyMessage": "No feedback yet"
+  },
+  "mainContent": {
+    "accountInfo": "Account Information",
+    "personalData": "Personal Data",
+    "fullName": "Full Name",
+    "email": "Email",
+    "verification": {
+      "verified": "Verified",
+      "emailVerified": "Email",
+      "highSecurity": "High Security",
+      "twoFactorEnabled": "2FA Enabled",
+      "member": "Member",
+      "memberSince": "Since"
+    }
+  },
+  "sidebar": {
+    "account": "Account",
+    "myTickets": "My Tickets",
+    "orderHistory": "Order History",
+    "studentVerification": "Student Verification",
+    "feedback": "Feedback"
+  },
+  "userDropdown": {
+    "profile": "Profile",
+    "myTickets": "My Tickets",
+    "logout": "Logout"
+  }
+}
