@@ -98,5 +98,25 @@
     "profile": "Profile",
     "myTickets": "My Tickets",
     "logout": "Logout"
+  },
+  "upgradeTicket": {
+    "title": "Upgrade Ticket",
+    "currentTicketInfo": "Current Ticket Information",
+    "ticketCode": "Ticket Code:",
+    "ticketName": "Ticket Name:",
+    "currentPrice": "Current Price:",
+    "selectNewDestination": "Select New Destination Station",
+    "loadingStations": "Loading station list...",
+    "selectDestinationPlaceholder": "Select new destination station",
+    "upgradeCost": "Upgrade Cost",
+    "calculating": "Calculating...",
+    "upgradeTicketFee": "Ticket upgrade fee:",
+    "serviceFee": "Service fee:",
+    "total": "Total:",
+    "noteTitle": "Note",
+    "noteDescription": "After successful upgrade, your ticket will be updated with the new destination station. This process cannot be undone.",
+    "cancel": "Cancel",
+    "payWithVNPay": "Pay with VNPay",
+    "currency": "VND"
   }
 }

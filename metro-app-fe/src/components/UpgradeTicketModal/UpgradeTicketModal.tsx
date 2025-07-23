@@ -34,7 +34,7 @@ const UpgradeTicketModal: React.FC<UpgradeTicketModalProps> = ({
   orderId,
   ticket,
 }) => {
-  const { t } = useTranslation("ticket");
+  const { t } = useTranslation("profile");
   const [selectedEndStationId, setSelectedEndStationId] = useState<
     number | null
   >(null);
@@ -54,7 +54,7 @@ const UpgradeTicketModal: React.FC<UpgradeTicketModalProps> = ({
 
   const stations = stationsData?.data?.data || [];
   const upgradeAmount = (upgradeAmountData?.data?.data || 0) - 10000;
-  const totalAmount = upgradeAmount + 10000; // Adding 10000 VND fee
+  const totalAmount = upgradeAmount + 10000;
 
   useEffect(() => {
     if (!visible) {

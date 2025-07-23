@@ -79,20 +79,26 @@ const MyTicket: React.FC = () => {
           {
             title: t("myTicket.action"),
             key: "action",
-            width: 300,
-            render: (_: any, record: OrderDetailResponse) => (
-              <Space>
-                <QRModal ticket={record.ticket} />
-                <Button
-                  type="primary"
-                  icon={<ArrowUp size={16} />}
-                  onClick={() => handleUpgradeClick(record)}
-                  className="!bg-gradient-to-r !from-cyan-500 !to-blue-600 hover:!from-cyan-600 hover:!to-blue-700 !border-0 !shadow-md !hover:shadow-lg !transition-all !transform hover:!scale-105 active:!scale-95 !duration-200"
-                >
-                  {t("myTicket.upgrade")}
-                </Button>
-              </Space>
-            ),
+            width: 250,
+            render: (_: any, record: OrderDetailResponse) => {
+              if (record.ticket?.status === TicketStatus.EXPIRED) {
+                return null;
+              }
+
+              return (
+                <Space>
+                  <QRModal ticket={record.ticket} />
+                  <Button
+                    type="primary"
+                    icon={<ArrowUp size={16} />}
+                    onClick={() => handleUpgradeClick(record)}
+                    className="!bg-gradient-to-r !from-cyan-500 !to-blue-600 hover:!from-cyan-600 hover:!to-blue-700 !border-0 !shadow-md !hover:shadow-lg !transition-all !transform hover:!scale-105 active:!scale-95 !duration-200"
+                  >
+                    {t("myTicket.upgrade")}
+                  </Button>
+                </Space>
+              );
+            },
           },
         ]
       : []),

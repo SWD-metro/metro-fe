@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useContext } from "react";
+import React from "react";
 import {
   Table,
   Card,
@@ -13,7 +13,6 @@ import {
 } from "antd";
 import { ShoppingCartOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
-import { AppContext } from "src/contexts/app.context";
 import { useGetOrderByUserId } from "src/queries/useOrder";
 import { OrderResponse, OrderStatus } from "src/types/orders.type";
 import { formatDate, formatPrice } from "src/utils/utils";
@@ -24,13 +23,8 @@ const { Title, Text } = Typography;
 
 const OrderHistory: React.FC = () => {
   const { t } = useTranslation("profile");
-  const { profile } = useContext(AppContext);
-  const userId = profile?.userId;
 
-  const { data: ordersData, isLoading } = useGetOrderByUserId({
-    id: userId as number,
-    enabled: !!userId,
-  });
+  const { data: ordersData, isLoading } = useGetOrderByUserId();
 
   const orders = ordersData?.data.data || [];
   const totalAmount = orders.reduce((sum, order) => sum + order.amount, 0);
@@ -65,12 +59,11 @@ const OrderHistory: React.FC = () => {
 
   const columns = [
     {
-      title: t("orderHistory.transactionCode"),
-      dataIndex: "orderId",
-      key: "orderId",
-      render: (text: string) => (
+      title: "STT",
+      key: "index",
+      render: (_: any, __: any, index: number) => (
         <Text strong className="text-blue-600 !text-lg">
-          {text}
+          {index + 1}
         </Text>
       ),
     },

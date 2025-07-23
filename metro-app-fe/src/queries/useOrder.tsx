@@ -21,16 +21,9 @@ export const useCreateOrderDaysMutation = () => {
   });
 };
 
-export const useGetOrderByUserId = ({
-  id,
-  enabled,
-}: {
-  id: number;
-  enabled: boolean;
-}) => {
+export const useGetOrderByUserId = () => {
   return useQuery({
-    queryKey: ["orders", id],
-    queryFn: () => orderApiRequests.orderByUser(id),
-    enabled,
+    queryKey: ["orders"],
+    queryFn: orderApiRequests.orderByUser,
   });
 };

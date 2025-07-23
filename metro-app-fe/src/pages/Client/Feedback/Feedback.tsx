@@ -125,8 +125,8 @@ const FeedbackPage = () => {
                         {t("feedback.sentAt")} {fb.createdAt}
                       </Text>
                       {fb.reply && (
-                        <div className="mt-3 border-l-4 border-green-400 pl-3">
-                          <p className="text-green-700 font-medium">
+                        <div className="mt-3 p-2 border-l-4 rounded-lg bg-blue-50 border-blue-400 pl-3">
+                          <p className="text-blue-700 font-medium">
                             {t("feedback.adminReply")}
                           </p>
                           <Text>{fb.reply}</Text>
