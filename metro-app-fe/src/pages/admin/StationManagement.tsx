@@ -17,6 +17,7 @@ import toast from "react-hot-toast";
 import { apiCreateStation, apiDeleteStation, apiGetStationByName, apiGetStations, apiUpdateStation } from "src/apis/station.api";
 import ConfirmModal from "src/components/ConfirmModal";
 import { useUpdateStationStatusMutation } from "src/queries/useStation";
+
 import { Station, StationsRequest, Status } from "src/types/stations.type";
 
 export default function StationManagement() {
@@ -98,7 +99,9 @@ export default function StationManagement() {
         if (response?.data) {
           setStations(
             stations.map((s) =>
-              s.stationId === editingStation.stationId && response.data ? response.data : s
+              s.stationId === editingStation.stationId && response.data
+                ? response.data
+                : s
             )
           );
           toast.success("Cập nhật trạm thành công!");
@@ -167,6 +170,7 @@ export default function StationManagement() {
       setShowDeleteModal(false);
       setDeleteModalData(null);
     }
+
   };
 
   const handleDeleteCancel = () => {
@@ -176,13 +180,15 @@ export default function StationManagement() {
 
   const handleStatusToggle = (station: Station) => {
     // Cycle through status values: active -> maintenance -> decommissioned -> active
-    const statusCycle: Status[] = ['active', 'maintenance', 'decommissioned'];
+    const statusCycle: Status[] = ["active", "maintenance", "decommissioned"];
     const currentIndex = statusCycle.indexOf(station.status as Status);
     const nextStatus = statusCycle[(currentIndex + 1) % statusCycle.length];
+
 
     // Set modal data and show modal
     setStatusModalData({ station, nextStatus });
     setShowStatusModal(true);
+
   };
 
   const handleStatusConfirm = async () => {
@@ -253,11 +259,11 @@ export default function StationManagement() {
     const isActive = status === "active";
     const isDecommissioned = status === "decommissioned";
     const isMaintenance = status === "maintenance";
-    
+
     let badgeClass = "";
     let icon = null;
     let text = "";
-    
+
     if (isActive) {
       badgeClass = "bg-green-100 text-green-800";
       icon = <CheckCircle size={12} />;
@@ -275,7 +281,7 @@ export default function StationManagement() {
       icon = <XCircle size={12} />;
       text = "Không xác định";
     }
-    
+
     return (
       <span
         className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${badgeClass}`}
@@ -292,9 +298,7 @@ export default function StationManagement() {
       <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">
-              Quản lý trạm
-            </h1>
+            <h1 className="text-2xl font-bold text-gray-900">Quản lý trạm</h1>
             <p className="text-gray-600 mt-1">
               Quản lý các nhà ga tàu điện và thông tin của họ
             </p>
@@ -392,7 +396,8 @@ export default function StationManagement() {
                   <div className="flex items-center gap-2 text-xs text-gray-500">
                     <Clock size={12} />
                     <span>
-                      Đã cập nhật: {new Date(station.updatedAt).toLocaleDateString()}
+                      Đã cập nhật:{" "}
+                      {new Date(station.updatedAt).toLocaleDateString()}
                     </span>
                   </div>
                 </div>
@@ -408,17 +413,17 @@ export default function StationManagement() {
                   <button
                     onClick={() => handleStatusToggle(station)}
                     className={`flex-1 px-3 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm ${
-                      station.status === 'active' 
-                        ? 'bg-yellow-50 hover:bg-yellow-100 text-yellow-700'
-                        : station.status === 'maintenance'
-                        ? 'bg-red-50 hover:bg-red-100 text-red-700'
-                        : 'bg-green-50 hover:bg-green-100 text-green-700'
+                      station.status === "active"
+                        ? "bg-yellow-50 hover:bg-yellow-100 text-yellow-700"
+                        : station.status === "maintenance"
+                        ? "bg-red-50 hover:bg-red-100 text-red-700"
+                        : "bg-green-50 hover:bg-green-100 text-green-700"
                     }`}
                     title={`Thay đổi trạng thái từ ${station.status}`}
                   >
-                    {station.status === 'active' ? (
+                    {station.status === "active" ? (
                       <Settings size={16} />
-                    ) : station.status === 'maintenance' ? (
+                    ) : station.status === "maintenance" ? (
                       <XCircle size={16} />
                     ) : (
                       <RotateCcw size={16} />
@@ -483,7 +488,10 @@ export default function StationManagement() {
             name="stationCode"
             rules={[
               { required: true, message: "Vui lòng nhập mã trạm" },
-              { pattern: /^[A-Z0-9]+$/, message: "Mã trạm chỉ được chứa chữ in hoa và số" }
+              {
+                pattern: /^[A-Z0-9]+$/,
+                message: "Mã trạm chỉ được chứa chữ in hoa và số",
+              },
             ]}
           >
             <Input placeholder="e.g., ST001" />
@@ -494,7 +502,7 @@ export default function StationManagement() {
             name="name"
             rules={[
               { required: true, message: "Vui lòng nhập tên trạm" },
-              { min: 2, message: "Tên trạm phải có ít nhất 2 ký tự" }
+              { min: 2, message: "Tên trạm phải có ít nhất 2 ký tự" },
             ]}
           >
             <Input placeholder="Nhập tên trạm" />
@@ -505,7 +513,7 @@ export default function StationManagement() {
             name="address"
             rules={[
               { required: true, message: "Vui lòng nhập địa chỉ" },
-              { min: 10, message: "Địa chỉ phải có ít nhất 10 ký tự" }
+              { min: 10, message: "Địa chỉ phải có ít nhất 10 ký tự" },
             ]}
           >
             <Input.TextArea rows={3} placeholder="Nhập địa chỉ đầy đủ" />
@@ -517,7 +525,12 @@ export default function StationManagement() {
               name="latitude"
               rules={[
                 { required: true, message: "Vui lòng nhập vĩ độ" },
-                { type: "number", min: -90, max: 90, message: "Vĩ độ phải nằm trong khoảng từ -90 đến 90" }
+                {
+                  type: "number",
+                  min: -90,
+                  max: 90,
+                  message: "Vĩ độ phải nằm trong khoảng từ -90 đến 90",
+                },
               ]}
             >
               <InputNumber
@@ -533,7 +546,12 @@ export default function StationManagement() {
               name="longitude"
               rules={[
                 { required: true, message: "Vui lòng nhập kinh độ" },
-                { type: "number", min: -180, max: 180, message: "Kinh độ phải nằm trong khoảng từ -180 đến 180" }
+                {
+                  type: "number",
+                  min: -180,
+                  max: 180,
+                  message: "Kinh độ phải nằm trong khoảng từ -180 đến 180",
+                },
               ]}
             >
               <InputNumber
@@ -580,11 +598,15 @@ export default function StationManagement() {
               <div className="space-y-3">
                 <div>
                   <span className="text-blue-700 font-medium">Tên trạm:</span>
-                  <p className="text-blue-900 text-lg">{selectedStation.name}</p>
+                  <p className="text-blue-900 text-lg">
+                    {selectedStation.name}
+                  </p>
                 </div>
                 <div>
                   <span className="text-blue-700 font-medium">Mã trạm:</span>
-                  <p className="text-blue-900 font-mono">{selectedStation.stationCode}</p>
+                  <p className="text-blue-900 font-mono">
+                    {selectedStation.stationCode}
+                  </p>
                 </div>
                 <div>
                   <span className="text-blue-700 font-medium">Địa chỉ:</span>
@@ -602,11 +624,15 @@ export default function StationManagement() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <span className="text-green-700 font-medium">Vĩ độ:</span>
-                  <p className="text-green-900 font-mono">{selectedStation.latitude.toFixed(6)}</p>
+                  <p className="text-green-900 font-mono">
+                    {selectedStation.latitude.toFixed(6)}
+                  </p>
                 </div>
                 <div>
                   <span className="text-green-700 font-medium">Kinh độ:</span>
-                  <p className="text-green-900 font-mono">{selectedStation.longitude.toFixed(6)}</p>
+                  <p className="text-green-900 font-mono">
+                    {selectedStation.longitude.toFixed(6)}
+                  </p>
                 </div>
               </div>
             </div>
@@ -629,12 +655,20 @@ export default function StationManagement() {
                   <p className="text-gray-900">{selectedStation.stationId}</p>
                 </div>
                 <div>
-                  <span className="text-gray-700 font-medium">Được tạo vào lúc:</span>
-                  <p className="text-gray-900">{new Date(selectedStation.createdAt).toLocaleString()}</p>
+                  <span className="text-gray-700 font-medium">
+                    Được tạo vào lúc:
+                  </span>
+                  <p className="text-gray-900">
+                    {new Date(selectedStation.createdAt).toLocaleString()}
+                  </p>
                 </div>
                 <div>
-                  <span className="text-gray-700 font-medium">Cập nhật vào lúc:</span>
-                  <p className="text-gray-900">{new Date(selectedStation.updatedAt).toLocaleString()}</p>
+                  <span className="text-gray-700 font-medium">
+                    Cập nhật vào lúc:
+                  </span>
+                  <p className="text-gray-900">
+                    {new Date(selectedStation.updatedAt).toLocaleString()}
+                  </p>
                 </div>
               </div>
             </div>

@@ -16,6 +16,8 @@ import { AppContext } from "src/contexts/app.context";
 import { useGetOrderByUserId } from "src/queries/useOrder";
 import { OrderResponse, OrderStatus } from "src/types/orders.type";
 import { formatDate, formatPrice } from "src/utils/utils";
+import { useCreateVNPayMutation } from "src/queries/usePayment";
+import toast from "react-hot-toast";
 const { Title, Text } = Typography;
 
 const OrderHistory: React.FC = () => {
@@ -32,6 +34,18 @@ const OrderHistory: React.FC = () => {
   const completedOrders = orders.filter(
     (order) => order.status === OrderStatus.SUCCESSFUL
   ).length;
+
+  const useCreateVNPay = useCreateVNPayMutation();
+
+  const handlePayment = async (orderId: number) => {
+    const paymentResponse = await useCreateVNPay.mutateAsync(orderId);
+    const redirectUrl = paymentResponse?.data?.data?.paymentUrl;
+    if (redirectUrl) {
+      window.location.href = redirectUrl;
+    } else {
+      toast.error("Không nhận được URL thanh toán.");
+    }
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -106,6 +120,7 @@ const OrderHistory: React.FC = () => {
             <Button
               type="primary"
               className="!rounded-lg !bg-blue-500 hover:!bg-blue-600"
+              onClick={() => handlePayment(record.orderId)}
             >
               Thanh toán
             </Button>

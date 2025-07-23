@@ -1,0 +1,86 @@
+{
+  "title": "HCMC Metro Map",
+  "subtitle": "Interactive metro system map with real-time station information",
+  "loading": {
+    "metroMap": "Loading Metro Map...",
+    "routeData": "Loading route data...",
+    "stationList": "Loading station list...",
+    "general": "Loading..."
+  },
+  "station": {
+    "list": "Station List",
+    "noStations": "No stations available",
+    "information": "Station Information",
+    "code": "Station Code",
+    "sequence": "Sequence Order",
+    "coordinates": "Coordinates",
+    "type": "Type",
+    "stationId": "Station ID",
+    "status": {
+      "open": "Open",
+      "closed": "Closed",
+      "active": "Active",
+      "inactive": "Inactive",
+      "maintenance": "Maintenance"
+    }
+  },
+  "busStation": {
+    "show": "Show Bus Stations",
+    "hide": "Hide Bus Stations",
+    "showing": "Showing {displayed} of {total} bus stations",
+    "information": "Bus Station Information",
+    "availableRoutes": "Available Routes",
+    "notice": {
+      "title": "Bus Station Information",
+      "withRoutes": "Bus route information is displayed above. For detailed schedules and real-time updates, please check with the local bus transportation authority.",
+      "withoutRoutes": "This is a bus station. Bus schedule information is not currently available through the metro system. For bus schedules and routes, please check with the local bus transportation authority."
+    }
+  },
+  "map": {
+    "title": "Interactive Metro Map",
+    "viewDetails": "View Details"
+  },
+  "schedule": {
+    "title": "Train Schedules",
+    "departure": "Departure",
+    "arrival": "Arrival",
+    "noSchedule": "No schedules available for this station",
+    "direction": {
+      "forward": "Forward Direction",
+      "backward": "Backward Direction"
+    }
+  },
+  "route": {
+    "label": "Route:",
+    "placeholder": "Select route",
+    "info": "Route {routeId}: {routeName} ({distanceInKm}km)",
+    "totalStations": "Total stations:",
+    "name": "Route",
+    "number": "Route #{routeNum}",
+    "distance": "Distance",
+    "duration": "Duration",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "direction": "Direction",
+    "availableBusRoutes": "Available Bus Routes"
+  },
+  "common": {
+    "close": "Close",
+    "loading": "Loading...",
+    "address": "Address",
+    "distance": "Distance",
+    "status": "Status",
+    "code": "Code",
+    "sequence": "Sequence",
+    "route": "Route",
+    "type": "Type",
+    "active": "Active",
+    "inactive": "Inactive",
+    "open": "Open",
+    "closed": "Closed",
+    "coordinates": "Coordinates",
+    "stationId": "Station ID",
+    "km": "km",
+    "min": "min"
+  }
+}

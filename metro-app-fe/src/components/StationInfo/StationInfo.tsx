@@ -19,9 +19,9 @@ const StationInfoDrawer: React.FC<StationInfoDrawerProps> = ({
   selectedStation,
   sortedStations,
 }) => {
-  const { data: schedulesData, isLoading } = useGetScheduleByStationId({
-    id: Number(selectedStation?.stationId),
-  });
+  const { data: schedulesData, isLoading } = useGetScheduleByStationId(
+    Number(selectedStation?.stationId)
+  );
   const schedules = schedulesData?.data?.data;
 
   return (

@@ -93,9 +93,7 @@ const LoginPage: React.FC = () => {
             </label>
           }
           name="usernameOrEmail"
-          rules={[
-            { required: true, message: t("login.username.usernameRequired") },
-          ]}
+          rules={[{ required: true, message: t("login.username.required") }]}
           className="mb-0"
         >
           <Input
@@ -112,9 +110,7 @@ const LoginPage: React.FC = () => {
             </label>
           }
           name="password"
-          rules={[
-            { required: true, message: t("login.password.passwordRequired") },
-          ]}
+          rules={[{ required: true, message: t("login.password.required") }]}
           className="mb-0"
         >
           <Input.Password
