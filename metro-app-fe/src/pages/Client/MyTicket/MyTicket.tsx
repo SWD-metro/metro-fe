@@ -155,7 +155,7 @@ const MyTicket: React.FC = () => {
       ),
       children: (
         <Table
-          columns={getColumns(false)}
+          columns={getColumns(true)}
           dataSource={categorizedTickets.used}
           loading={isLoading}
           bordered
