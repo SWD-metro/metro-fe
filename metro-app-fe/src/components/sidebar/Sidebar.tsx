@@ -32,8 +32,18 @@ const Sidebar = () => {
   const { reset } = useContext(AppContext);
 
   const getSelectedKey = (pathname: string): string | undefined => {
-    if (pathname.startsWith("/admin")) {
-      return "1";
+    // Kiểm tra các route cụ thể trước, route chung nhất cuối cùng
+    if (pathname.startsWith("/admin/verify-student-request")) {
+      return "8";
+    }
+    if (pathname.startsWith("/admin/station-route")) {
+      return "6";
+    }
+    if (pathname.startsWith("/admin/stations")) {
+      return "7";
+    }
+    if (pathname.startsWith("/admin/feedbacks")) {
+      return "9";
     }
     if (pathname.startsWith("/admin/user")) {
       return "2";
@@ -47,14 +57,8 @@ const Sidebar = () => {
     if (pathname.startsWith("/admin/schedule")) {
       return "5";
     }
-    if (pathname.startsWith("/admin/verify-student-request")) {
-      return "6";
-    }
-    if (pathname.startsWith("/admin/station-route")) {
-      return "9";
-    }
-    if (pathname.startsWith("/admin/stations")) {
-      return "10";
+    if (pathname === "/admin" || pathname === "/admin/") {
+      return "1";
     }
     return undefined;
   };
