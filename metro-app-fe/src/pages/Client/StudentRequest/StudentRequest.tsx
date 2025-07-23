@@ -10,6 +10,7 @@ import {
   CreditCard,
   Eye,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import AddRequestModal from "src/components/RequestModal";
 import { AppContext } from "src/contexts/app.context";
 import { useGetRequestListByUser } from "src/queries/useUser";
@@ -20,6 +21,7 @@ import RequestDetailModal from "src/components/RequestDetailModal";
 const { Title, Text } = Typography;
 
 const StudentRequestPage: React.FC = () => {
+  const { t } = useTranslation("profile");
   const { profile } = useContext(AppContext);
   const userId = profile?.userId;
   const [openDetail, setOpenDetail] = useState(false);
@@ -67,13 +69,13 @@ const StudentRequestPage: React.FC = () => {
   const getStatusText = (status: RequestStatus) => {
     switch (status) {
       case RequestStatus.PENDING:
-        return "Đang chờ duyệt";
+        return t("studentRequest.status.pending");
       case RequestStatus.APPROVED:
-        return "Đã duyệt";
+        return t("studentRequest.status.approved");
       case RequestStatus.REJECTED:
-        return "Bị từ chối";
+        return t("studentRequest.status.rejected");
       default:
-        return "Không xác định";
+        return t("studentRequest.status.unknown");
     }
   };
 
@@ -112,7 +114,7 @@ const StudentRequestPage: React.FC = () => {
             <div>
               <Title level={2} className="!mb-2 !text-gray-800">
                 <FileText className="inline-block w-8 h-8 mr-3 text-blue-600" />
-                Xác nhận sinh viên - Vé Metro TP.HCM
+                {t("studentRequest.title")}
               </Title>
             </div>
             <Button
@@ -122,7 +124,7 @@ const StudentRequestPage: React.FC = () => {
               onClick={() => setIsModalVisible(true)}
               className="!bg-gradient-to-r !from-blue-600 !to-indigo-600 !border-none !h-12 !rounded-xl !shadow-lg hover:!shadow-xl !transition-all !duration-300"
             >
-              Xin xác nhận mới
+              {t("studentRequest.newRequest")}
             </Button>
           </div>
         </div>
@@ -134,7 +136,9 @@ const StudentRequestPage: React.FC = () => {
                 <Clock className="w-6 h-6 text-white" />
               </div>
               <div className="ml-4">
-                <Text className="text-gray-600 block">Đang chờ duyệt</Text>
+                <Text className="text-gray-600 block">
+                  {t("studentRequest.stats.pending")}
+                </Text>
                 <Title level={3} className="!my-0 !text-orange-600">
                   {pendingCount}
                 </Title>
@@ -148,7 +152,9 @@ const StudentRequestPage: React.FC = () => {
                 <CheckCircle className="w-6 h-6 text-white" />
               </div>
               <div className="ml-4">
-                <Text className="text-gray-600 block">Đã duyệt</Text>
+                <Text className="text-gray-600 block">
+                  {t("studentRequest.stats.approved")}
+                </Text>
                 <Title level={3} className="!my-0 !text-green-600">
                   {approvedCount}
                 </Title>
@@ -162,7 +168,9 @@ const StudentRequestPage: React.FC = () => {
                 <FileText className="w-6 h-6 text-white" />
               </div>
               <div className="ml-4">
-                <Text className="text-gray-600 block">Tổng yêu cầu</Text>
+                <Text className="text-gray-600 block">
+                  {t("studentRequest.stats.totalRequests")}
+                </Text>
                 <Title level={3} className="!my-0 !text-blue-600">
                   {totalCount}
                 </Title>
@@ -173,7 +181,7 @@ const StudentRequestPage: React.FC = () => {
 
         <Card className="!border-0 !shadow-lg !rounded-2xl">
           <Title level={3} className="!mb-6 !text-gray-800">
-            Danh sách yêu cầu xác nhận sinh viên
+            {t("studentRequest.listTitle")}
           </Title>
 
           {requests.length > 0 ? (
@@ -214,7 +222,8 @@ const StudentRequestPage: React.FC = () => {
                               <Calendar className="w-4 h-4 text-green-600" />
                             </div>
                             <Text className="text-sm font-medium">
-                              Tạo: {request.createdAt}
+                              {t("studentRequest.createdAt")}{" "}
+                              {request.createdAt}
                             </Text>
                           </div>
                         </Col>
@@ -226,7 +235,8 @@ const StudentRequestPage: React.FC = () => {
                                 <Clock className="w-4 h-4 text-orange-600" />
                               </div>
                               <Text className="text-sm font-medium">
-                                Hạn: {formatDDMMYY(request.endDate)}
+                                {t("studentRequest.deadline")}{" "}
+                                {formatDDMMYY(request.endDate)}
                               </Text>
                             </div>
                           </Col>
@@ -253,7 +263,7 @@ const StudentRequestPage: React.FC = () => {
                           setOpenDetail(true);
                         }}
                       >
-                        Chi tiết
+                        {t("studentRequest.details")}
                       </Button>
                     </div>
                   </div>
@@ -262,7 +272,7 @@ const StudentRequestPage: React.FC = () => {
             />
           ) : (
             <Empty
-              description="Chưa có yêu cầu nào"
+              description={t("studentRequest.emptyMessage")}
               className="!py-12"
               image={Empty.PRESENTED_IMAGE_SIMPLE}
             />

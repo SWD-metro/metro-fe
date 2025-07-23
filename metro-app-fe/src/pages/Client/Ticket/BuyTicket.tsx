@@ -23,6 +23,7 @@ import { useGetRouteList } from "src/queries/useRoute";
 import { AppContext } from "src/contexts/app.context";
 import { GraduationCap } from "lucide-react";
 import path from "src/constants/path";
+import { useTranslation } from "react-i18next";
 
 type TicketType = "single" | "days";
 
@@ -30,6 +31,7 @@ const { Option } = Select;
 const { TabPane } = Tabs;
 
 const BuyTicketPage: React.FC = () => {
+  const { t } = useTranslation("ticket");
   const { profile } = useContext(AppContext);
   const [selectedTicketType, setSelectedTicketType] =
     useState<TicketType>("single");
@@ -82,12 +84,12 @@ const BuyTicketPage: React.FC = () => {
 
   const handleBooking = async () => {
     if (selectedTicketType === "single" && (!fromStation || !toStation)) {
-      toast.error("Vui lòng chọn ga đi và ga đến");
+      toast.error(t("messages.selectStations"));
       return;
     }
 
     if (selectedTicketType !== "single" && !selectedTicketInfo) {
-      toast.error("Vui lòng chọn loại vé");
+      toast.error(t("messages.selectTicketType"));
       return;
     }
 
@@ -102,7 +104,7 @@ const BuyTicketPage: React.FC = () => {
         const price = fareMatrix?.price;
 
         if (!fareMatrixId || !price) {
-          toast.error("Không tìm thấy thông tin giá vé");
+          toast.error(t("messages.fareNotFound"));
           return;
         }
 
@@ -133,7 +135,7 @@ const BuyTicketPage: React.FC = () => {
         const price = selectedTicketInfo?.price;
 
         if (!ticketTypeId || !price) {
-          toast.error("Không tìm thấy loại vé hợp lệ");
+          toast.error(t("messages.ticketTypeNotFound"));
           return;
         }
 
@@ -152,7 +154,7 @@ const BuyTicketPage: React.FC = () => {
         });
       }
     } catch (error) {
-      toast.error("Error");
+      toast.error(t("messages.error"));
       console.log(error);
     }
   };
@@ -192,11 +194,10 @@ const BuyTicketPage: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-gray-800">
-                  Xác nhận sinh viên để được giảm giá vé!
+                  {t("studentVerification.title")}
                 </h3>
                 <p className="text-gray-600 text-sm mt-1">
-                  Bạn chưa xác nhận là sinh viên. Hãy gửi yêu cầu để được hưởng
-                  ưu đãi dành riêng cho sinh viên.
+                  {t("studentVerification.description")}
                 </p>
               </div>
             </div>
@@ -206,7 +207,7 @@ const BuyTicketPage: React.FC = () => {
               className="bg-blue-600 hover:bg-blue-700 rounded-xl font-semibold shadow"
               onClick={() => navigate(path.studentRequest)}
             >
-              Gửi yêu cầu sinh viên
+              {t("studentVerification.submitRequest")}
             </Button>
           </div>
         </>
@@ -223,10 +224,10 @@ const BuyTicketPage: React.FC = () => {
                   backgroundPosition: "center",
                 }}
               >
-                <h2 className="text-2xl font-bold mb-2">Đặt vé Metro</h2>
-                <p className="text-blue-100">
-                  Chọn loại vé và thông tin chuyến đi
-                </p>
+                <h2 className="text-2xl font-bold mb-2">
+                  {t("buyTicket.title")}
+                </h2>
+                <p className="text-blue-100">{t("buyTicket.subtitle")}</p>
               </div>
 
               <Tabs activeKey={selectedTicketType} onChange={handleTabChange}>
@@ -234,7 +235,7 @@ const BuyTicketPage: React.FC = () => {
                   tab={
                     <span className="flex items-center gap-2 text-base font-medium">
                       <SwapOutlined />
-                      Vé lượt
+                      {t("buyTicket.singleTicket")}
                     </span>
                   }
                   key="single"
@@ -242,10 +243,10 @@ const BuyTicketPage: React.FC = () => {
                   <div className="space-y-8 p-4 bg-white rounded-xl">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Tuyến đường
+                        {t("buyTicket.route")}
                       </label>
                       <Select
-                        placeholder="Chọn tuyến"
+                        placeholder={t("buyTicket.selectRoute")}
                         className="w-full"
                         size="large"
                         value={selectedRouteId}
@@ -267,11 +268,11 @@ const BuyTicketPage: React.FC = () => {
                       <div>
                         <label className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
                           <EnvironmentOutlined className="mr-1 text-blue-500" />
-                          Ga đi
+                          {t("buyTicket.fromStation")}
                         </label>
 
                         <Select
-                          placeholder="Chọn ga đi"
+                          placeholder={t("buyTicket.selectFromStation")}
                           value={fromStation}
                           onChange={setFromStation}
                           className="w-full"
@@ -301,7 +302,8 @@ const BuyTicketPage: React.FC = () => {
                                   >
                                     {stationInfo.name} (
                                     {stationInfo.stationCode})
-                                    {isInactive && " (Không khả dụng)"}
+                                    {isInactive &&
+                                      ` (${t("buyTicket.unavailable")})`}
                                   </div>
                                   <div
                                     style={{
@@ -335,10 +337,10 @@ const BuyTicketPage: React.FC = () => {
                       <div>
                         <label className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
                           <EnvironmentOutlined className="mr-1 text-green-500" />
-                          Ga đến
+                          {t("buyTicket.toStation")}
                         </label>
                         <Select
-                          placeholder="Chọn ga đến"
+                          placeholder={t("buyTicket.selectToStation")}
                           value={toStation}
                           onChange={setToStation}
                           className="w-full"
@@ -374,7 +376,8 @@ const BuyTicketPage: React.FC = () => {
                                     >
                                       {stationInfo.name} (
                                       {stationInfo.stationCode})
-                                      {isInactive && " (Không khả dụng)"}
+                                      {isInactive &&
+                                        ` (${t("buyTicket.unavailable")})`}
                                     </div>
                                     <div
                                       style={{
@@ -406,8 +409,7 @@ const BuyTicketPage: React.FC = () => {
                       </div>
                     </div>
                     <div className="text-xs text-gray-500 mt-2 pt-2 border-t">
-                      *Giá vé khác nhau tùy theo cặp ga. Chọn ga để xem giá
-                      chính xác.
+                      {t("buyTicket.priceNote")}
                     </div>
                   </div>
                 </TabPane>
@@ -416,7 +418,7 @@ const BuyTicketPage: React.FC = () => {
                   tab={
                     <span className="flex items-center gap-2">
                       <CreditCardOutlined />
-                      Các loại vé khác
+                      {t("buyTicket.multiDayTicket")}
                     </span>
                   }
                   key="days"
@@ -424,10 +426,11 @@ const BuyTicketPage: React.FC = () => {
                   {selectedTicketInfo && (
                     <div className="flex justify-between items-center bg-blue-50 p-3 rounded-lg mb-4">
                       <span className="text-sm text-blue-500">
-                        Đã chọn: <strong>{selectedTicketInfo.name}</strong>
+                        {t("buyTicket.selected")}{" "}
+                        <strong>{selectedTicketInfo.name}</strong>
                       </span>
                       <Button type="primary" onClick={resetTicketSelection}>
-                        Bỏ chọn
+                        {t("buyTicket.deselect")}
                       </Button>
                     </div>
                   )}
@@ -488,7 +491,9 @@ const BuyTicketPage: React.FC = () => {
                                     {formatPrice(ticket.price)}
                                   </p>
                                   <p className="text-2xl font-bold text-green-400">
-                                    Hiệu lực: {ticket.validityDuration} ngày
+                                    {t("buyTicket.validity")}{" "}
+                                    {ticket.validityDuration}{" "}
+                                    {t("buyTicket.days")}
                                   </p>
                                 </div>
                               </div>
@@ -506,7 +511,7 @@ const BuyTicketPage: React.FC = () => {
             <Card className="shadow-lg border-0 rounded-xl">
               <div className="text-center mb-6">
                 <h3 className="text-xl font-bold text-cyan-800 mb-2">
-                  Thông tin đặt vé
+                  {t("buyTicket.bookingInfo")}
                 </h3>
                 <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-green-500 mx-auto rounded"></div>
               </div>
@@ -515,10 +520,24 @@ const BuyTicketPage: React.FC = () => {
                 {selectedTicketType === "single" &&
                   fromStation &&
                   toStation && (
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm text-cyan-800">Tuyến:</span>
-                        <span className="font-medium text-sm">
+                    <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-1">
+                        <span className="text-sm text-cyan-800">
+                          {t("buyTicket.routeLabel")}
+                        </span>
+                        <span
+                          className="font-medium text-sm text-ellipsis overflow-hidden whitespace-nowrap max-w-full sm:max-w-[70%]"
+                          title={`${
+                            stationRoutesList.find(
+                              (s) =>
+                                s.stationsResponse.stationId === fromStation
+                            )?.stationsResponse.name
+                          } → ${
+                            stationRoutesList.find(
+                              (s) => s.stationsResponse.stationId === toStation
+                            )?.stationsResponse.name
+                          }`}
+                        >
                           {
                             stationRoutesList.find(
                               (s) =>
@@ -533,11 +552,12 @@ const BuyTicketPage: React.FC = () => {
                           }
                         </span>
                       </div>
+
                       <div className="flex items-center justify-between">
                         <span className="text-sm text-cyan-800">
-                          Giá vé lượt:
+                          {t("buyTicket.singleTicketPrice")}
                         </span>
-                        <span className="font-bold text-blue-600">
+                        <span className="font-bold text-blue-600 text-base">
                           {formatPrice(
                             getSingleTicketPrice(fromStation, toStation)
                           )}
@@ -549,21 +569,28 @@ const BuyTicketPage: React.FC = () => {
                 {selectedTicketType !== "single" && selectedTicketInfo && (
                   <div className="bg-gray-50 p-4 rounded-lg">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm text-cyan-800">Loại vé:</span>
+                      <span className="text-sm text-cyan-800">
+                        {t("buyTicket.ticketType")}
+                      </span>
                       <span className="font-medium text-sm">
                         {selectedTicketInfo.name}
                       </span>
                     </div>
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm text-cyan-800">Giá vé:</span>
+                      <span className="text-sm text-cyan-800">
+                        {t("buyTicket.ticketPrice")}
+                      </span>
                       <span className="font-bold text-blue-600">
                         {formatPrice(selectedTicketInfo.price)}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-cyan-800">Hiệu lực:</span>
+                      <span className="text-sm text-cyan-800">
+                        {t("buyTicket.validityLabel")}
+                      </span>
                       <span className="font-medium text-sm">
-                        {selectedTicketInfo.validityDuration} ngày
+                        {selectedTicketInfo.validityDuration}{" "}
+                        {t("buyTicket.days")}
                       </span>
                     </div>
                   </div>
@@ -571,7 +598,7 @@ const BuyTicketPage: React.FC = () => {
 
                 <div className="border-t pt-4">
                   <div className="flex items-center justify-between text-lg font-bold">
-                    <span>Tổng tiền:</span>
+                    <span>{t("buyTicket.totalAmount")}</span>
                     <span className="text-2xl text-blue-600">
                       {formatPrice(calculatePrice())}
                     </span>
@@ -589,7 +616,7 @@ const BuyTicketPage: React.FC = () => {
                     (selectedTicketType !== "single" && !selectedTicketInfo)
                   }
                 >
-                  Mua vé ngay
+                  {t("buyTicket.buyNow")}
                 </Button>
               </div>
 

@@ -1,0 +1,101 @@
+{
+  "myTicket": {
+    "title": "Vé của tôi",
+    "description": "Quản lý và theo dõi tất cả vé của bạn tại đây",
+    "ticketName": "Tên vé",
+    "ticketCode": "Mã code",
+    "action": "Hành động",
+    "upgrade": "Nâng cấp",
+    "tabs": {
+      "notUsed": "Chưa sử dụng",
+      "used": "Đã sử dụng",
+      "expired": "Hết hạn"
+    },
+    "emptyMessages": {
+      "notUsed": "Tất cả vé của bạn đã được sử dụng hoặc hết hạn",
+      "used": "Bạn chưa sử dụng vé nào",
+      "expired": "Không có vé nào hết hạn"
+    }
+  },
+  "orderHistory": {
+    "title": "Lịch sử giao dịch",
+    "transactionCode": "Mã giao dịch",
+    "amount": "Số tiền",
+    "orderDate": "Ngày đặt",
+    "paymentMethod": "Phương thức thanh toán",
+    "status": "Trạng thái",
+    "action": "Hành động",
+    "payment": "Thanh toán",
+    "paymentError": "Không nhận được URL thanh toán.",
+    "unknown": "Không rõ",
+    "stats": {
+      "totalOrders": "Tổng số đơn",
+      "completed": "Đã hoàn thành",
+      "totalSpent": "Tổng chi tiêu"
+    },
+    "emptyMessage": "Không có giao dịch nào"
+  },
+  "studentRequest": {
+    "title": "Xác nhận sinh viên - Vé Metro TP.HCM",
+    "newRequest": "Xin xác nhận mới",
+    "stats": {
+      "pending": "Đang chờ duyệt",
+      "approved": "Đã duyệt",
+      "totalRequests": "Tổng yêu cầu"
+    },
+    "listTitle": "Danh sách yêu cầu xác nhận sinh viên",
+    "details": "Chi tiết",
+    "status": {
+      "pending": "Đang chờ duyệt",
+      "approved": "Đã duyệt",
+      "rejected": "Bị từ chối",
+      "unknown": "Không xác định"
+    },
+    "createdAt": "Tạo:",
+    "deadline": "Hạn:",
+    "emptyMessage": "Chưa có yêu cầu nào"
+  },
+  "feedback": {
+    "title": "Góp ý & Phản hồi",
+    "sendFeedback": "Gửi phản hồi",
+    "stats": {
+      "pending": "Đang chờ phản hồi",
+      "replied": "Đã phản hồi",
+      "totalFeedback": "Tổng phản hồi"
+    },
+    "listTitle": "Danh sách phản hồi",
+    "sentAt": "Gửi lúc:",
+    "adminReply": "Phản hồi từ admin:",
+    "status": {
+      "replied": "Đã phản hồi",
+      "pending": "Đang chờ"
+    },
+    "emptyMessage": "Chưa có phản hồi nào"
+  },
+  "mainContent": {
+    "accountInfo": "Thông tin tài khoản",
+    "personalData": "Dữ liệu cá nhân",
+    "fullName": "Tên đầy đủ",
+    "email": "Email",
+    "verification": {
+      "verified": "Đã xác thực",
+      "emailVerified": "Email",
+      "highSecurity": "Bảo mật cao",
+      "twoFactorEnabled": "2FA được bật",
+      "member": "Thành viên",
+      "memberSince": "Từ"
+    }
+  },
+  "sidebar": {
+    "account": "Tài khoản",
+    "myTickets": "Vé của tôi",
+    "orderHistory": "Lịch sử giao dịch",
+    "studentVerification": "Xác nhận sinh viên",
+    "feedback": "Đánh giá"
+  },
+  "userDropdown": {
+    "profile": "Hồ sơ",
+    "myTickets": "Vé của tôi",
+    "logout": "Đăng xuất"
+  }
+}

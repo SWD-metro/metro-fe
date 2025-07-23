@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { formatPrice } from "src/utils/utils";
-import React, { useContext, useState } from "react";
-import { Button, Col, Row, Select } from "antd";
+import React, { useContext } from "react";
+import { Button, Col, Row } from "antd";
 import {
   useGetFareMatrixById,
   useGetTicketTypeById,
@@ -11,19 +11,17 @@ import {
   useCreateOrderDaysMutation,
   useCreateOrderSingleMutation,
 } from "src/queries/useOrder";
-import {
-  useCreateVNPayMutation,
-  useGetPaymentMethodList,
-} from "src/queries/usePayment";
+import { useCreateVNPayMutation } from "src/queries/usePayment";
 import toast from "react-hot-toast";
 import {
   OrderTicketDaysRequest,
   OrderTicketSingleRequest,
 } from "src/types/orders.type";
-
-const { Option } = Select;
+import { BankOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
 const OrderPage: React.FC = () => {
+  const { t } = useTranslation("ticket");
   const location = useLocation();
   const {
     type,
@@ -37,9 +35,6 @@ const OrderPage: React.FC = () => {
     quantity: number;
   } = location.state || {};
   const { profile } = useContext(AppContext);
-  const [paymentMethod, setPaymentMethod] = useState<number>(1);
-  const { data: paymentMethodData } = useGetPaymentMethodList();
-  const paymentMethods = paymentMethodData?.data.data;
 
   const useCreateOrderSingle = useCreateOrderSingleMutation();
   const useCreateOrderDays = useCreateOrderDaysMutation();
@@ -58,7 +53,7 @@ const OrderPage: React.FC = () => {
 
   const handlePayment = async () => {
     if (!profile) {
-      toast.error("Vui lòng đăng nhập để thanh toán.");
+      toast.error(t("orderPage.loginRequired"));
       return;
     }
 
@@ -68,24 +63,24 @@ const OrderPage: React.FC = () => {
       let orderResponse;
       if (type === "single") {
         if (!fareMatrixId) {
-          toast.error("Không tìm thấy thông tin giá vé");
+          toast.error(t("orderPage.fareInfoNotFound"));
           return;
         }
         orderPayload = {
           userId: profile.userId,
           fareMatrixId: { id: fareMatrixId },
-          paymentMethodId: paymentMethod,
+          paymentMethodId: 1,
         };
         orderResponse = await useCreateOrderSingle.mutateAsync(orderPayload);
       } else {
         if (!ticketTypeId) {
-          toast.error("Không tìm thấy loại vé hợp lệ");
+          toast.error(t("orderPage.ticketTypeNotFound"));
           return;
         }
         orderPayload = {
           userId: profile.userId,
           ticketId: { id: ticketTypeId },
-          paymentMethodId: paymentMethod,
+          paymentMethodId: 1,
         };
         orderResponse = await useCreateOrderDays.mutateAsync(orderPayload);
       }
@@ -98,57 +93,62 @@ const OrderPage: React.FC = () => {
         if (redirectUrl) {
           window.location.href = redirectUrl;
         } else {
-          toast.error("Không nhận được URL thanh toán.");
+          toast.error(t("orderPage.paymentUrlNotReceived"));
         }
       }
     } catch (error) {
-      toast.error("Lỗi khi tạo vé");
+      toast.error(t("orderPage.errorCreatingTicket"));
       console.log(error);
     }
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-8 bg-white rounded-2xl my-20 border-2 border-blue-100">
+    <div className="max-w-3xl mx-auto p-8 bg-white rounded-2xl my-20 border-2 border-blue-100 shadow-md">
       <h1 className="text-3xl font-bold text-center text-blue-600 mb-8">
-        Xác nhận mua vé
+        {t("orderPage.title")}
       </h1>
 
-      <div className="space-y-4 text-[16px]">
+      <div className="space-y-6 text-[16px]">
         {type === "single" && fareMatrix && (
-          <div className="p-4 rounded-lg border">
-            <h2 className="text-lg font-semibold text-gray-800 mb-3">
-              Thông tin vé lượt
+          <div className="p-6 rounded-xl border border-blue-100 bg-blue-50/30">
+            <h2 className="text-lg font-semibold text-blue-700 mb-4">
+              {t("orderPage.singleTicketInfo")}
             </h2>
             <Row gutter={[0, 12]}>
               <Col span={12} className="text-gray-600">
-                Tuyến:
+                {t("orderPage.route")}
               </Col>
               <Col span={12} className="font-medium">
                 {fareMatrix.name}
               </Col>
 
               <Col span={12} className="text-gray-600">
-                Giá vé 1 lượt:
+                {t("orderPage.singleTicketPrice")}
               </Col>
               <Col span={12} className="text-blue-600 font-bold">
                 {formatPrice(fareMatrix.price)}
               </Col>
 
               <Col span={12} className="text-gray-600">
-                Số lượng:
+                {t("orderPage.quantity")}
               </Col>
-              <Col span={12} className="font-medium">
-                {quantity}
+              <Col span={12}>{quantity}</Col>
+
+              <Col span={12} className="text-gray-600">
+                {t("orderPage.purchaseDate")}
+              </Col>
+              <Col span={12}>
+                {new Date(fareMatrix.createdAt).toLocaleDateString("vi-VN")}
               </Col>
 
               <Col span={24}>
-                <div className="border-t my-2"></div>
+                <div className="border-t my-3"></div>
               </Col>
 
-              <Col span={12} className="text-gray-600 !text-lg">
-                Tổng tiền:
+              <Col span={12} className="text-lg text-gray-800 font-semibold">
+                {t("orderPage.totalAmount")}
               </Col>
-              <Col span={12} className="text-red-600 font-bold !text-lg">
+              <Col span={12} className="text-lg font-bold text-red-600">
                 {formatPrice(fareMatrix.price * quantity)}
               </Col>
             </Row>
@@ -156,68 +156,69 @@ const OrderPage: React.FC = () => {
         )}
 
         {type === "days" && ticketType && (
-          <div className="bg-gray-50 p-4 rounded-lg border">
-            <h2 className="text-lg font-semibold text-gray-800 mb-3">
-              Thông tin vé
+          <div className="p-6 rounded-xl border border-yellow-100 bg-yellow-50/40">
+            <h2 className="text-lg font-semibold text-yellow-700 mb-4">
+              {t("orderPage.multiDayTicketInfo")}
             </h2>
             <Row gutter={[0, 12]}>
               <Col span={12} className="text-gray-600">
-                Loại vé:
+                {t("orderPage.ticketType")}
               </Col>
               <Col span={12} className="font-medium">
                 {ticketType.name}
               </Col>
 
               <Col span={12} className="text-gray-600">
-                Mã vé:
+                {t("orderPage.ticketCode")}
               </Col>
               <Col span={12}>{ticketTypeId}</Col>
 
               <Col span={12} className="text-gray-600">
-                Hiệu lực:
+                {t("orderPage.validity")}
               </Col>
-              <Col span={12}>{ticketType.validityDuration} ngày</Col>
+              <Col span={12}>
+                {ticketType.validityDuration} {t("orderPage.days")}
+              </Col>
 
               <Col span={12} className="text-gray-600">
-                Giá vé:
+                {t("orderPage.description")}
+              </Col>
+              <Col span={12} className="text-gray-700 italic">
+                {ticketType.description}
+              </Col>
+
+              <Col span={12} className="text-gray-600">
+                {t("orderPage.ticketPrice")}
               </Col>
               <Col span={12} className="text-red-600 font-bold">
                 {formatPrice(ticketType.price)}
               </Col>
+
+              <Col span={12} className="text-gray-600">
+                {t("orderPage.forStudents")}
+              </Col>
+              <Col span={12}>
+                {ticketType.forStudent ? t("orderPage.yes") : t("orderPage.no")}
+              </Col>
+
+              <Col span={12} className="text-gray-600">
+                {t("orderPage.createdDate")}
+              </Col>
+              <Col span={12}>
+                {new Date(ticketType.createdAt).toLocaleDateString("vi-VN")}
+              </Col>
             </Row>
           </div>
         )}
-
-        <div className="pt-6 border-t mt-4">
-          <h2 className="text-lg font-semibold text-gray-800 mb-3">
-            Chọn phương thức thanh toán
-          </h2>
-          <Select
-            value={paymentMethod}
-            onChange={setPaymentMethod}
-            size="large"
-            className="w-full"
-            placeholder="Chọn phương thức thanh toán"
-          >
-            {paymentMethods?.map((method) => (
-              <Option
-                key={method.paymentMethodName}
-                value={method.paymentMethodId}
-              >
-                {method.paymentMethodName}
-              </Option>
-            ))}
-          </Select>
-        </div>
       </div>
 
       <Button
         type="primary"
         size="large"
-        className="w-full mt-6 rounded-xl font-semibold"
+        className="w-full mt-8 rounded-xl font-semibold shadow-md"
         onClick={handlePayment}
       >
-        Thanh toán ngay
+        {t("orderPage.payNowVNPay")} <BankOutlined />
       </Button>
     </div>
   );

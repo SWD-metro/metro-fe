@@ -5,7 +5,6 @@ import AdminLayout from "src/layouts/adminLayout/AdminLayout";
 import AuthLayout from "src/layouts/AuthLayout";
 import MainLayout from "src/layouts/MainLayout";
 import Dashboard from "src/pages/admin/Dashboard";
-import Manage from "src/pages/admin/Manage";
 import LoginPage from "src/pages/Auth/Login";
 import RegisterPage from "src/pages/Auth/Register";
 import VerifyOtpPage from "src/pages/Auth/VerifyOtp";
@@ -135,10 +134,6 @@ const RouteElements: React.FC = () => {
           children: [
             {
               index: true,
-              element: <MainContent />,
-            },
-            {
-              path: "dashboard",
               element: <Dashboard />,
             },
             {

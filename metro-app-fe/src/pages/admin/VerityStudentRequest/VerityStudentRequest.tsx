@@ -245,9 +245,9 @@ const VerifyStudentRequest: React.FC = () => {
 
   return (
     <Layout className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
-      <Content className="w-full max-w-7xl mx-auto p-6">
+      <Content className="w-full max-w-7xl mx-auto p-2">
         <div className="mb-8">
-          <div className="flex items-center space-x-3 mb-2">
+          <div className="flex items-center space-x-3 mb-2 mt-4">
             <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
               <GraduationCap className="w-6 h-6 text-white" />
             </div>
