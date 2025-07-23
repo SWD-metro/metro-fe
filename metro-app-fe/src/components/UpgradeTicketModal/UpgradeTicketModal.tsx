@@ -34,7 +34,7 @@ const UpgradeTicketModal: React.FC<UpgradeTicketModalProps> = ({
   orderId,
   ticket,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("ticket");
   const [selectedEndStationId, setSelectedEndStationId] = useState<
     number | null
   >(null);
