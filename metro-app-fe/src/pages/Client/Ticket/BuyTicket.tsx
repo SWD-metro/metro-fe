@@ -455,6 +455,7 @@ const BuyTicketPage: React.FC = () => {
                                 profile?.isStudent === true) &&
                               ticket.price > 0
                           )
+                          .filter((ticket) => ticket.isActive)
                           .map((ticket) => (
                             <div key={ticket.id} className="relative">
                               <Radio

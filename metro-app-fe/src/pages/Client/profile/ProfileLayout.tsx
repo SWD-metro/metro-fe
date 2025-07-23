@@ -13,7 +13,10 @@ const ProfileLayout: React.FC = () => {
         className="min-h-screen"
         style={{ backgroundImage: `url(${background})` }}
       >
-        <Layout className="!min-h-screen max-w-7xl mx-auto !bg-transparent rounded-3xl overflow-hidden">
+        <Layout
+          className="!min-h-screen mx-auto !bg-transparent rounded-3xl overflow-hidden"
+          style={{ width: "80%", margin: "0 auto" }}
+        >
           <Sider
             width={320}
             className="!bg-transparent "

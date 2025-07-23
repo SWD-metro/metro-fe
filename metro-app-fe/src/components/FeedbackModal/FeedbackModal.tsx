@@ -13,6 +13,7 @@ import {
 } from "antd";
 import { UploadIcon, X, CheckCircle, MessageCircle } from "lucide-react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { compressImage, convertFileToBase64 } from "src/utils/utils";
 import { useCreateFeedbackMutation } from "src/queries/useUser";
 import { FeedbackCreationRequest } from "src/types/user.type";
@@ -32,6 +33,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({
   onClose,
   onSubmitted,
 }) => {
+  const { t } = useTranslation("profile");
   const [form] = Form.useForm();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
@@ -44,7 +46,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({
     try {
       const compressed = await compressImage(file);
       if (!compressed) {
-        toast.error("Không thể nén ảnh phản hồi!");
+        toast.error(t("feedbackForm.errors.cannotCompressImage"));
         return false;
       }
 
@@ -52,9 +54,9 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({
       setImageFile(compressed);
       setImageBase64(base64);
       setImagePreview(URL.createObjectURL(compressed));
-      toast.success("Tải ảnh thành công!");
+      toast.success(t("feedbackForm.success.imageUploaded"));
     } catch (err) {
-      toast.error("Tải ảnh thất bại!");
+      toast.error(t("feedbackForm.errors.imageUploadFailed"));
     } finally {
       setUploading(false);
     }
@@ -64,7 +66,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({
   const removeImage = () => {
     setImageFile(null);
     setImagePreview("");
-    toast("Đã xoá ảnh đính kèm");
+    toast(t("feedbackForm.success.imageRemoved"));
   };
 
   const handleSubmit = async (values: FeedbackCreationRequest) => {
@@ -78,13 +80,13 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({
       };
 
       await feedbackMutation.mutateAsync(data);
-      toast.success("Gửi phản hồi thành công!");
+      toast.success(t("feedbackForm.success.submitted"));
       form.resetFields();
       removeImage();
       onSubmitted();
       onClose();
     } catch (err) {
-      toast.error("Lỗi khi gửi phản hồi");
+      toast.error(t("feedbackForm.errors.submitFailed"));
     }
   };
 
@@ -98,7 +100,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({
       title={
         <div className="flex items-center text-xl font-semibold text-gray-800">
           <MessageCircle className="w-5 h-5 mr-2 text-teal-600" />
-          Gửi phản hồi
+          {t("feedbackForm.title")}
         </div>
       }
     >
@@ -111,25 +113,35 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({
       >
         <Form.Item
           name="category"
-          label="Loại phản hồi"
-          rules={[{ required: true, message: "Vui lòng chọn loại" }]}
+          label={t("feedbackForm.fields.category.label")}
+          rules={[
+            {
+              required: true,
+              message: t("feedbackForm.fields.category.required"),
+            },
+          ]}
         >
-          <Input placeholder="VD: Góp ý, Lỗi hệ thống,..." />
+          <Input placeholder={t("feedbackForm.fields.category.placeholder")} />
         </Form.Item>
 
         <Form.Item
           name="content"
-          label="Nội dung"
-          rules={[{ required: true, message: "Vui lòng nhập nội dung" }]}
+          label={t("feedbackForm.fields.content.label")}
+          rules={[
+            {
+              required: true,
+              message: t("feedbackForm.fields.content.required"),
+            },
+          ]}
         >
           <TextArea
             rows={4}
-            placeholder="Nhập nội dung phản hồi tại đây..."
+            placeholder={t("feedbackForm.fields.content.placeholder")}
             className="!rounded-lg"
           />
         </Form.Item>
 
-        <Form.Item label="Hình ảnh minh hoạ (tuỳ chọn)">
+        <Form.Item label={t("feedbackForm.fields.image.label")}>
           {!imageFile ? (
             <Dragger
               beforeUpload={handleUpload}
@@ -142,10 +154,12 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({
                   <UploadIcon className="w-12 h-12 text-teal-500 mx-auto" />
                 </p>
                 <p className="ant-upload-text">
-                  {uploading ? "Đang xử lý..." : "Nhấn hoặc kéo thả để tải ảnh"}
+                  {uploading
+                    ? t("feedbackForm.upload.processing")
+                    : t("feedbackForm.upload.dragText")}
                 </p>
                 <p className="ant-upload-hint">
-                  Hỗ trợ: JPG, PNG, GIF (Tối đa 5MB)
+                  {t("feedbackForm.upload.supportedFormats")}
                 </p>
               </Spin>
             </Dragger>
@@ -154,7 +168,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({
               <div className="relative">
                 <Image
                   src={imagePreview}
-                  alt="Ảnh phản hồi"
+                  alt={t("feedbackForm.upload.imageAlt")}
                   className="!rounded-lg w-full"
                   style={{ maxHeight: "200px", objectFit: "cover" }}
                   preview={true}
@@ -186,7 +200,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({
             disabled={feedbackMutation.isPending}
             className="!rounded-lg !px-8"
           >
-            Huỷ
+            {t("common.cancel")}
           </Button>
           <Button
             type="primary"
@@ -195,7 +209,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({
             loading={feedbackMutation.isPending}
             className="!rounded-lg !px-8"
           >
-            Gửi phản hồi
+            {t("feedbackForm.actions.submit")}
           </Button>
         </div>
       </Form>

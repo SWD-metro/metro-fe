@@ -17,6 +17,7 @@ import UpgradeTicketModal from "src/components/UpgradeTicketModal";
 import { useGetTicketByUser } from "src/queries/useTicket";
 import { OrderDetailResponse } from "src/types/orders.type";
 import { TicketStatus } from "src/types/tickets.type";
+import { formatDate } from "src/utils/utils";
 
 const { Title } = Typography;
 
@@ -74,6 +75,17 @@ const MyTicket: React.FC = () => {
         </span>
       ),
     },
+    {
+      title: t("myTicket.time"),
+      dataIndex: ["ticket", "createdAt"],
+      key: "createdAt",
+      ellipsis: true,
+      render: (createdAt: string) => (
+        <span className="font-medium text-gray-800">
+          {formatDate(createdAt)}
+        </span>
+      ),
+    },
     ...(showAction
       ? [
           {
@@ -88,14 +100,16 @@ const MyTicket: React.FC = () => {
               return (
                 <Space>
                   <QRModal ticket={record.ticket} />
-                  <Button
-                    type="primary"
-                    icon={<ArrowUp size={16} />}
-                    onClick={() => handleUpgradeClick(record)}
-                    className="!bg-gradient-to-r !from-cyan-500 !to-blue-600 hover:!from-cyan-600 hover:!to-blue-700 !border-0 !shadow-md !hover:shadow-lg !transition-all !transform hover:!scale-105 active:!scale-95 !duration-200"
-                  >
-                    {t("myTicket.upgrade")}
-                  </Button>
+                  {record.ticket.ticketTypeId === 5 && (
+                    <Button
+                      type="primary"
+                      icon={<ArrowUp size={16} />}
+                      onClick={() => handleUpgradeClick(record)}
+                      className="!bg-gradient-to-r !from-cyan-500 !to-blue-600 hover:!from-cyan-600 hover:!to-blue-700 !border-0 !shadow-md !hover:shadow-lg !transition-all !transform hover:!scale-105 active:!scale-95 !duration-200"
+                    >
+                      {t("myTicket.upgrade")}
+                    </Button>
+                  )}
                 </Space>
               );
             },
@@ -155,7 +169,7 @@ const MyTicket: React.FC = () => {
       ),
       children: (
         <Table
-          columns={getColumns(false)}
+          columns={getColumns(true)}
           dataSource={categorizedTickets.used}
           loading={isLoading}
           bordered

@@ -169,18 +169,6 @@ const OrderPage: React.FC = () => {
               </Col>
 
               <Col span={12} className="text-gray-600">
-                {t("orderPage.ticketCode")}
-              </Col>
-              <Col span={12}>{ticketTypeId}</Col>
-
-              <Col span={12} className="text-gray-600">
-                {t("orderPage.validity")}
-              </Col>
-              <Col span={12}>
-                {ticketType.validityDuration} {t("orderPage.days")}
-              </Col>
-
-              <Col span={12} className="text-gray-600">
                 {t("orderPage.description")}
               </Col>
               <Col span={12} className="text-gray-700 italic">

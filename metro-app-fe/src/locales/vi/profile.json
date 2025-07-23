@@ -4,6 +4,7 @@
     "description": "Quản lý và theo dõi tất cả vé của bạn tại đây",
     "ticketName": "Tên vé",
     "ticketCode": "Mã code",
+    "time": "Thời gian mua",
     "action": "Hành động",
     "upgrade": "Nâng cấp",
     "tabs": {
@@ -118,5 +119,113 @@
     "cancel": "Hủy",
     "payWithVNPay": "Thanh toán qua VNPay",
     "currency": "VND"
+  },
+  "common": {
+    "cancel": "Huỷ"
+  },
+  "feedbackForm": {
+    "title": "Gửi phản hồi",
+    "fields": {
+      "category": {
+        "label": "Loại phản hồi",
+        "placeholder": "VD: Góp ý, Lỗi hệ thống,...",
+        "required": "Vui lòng chọn loại"
+      },
+      "content": {
+        "label": "Nội dung",
+        "placeholder": "Nhập nội dung phản hồi tại đây...",
+        "required": "Vui lòng nhập nội dung"
+      },
+      "image": {
+        "label": "Hình ảnh minh hoạ (tuỳ chọn)"
+      }
+    },
+    "upload": {
+      "processing": "Đang xử lý...",
+      "dragText": "Nhấn hoặc kéo thả để tải ảnh",
+      "supportedFormats": "Hỗ trợ: JPG, PNG, GIF (Tối đa 5MB)",
+      "imageAlt": "Ảnh phản hồi"
+    },
+    "actions": {
+      "submit": "Gửi phản hồi"
+    },
+    "success": {
+      "imageUploaded": "Tải ảnh thành công!",
+      "imageRemoved": "Đã xoá ảnh đính kèm",
+      "submitted": "Gửi phản hồi thành công!"
+    },
+    "errors": {
+      "cannotCompressImage": "Không thể nén ảnh phản hồi!",
+      "imageUploadFailed": "Tải ảnh thất bại!",
+      "submitFailed": "Lỗi khi gửi phản hồi"
+    }
+  },
+  "request": {
+    "title": "Xin xác nhận sinh viên - Metro HCMC",
+    "fields": {
+      "content": {
+        "label": "Nội dung",
+        "placeholder": "Ví dụ: Tôi cần xin giấy xác nhận sinh viên để đăng ký mua vé tháng metro với giá ưu đãi cho sinh viên..."
+      },
+      "citizenId": {
+        "label": "Số CCCD/CMND",
+        "placeholder": "Nhập số CCCD (12 chữ số)",
+        "required": "Vui lòng nhập số CCCD/CMND.",
+        "pattern": "Số CCCD phải gồm đúng 12 chữ số."
+      },
+      "endDate": {
+        "label": "Ngày hết hạn thẻ sinh viên",
+        "placeholder": "Chọn ngày"
+      },
+      "studentCard": {
+        "label": "Hình ảnh thẻ sinh viên"
+      },
+      "citizenIdImage": {
+        "label": "Hình ảnh CCCD/CMND"
+      }
+    },
+    "upload": {
+      "processing": "Đang xử lý...",
+      "dragText": "Nhấn hoặc kéo thả để tải lên",
+      "supportedFormats": "Hỗ trợ: JPG, PNG, GIF (Tối đa 5MB)",
+      "studentCardAlt": "Thẻ sinh viên",
+      "citizenIdAlt": "CCCD/CMND"
+    },
+    "actions": {
+      "submit": "Gửi yêu cầu xác nhận",
+      "submitting": "Đang gửi..."
+    },
+    "success": {
+      "studentCardUploaded": "Đã tải lên thẻ sinh viên thành công!",
+      "citizenIdUploaded": "Đã tải lên CCCD/CMND thành công!",
+      "studentCardRemoved": "Đã xóa hình ảnh thẻ sinh viên",
+      "citizenIdRemoved": "Đã xóa hình ảnh CCCD/CMND",
+      "submitted": "Đã gửi yêu cầu xác nhận sinh viên thành công!"
+    },
+    "errors": {
+      "cannotCompressStudentCard": "Không thể nén ảnh thẻ sinh viên!",
+      "cannotCompressCitizenId": "Không thể nén ảnh CCCD/CMND!",
+      "studentCardUploadFailed": "Có lỗi khi tải lên thẻ sinh viên!",
+      "citizenIdUploadFailed": "Có lỗi khi tải lên CCCD/CMND!",
+      "missingImages": "Vui lòng tải lên đầy đủ hình ảnh!",
+      "submitFailed": "Có lỗi xảy ra khi gửi yêu cầu!"
+    }
+  },
+  "requestDetail": {
+    "sections": {
+      "description": "Mô tả yêu cầu",
+      "attachedImages": "Hình ảnh đính kèm",
+      "timeInfo": "Thông tin thời gian"
+    },
+    "images": {
+      "studentCard": "Thẻ sinh viên",
+      "citizenId": "Căn cước công dân",
+      "studentCardAlt": "Thẻ sinh viên",
+      "citizenIdAlt": "CCCD"
+    },
+    "time": {
+      "createdDate": "Ngày tạo",
+      "processingDeadline": "Hạn xử lý"
+    }
   }
 }

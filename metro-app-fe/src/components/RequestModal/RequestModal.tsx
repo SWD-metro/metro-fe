@@ -23,6 +23,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
 import { useCreateStudentRequestMutation } from "src/queries/useUser";
 import toast from "react-hot-toast";
 import {
@@ -46,6 +47,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
   onCancel,
   onSubmit,
 }) => {
+  const { t } = useTranslation("profile");
   const [form] = Form.useForm();
   const [studentCardFile, setStudentCardFile] = useState<File | null>(null);
   const [citizenIdFile, setCitizenIdFile] = useState<File | null>(null);
@@ -63,7 +65,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
       const compressedFile = await compressImage(file);
 
       if (!compressedFile) {
-        toast.error("Không thể nén ảnh thẻ sinh viên!");
+        toast.error(t("request.errors.cannotCompressStudentCard"));
         return false;
       }
       const base64 = await convertFileToBase64(compressedFile);
@@ -71,9 +73,9 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
       setStudentCardFile(compressedFile);
       setStudentCardBase64(base64);
       setStudentCardPreview(URL.createObjectURL(compressedFile));
-      toast.success("Đã tải lên thẻ sinh viên thành công!");
+      toast.success(t("request.success.studentCardUploaded"));
     } catch (error) {
-      toast.error("Có lỗi khi tải lên thẻ sinh viên!");
+      toast.error(t("request.errors.studentCardUploadFailed"));
       console.error("Student card upload error:", error);
     } finally {
       setUploadingStudentCard(false);
@@ -87,7 +89,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
       const compressedFile = await compressImage(file);
 
       if (!compressedFile) {
-        toast.error("Không thể nén ảnh CCCD/CMND!");
+        toast.error(t("request.errors.cannotCompressCitizenId"));
         return false;
       }
 
@@ -96,9 +98,9 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
       setCitizenIdFile(compressedFile);
       setCitizenIdBase64(base64);
       setCitizenIdPreview(URL.createObjectURL(compressedFile));
-      toast.success("Đã tải lên CCCD/CMND thành công!");
+      toast.success(t("request.success.citizenIdUploaded"));
     } catch (error) {
-      toast.error("Có lỗi khi tải lên CCCD/CMND!");
+      toast.error(t("request.errors.citizenIdUploadFailed"));
       console.error("Citizen ID upload error:", error);
     } finally {
       setUploadingCitizenId(false);
@@ -110,7 +112,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
     if (useCreateStudentRequest.isPending) return;
 
     if (!studentCardFile || !citizenIdFile) {
-      toast.error("Vui lòng tải lên đầy đủ hình ảnh!");
+      toast.error(t("request.errors.missingImages"));
       return;
     }
 
@@ -125,11 +127,11 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
 
       await useCreateStudentRequest.mutateAsync(requestData);
 
-      toast.success("Đã gửi yêu cầu xác nhận sinh viên thành công!");
+      toast.success(t("request.success.submitted"));
       handleCancel();
       onSubmit();
     } catch (error) {
-      toast.error("Có lỗi xảy ra khi gửi yêu cầu!");
+      toast.error(t("request.errors.submitFailed"));
       console.error("Create request error:", error);
     }
   };
@@ -146,13 +148,13 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
   const removeStudentCard = () => {
     setStudentCardFile(null);
     setStudentCardPreview("");
-    toast.bind("Đã xóa hình ảnh thẻ sinh viên");
+    toast(t("request.success.studentCardRemoved"));
   };
 
   const removeCitizenId = () => {
     setCitizenIdFile(null);
     setCitizenIdPreview("");
-    toast.bind("Đã xóa hình ảnh CCCD/CMND");
+    toast(t("request.success.citizenIdRemoved"));
   };
 
   return (
@@ -160,7 +162,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
       title={
         <div className="flex items-center text-xl font-semibold text-gray-800">
           <Plus className="w-6 h-6 mr-2 text-blue-600" />
-          Xin xác nhận sinh viên - Metro HCMC
+          {t("request.title")}
         </div>
       }
       open={visible}
@@ -178,36 +180,44 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
         onFinish={handleSubmit}
         className="space-y-6"
       >
-        <Form.Item name="content" label="Nội dung" required>
+        <Form.Item
+          name="content"
+          label={t("request.fields.content.label")}
+          required
+        >
           <TextArea
             rows={3}
-            placeholder="Ví dụ: Tôi cần xin giấy xác nhận sinh viên để đăng ký mua vé tháng metro với giá ưu đãi cho sinh viên..."
+            placeholder={t("request.fields.content.placeholder")}
             className="!rounded-lg"
           />
         </Form.Item>
 
         <Form.Item
           name="citizenIdNumber"
-          label="Số CCCD/CMND"
+          label={t("request.fields.citizenId.label")}
           rules={[
-            { required: true, message: "Vui lòng nhập số CCCD/CMND." },
+            { required: true, message: t("request.fields.citizenId.required") },
             {
               pattern: /^\d{12}$/,
-              message: "Số CCCD phải gồm đúng 12 chữ số.",
+              message: t("request.fields.citizenId.pattern"),
             },
           ]}
         >
           <Input
-            placeholder="Nhập số CCCD (12 chữ số)"
+            placeholder={t("request.fields.citizenId.placeholder")}
             className="!rounded-lg"
             maxLength={12}
           />
         </Form.Item>
 
-        <Form.Item name="endDate" label="Ngày hết hạn thẻ sinh viên" required>
+        <Form.Item
+          name="endDate"
+          label={t("request.fields.endDate.label")}
+          required
+        >
           <DatePicker
             size="large"
-            placeholder="Chọn ngày"
+            placeholder={t("request.fields.endDate.placeholder")}
             className="!w-full !rounded-lg"
             disabledDate={(current) =>
               current && current < dayjs().endOf("day")
@@ -221,7 +231,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
               label={
                 <span className="flex items-center text-blue-600 font-medium">
                   <User className="w-4 h-4 mr-2" />
-                  Hình ảnh thẻ sinh viên
+                  {t("request.fields.studentCard.label")}
                 </span>
               }
               required
@@ -239,11 +249,11 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
                     </p>
                     <p className="ant-upload-text">
                       {uploadingStudentCard
-                        ? "Đang xử lý..."
-                        : "Nhấn hoặc kéo thả để tải lên"}
+                        ? t("request.upload.processing")
+                        : t("request.upload.dragText")}
                     </p>
                     <p className="ant-upload-hint">
-                      Hỗ trợ: JPG, PNG, GIF (Tối đa 5MB)
+                      {t("request.upload.supportedFormats")}
                     </p>
                   </Spin>
                 </Dragger>
@@ -252,7 +262,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
                   <div className="relative">
                     <Image
                       src={studentCardPreview}
-                      alt="Thẻ sinh viên"
+                      alt={t("request.upload.studentCardAlt")}
                       className="!rounded-lg w-full"
                       style={{ maxHeight: "200px", objectFit: "cover" }}
                       preview={true}
@@ -284,7 +294,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
               label={
                 <span className="flex items-center text-green-600 font-medium">
                   <CreditCard className="w-4 h-4 mr-2" />
-                  Hình ảnh CCCD/CMND
+                  {t("request.fields.citizenIdImage.label")}
                 </span>
               }
               required
@@ -302,11 +312,11 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
                     </p>
                     <p className="ant-upload-text">
                       {uploadingCitizenId
-                        ? "Đang xử lý..."
-                        : "Nhấn hoặc kéo thả để tải lên"}
+                        ? t("request.upload.processing")
+                        : t("request.upload.dragText")}
                     </p>
                     <p className="ant-upload-hint">
-                      Hỗ trợ: JPG, PNG, GIF (Tối đa 5MB)
+                      {t("request.upload.supportedFormats")}
                     </p>
                   </Spin>
                 </Dragger>
@@ -315,7 +325,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
                   <div className="relative">
                     <Image
                       src={citizenIdPreview}
-                      alt="CCCD/CMND"
+                      alt={t("request.upload.citizenIdAlt")}
                       className="!rounded-lg w-full"
                       style={{ maxHeight: "200px", objectFit: "cover" }}
                       preview={true}
@@ -350,7 +360,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
             className="!rounded-lg !px-8"
             disabled={useCreateStudentRequest.isPending}
           >
-            Hủy bỏ
+            {t("common.cancel")}
           </Button>
           <Button
             type="primary"
@@ -366,8 +376,8 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
             }
           >
             {useCreateStudentRequest.isPending
-              ? "Đang gửi..."
-              : "Gửi yêu cầu xác nhận"}
+              ? t("request.actions.submitting")
+              : t("request.actions.submit")}
           </Button>
         </div>
       </Form>

@@ -15,7 +15,7 @@ import { formatDate, formatDDMMYY } from "src/utils/utils";
 
 const QRModal = ({ ticket }: { ticket: TicketResponse }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [countdown, setCountdown] = useState(0);
+  const [countdown, setCountdown] = useState(60);
   const [refreshKey, setRefreshKey] = useState(0);
 
   const {

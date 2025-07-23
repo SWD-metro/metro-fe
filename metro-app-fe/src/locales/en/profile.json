@@ -4,6 +4,7 @@
     "description": "Manage and track all your tickets here",
     "ticketName": "Ticket Name",
     "ticketCode": "Ticket Code",
+    "time": "Purchase Time",
     "action": "Action",
     "upgrade": "Upgrade",
     "tabs": {
@@ -118,5 +119,110 @@
     "cancel": "Cancel",
     "payWithVNPay": "Pay with VNPay",
     "currency": "VND"
+  },
+  "feedbackForm": {
+    "title": "Send Feedback",
+    "fields": {
+      "category": {
+        "label": "Feedback Type",
+        "placeholder": "e.g., Suggestions, System errors...",
+        "required": "Please select a type"
+      },
+      "content": {
+        "label": "Content",
+        "placeholder": "Enter your feedback content here...",
+        "required": "Please enter content"
+      },
+      "image": {
+        "label": "Illustration Image (Optional)"
+      }
+    },
+    "upload": {
+      "processing": "Processing...",
+      "dragText": "Click or drag to upload image",
+      "supportedFormats": "Support: JPG, PNG, GIF (Max 5MB)",
+      "imageAlt": "Feedback image"
+    },
+    "actions": {
+      "submit": "Send Feedback"
+    },
+    "success": {
+      "imageUploaded": "Image uploaded successfully!",
+      "imageRemoved": "Attached image removed",
+      "submitted": "Feedback sent successfully!"
+    },
+    "errors": {
+      "cannotCompressImage": "Cannot compress feedback image!",
+      "imageUploadFailed": "Image upload failed!",
+      "submitFailed": "Error sending feedback"
+    }
+  },
+  "request": {
+    "title": "Student Verification Request - Metro HCMC",
+    "fields": {
+      "content": {
+        "label": "Content",
+        "placeholder": "Example: I need a student verification letter to register for discounted metro monthly tickets for students..."
+      },
+      "citizenId": {
+        "label": "Citizen ID Number",
+        "placeholder": "Enter citizen ID (12 digits)",
+        "required": "Please enter citizen ID number.",
+        "pattern": "Citizen ID must have exactly 12 digits."
+      },
+      "endDate": {
+        "label": "Student Card Expiry Date",
+        "placeholder": "Select date"
+      },
+      "studentCard": {
+        "label": "Student Card Image"
+      },
+      "citizenIdImage": {
+        "label": "Citizen ID Image"
+      }
+    },
+    "upload": {
+      "processing": "Processing...",
+      "dragText": "Click or drag to upload",
+      "supportedFormats": "Support: JPG, PNG, GIF (Max 5MB)",
+      "studentCardAlt": "Student card",
+      "citizenIdAlt": "Citizen ID"
+    },
+    "actions": {
+      "submit": "Send Verification Request",
+      "submitting": "Sending..."
+    },
+    "success": {
+      "studentCardUploaded": "Student card uploaded successfully!",
+      "citizenIdUploaded": "Citizen ID uploaded successfully!",
+      "studentCardRemoved": "Student card image removed",
+      "citizenIdRemoved": "Citizen ID image removed",
+      "submitted": "Student verification request sent successfully!"
+    },
+    "errors": {
+      "cannotCompressStudentCard": "Cannot compress student card image!",
+      "cannotCompressCitizenId": "Cannot compress citizen ID image!",
+      "studentCardUploadFailed": "Student card upload failed!",
+      "citizenIdUploadFailed": "Citizen ID upload failed!",
+      "missingImages": "Please upload all required images!",
+      "submitFailed": "Error occurred while sending request!"
+    }
+  },
+  "requestDetail": {
+    "sections": {
+      "description": "Request Description",
+      "attachedImages": "Attached Images",
+      "timeInfo": "Time Information"
+    },
+    "images": {
+      "studentCard": "Student Card",
+      "citizenId": "Citizen Identity Card",
+      "studentCardAlt": "Student card",
+      "citizenIdAlt": "Citizen ID"
+    },
+    "time": {
+      "createdDate": "Created Date",
+      "processingDeadline": "Processing Deadline"
+    }
   }
 }

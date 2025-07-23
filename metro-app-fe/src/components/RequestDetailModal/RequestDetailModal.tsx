@@ -1,5 +1,6 @@
 import { Modal, Typography, Image, Row, Col } from "antd";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { RequestDto } from "src/types/user.type";
 import { Calendar, Clock, FileText, CreditCard, User } from "lucide-react";
 
@@ -16,6 +17,8 @@ const RequestDetailModal: React.FC<DetailModalProps> = ({
   onClose,
   data,
 }) => {
+  const { t } = useTranslation("profile");
+
   if (!data) return null;
 
   return (
@@ -44,7 +47,7 @@ const RequestDetailModal: React.FC<DetailModalProps> = ({
               <FileText className="w-4 h-4 text-green-600" />
             </div>
             <Text strong className="text-lg text-gray-800">
-              Mô tả yêu cầu
+              {t("requestDetail.sections.description")}
             </Text>
           </div>
           <div className="bg-gray-50 p-4 rounded-lg">
@@ -61,7 +64,7 @@ const RequestDetailModal: React.FC<DetailModalProps> = ({
                 <CreditCard className="w-4 h-4 text-purple-600" />
               </div>
               <Text strong className="text-lg text-gray-800">
-                Hình ảnh đính kèm
+                {t("requestDetail.sections.attachedImages")}
               </Text>
             </div>
 
@@ -74,13 +77,13 @@ const RequestDetailModal: React.FC<DetailModalProps> = ({
                         <User className="w-4 h-4 text-blue-600" />
                       </div>
                       <Text strong className="text-gray-700">
-                        Thẻ sinh viên
+                        {t("requestDetail.images.studentCard")}
                       </Text>
                     </div>
                     <div className="relative group">
                       <Image
                         src={data.studentCardImage}
-                        alt="Thẻ sinh viên"
+                        alt={t("requestDetail.images.studentCardAlt")}
                         className="!rounded-xl !border-2 !border-gray-200 shadow-lg group-hover:shadow-xl transition-shadow duration-300"
                         width="100%"
                         style={{
@@ -102,13 +105,13 @@ const RequestDetailModal: React.FC<DetailModalProps> = ({
                         <CreditCard className="w-4 h-4 text-orange-600" />
                       </div>
                       <Text strong className="text-gray-700">
-                        Căn cước công dân
+                        {t("requestDetail.images.citizenId")}
                       </Text>
                     </div>
                     <div className="relative group">
                       <Image
                         src={data.citizenIdentityCardImage}
-                        alt="CCCD"
+                        alt={t("requestDetail.images.citizenIdAlt")}
                         className="!rounded-xl !border-2 !border-gray-200 shadow-lg group-hover:shadow-xl transition-shadow duration-300"
                         width="100%"
                         style={{
@@ -131,7 +134,7 @@ const RequestDetailModal: React.FC<DetailModalProps> = ({
               <Clock className="w-4 h-4 text-indigo-600" />
             </div>
             <Text strong className="text-lg text-gray-800">
-              Thông tin thời gian
+              {t("requestDetail.sections.timeInfo")}
             </Text>
           </div>
 
@@ -143,7 +146,7 @@ const RequestDetailModal: React.FC<DetailModalProps> = ({
                 </div>
                 <div>
                   <Text className="text-sm text-green-700 font-medium block">
-                    Ngày tạo
+                    {t("requestDetail.time.createdDate")}
                   </Text>
                   <Text className="text-green-800 font-semibold">
                     {data.createdAt}
@@ -160,7 +163,7 @@ const RequestDetailModal: React.FC<DetailModalProps> = ({
                   </div>
                   <div>
                     <Text className="text-sm text-orange-700 font-medium block">
-                      Hạn xử lý
+                      {t("requestDetail.time.processingDeadline")}
                     </Text>
                     <Text className="text-orange-800 font-semibold">
                       {data.endDate}
