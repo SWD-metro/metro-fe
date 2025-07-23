@@ -123,7 +123,9 @@ const UpgradeTicketModal: React.FC<UpgradeTicketModalProps> = ({
                 (option?.label as string)?.toLowerCase().includes(input.toLowerCase())
               }
             >
-              {stations.map((station) => (
+              {stations
+                .filter((station) => station.status === 'active')
+                .map((station) => (
                 <Option key={station.id} value={station.stationsResponse.stationId}>
                   {station.stationsResponse.name} - {station.stationsResponse.address}
                 </Option>
