@@ -94,7 +94,6 @@ const UpgradeTicketModal: React.FC<UpgradeTicketModalProps> = ({
       className="upgrade-ticket-modal"
     >
       <div className="space-y-6">
-        {/* Current Ticket Info */}
         <div className="bg-gray-50 p-4 rounded-lg">
           <Title level={5} className="!mb-2">
             {t("upgradeTicket.currentTicketInfo")}
@@ -120,7 +119,6 @@ const UpgradeTicketModal: React.FC<UpgradeTicketModalProps> = ({
 
         <Divider />
 
-        {/* Station Selection */}
         <div>
           <Title level={5} className="!mb-3">
             <MapPin className="inline mr-2" size={20} />
@@ -146,20 +144,21 @@ const UpgradeTicketModal: React.FC<UpgradeTicketModalProps> = ({
                   .includes(input.toLowerCase())
               }
             >
-              {stations.map((station) => (
-                <Option
-                  key={station.id}
-                  value={station.stationsResponse.stationId}
-                >
-                  {station.stationsResponse.name} -{" "}
-                  {station.stationsResponse.address}
-                </Option>
-              ))}
+              {stations
+                .filter((station) => station.status === "active")
+                .map((station) => (
+                  <Option
+                    key={station.id}
+                    value={station.stationsResponse.stationId}
+                  >
+                    {station.stationsResponse.name} -{" "}
+                    {station.stationsResponse.address}
+                  </Option>
+                ))}
             </Select>
           )}
         </div>
 
-        {/* Upgrade Cost */}
         {selectedEndStationId && (
           <div className="bg-blue-50 p-4 rounded-lg">
             <Title level={5} className="!mb-3">
@@ -201,7 +200,6 @@ const UpgradeTicketModal: React.FC<UpgradeTicketModalProps> = ({
           </div>
         )}
 
-        {/* Warning */}
         <Alert
           message={t("upgradeTicket.noteTitle")}
           description={t("upgradeTicket.noteDescription")}
@@ -209,7 +207,6 @@ const UpgradeTicketModal: React.FC<UpgradeTicketModalProps> = ({
           showIcon
         />
 
-        {/* Action Buttons */}
         <div className="flex justify-end space-x-3">
           <Button size="large" onClick={onCancel}>
             {t("upgradeTicket.cancel")}
