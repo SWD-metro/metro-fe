@@ -1,0 +1,86 @@
+{
+  "title": "Bản đồ Metro HCMC",
+  "subtitle": "Bản đồ hệ thống metro tương tác với thông tin trạm thời gian thực",
+  "loading": {
+    "metroMap": "Đang tải Bản đồ Metro...",
+    "routeData": "Đang tải dữ liệu tuyến...",
+    "stationList": "Đang tải danh sách Ga...",
+    "general": "Đang tải..."
+  },
+  "route": {
+    "label": "Tuyến:",
+    "placeholder": "Chọn tuyến",
+    "info": "Tuyến {routeId}: {routeName} ({distanceInKm}km)",
+    "totalStations": "Tổng số trạm:",
+    "name": "Tuyến",
+    "number": "Tuyến #{routeNum}",
+    "distance": "Khoảng cách",
+    "duration": "Thời gian",
+    "startTime": "Giờ bắt đầu",
+    "endTime": "Giờ kết thúc",
+    "direction": "Hướng",
+    "availableBusRoutes": "Các Tuyến Bus Có Sẵn"
+  },
+  "station": {
+    "list": "Danh sách trạm",
+    "noStations": "Không có Ga nào",
+    "information": "Thông Tin Ga",
+    "code": "Mã Ga",
+    "sequence": "Thứ Tự",
+    "coordinates": "Tọa Độ",
+    "type": "Loại",
+    "stationId": "ID Ga",
+    "status": {
+      "open": "Mở",
+      "closed": "Đóng",
+      "active": "Hoạt động",
+      "inactive": "Không hoạt động",
+      "maintenance": "Bảo trì"
+    }
+  },
+  "busStation": {
+    "show": "Hiển thị Trạm Bus",
+    "hide": "Ẩn Trạm Bus",
+    "showing": "Hiển thị {displayed} trong {total} trạm bus",
+    "information": "Thông Tin Trạm Bus",
+    "availableRoutes": "Tuyến Có Sẵn",
+    "notice": {
+      "title": "Thông Tin Trạm Bus",
+      "withRoutes": "Thông tin tuyến bus được hiển thị ở trên. Để biết lịch trình chi tiết và cập nhật thời gian thực, vui lòng kiểm tra với cơ quan giao thông vận tải bus địa phương.",
+      "withoutRoutes": "Đây là trạm bus. Thông tin lịch trình bus hiện không có sẵn thông qua hệ thống metro. Để biết lịch trình và tuyến bus, vui lòng kiểm tra với cơ quan giao thông vận tải bus địa phương."
+    }
+  },
+  "map": {
+    "title": "Bản Đồ Metro Tương Tác",
+    "viewDetails": "Xem Chi Tiết"
+  },
+  "schedule": {
+    "title": "Lịch Trình Tàu",
+    "departure": "Khởi hành",
+    "arrival": "Đến nơi",
+    "noSchedule": "Không có lịch trình cho ga này",
+    "direction": {
+      "forward": "Hướng Đi",
+      "backward": "Hướng Về"
+    }
+  },
+  "common": {
+    "close": "Đóng",
+    "loading": "Đang tải...",
+    "address": "Địa chỉ",
+    "distance": "Khoảng cách",
+    "status": "Trạng thái",
+    "code": "Mã",
+    "sequence": "Thứ tự",
+    "route": "Tuyến",
+    "type": "Loại",
+    "active": "Hoạt động",
+    "inactive": "Không hoạt động",
+    "open": "Mở",
+    "closed": "Đóng",
+    "coordinates": "Tọa độ",
+    "stationId": "ID Ga",
+    "km": "km",
+    "min": "phút"
+  }
+}

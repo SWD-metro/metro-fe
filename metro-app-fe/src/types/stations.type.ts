@@ -67,3 +67,37 @@ export interface StationRouteResponse {
 }
 
 export type Status = "active" | "decommissioned" | "maintenance";
+
+export interface BusStation {
+  id: number;
+  name: string;
+  latitude: number;
+  longitude: number;
+  isActive: number;
+  address: string;
+  code: string;
+}
+
+export interface BusStationDetail {
+  id: number;
+  name: string;
+  latitude: number;
+  longitude: number;
+  isActive: number;
+  address: string;
+  code: string;
+  routes: BusRoute[];
+}
+
+export interface BusRoute {
+  id: string;
+  name: string;
+  distance: number;
+  duration: number;
+  start_time: string;
+  end_time: string;
+  is_active: number;
+  route_num: string;
+  direction: string;
+  trip_spacing: string;
+}
