@@ -34,6 +34,7 @@ import ManageFeedbackPage from "src/pages/admin/ManageFeedback";
 import RouteManagement from "src/pages/admin/RouteManagement";
 import StationRouteManagement from "src/components/managements/StationRouteManagement";
 import StationManagement from "src/pages/admin/StationManagement";
+import ManageTicketPage from "src/pages/admin/TicketManagement";
 
 const RouteElements: React.FC = () => {
   const routeElements = useRoutes([
@@ -156,7 +157,7 @@ const RouteElements: React.FC = () => {
             },
             {
               path: "ticket",
-              element: <Manage />,
+              element: <ManageTicketPage />,
             },
             {
               path: "routes",
