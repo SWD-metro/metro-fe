@@ -1,5 +1,5 @@
-import React from 'react';
-import { X } from 'lucide-react';
+import React from "react";
+import { X } from "lucide-react";
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -18,9 +18,9 @@ export default function ConfirmModal({
   onConfirm,
   title,
   children,
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
-  confirmButtonClass = 'bg-blue-600 hover:bg-blue-700'
+  confirmText = "Confirm",
+  cancelText = "Cancel",
+  confirmButtonClass = "bg-blue-600 hover:bg-blue-700",
 }: ConfirmModalProps) {
   if (!isOpen) return null;
 
@@ -31,7 +31,7 @@ export default function ConfirmModal({
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 bg-gray-900 bg-opacity-20 flex items-center justify-center z-50"
       onClick={handleBackdropClick}
     >
@@ -47,12 +47,8 @@ export default function ConfirmModal({
           </button>
         </div>
 
-        {/* Content */}
-        <div className="p-6">
-          {children}
-        </div>
+        <div className="p-6">{children}</div>
 
-        {/* Footer */}
         <div className="flex gap-3 p-6 border-t border-gray-200">
           <button
             onClick={onClose}

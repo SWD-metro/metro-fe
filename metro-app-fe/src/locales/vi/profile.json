@@ -57,6 +57,7 @@
   },
   "feedback": {
     "title": "Góp ý & Phản hồi",
+    "content": "Nội dung",
     "sendFeedback": "Gửi phản hồi",
     "stats": {
       "pending": "Đang chờ phản hồi",

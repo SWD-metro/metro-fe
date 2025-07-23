@@ -78,5 +78,25 @@
     "ticketTypeNotFound": "Không tìm thấy loại vé hợp lệ",
     "paymentUrlNotReceived": "Không nhận được URL thanh toán.",
     "errorCreatingTicket": "Lỗi khi tạo vé"
+  },
+  "upgradeTicket": {
+    "title": "Nâng cấp vé",
+    "currentTicketInfo": "Thông tin vé hiện tại",
+    "ticketCode": "Mã vé:",
+    "ticketName": "Tên vé:",
+    "currentPrice": "Giá hiện tại:",
+    "selectNewDestination": "Chọn ga đích mới",
+    "loadingStations": "Đang tải danh sách ga...",
+    "selectDestinationPlaceholder": "Chọn ga đích mới",
+    "upgradeCost": "Chi phí nâng cấp",
+    "calculating": "Đang tính toán...",
+    "upgradeTicketFee": "Phí nâng cấp vé:",
+    "serviceFee": "Phí dịch vụ:",
+    "total": "Tổng cộng:",
+    "noteTitle": "Lưu ý",
+    "noteDescription": "Sau khi nâng cấp thành công, vé của bạn sẽ được cập nhật với ga đích mới. Quá trình này không thể hoàn tác.",
+    "cancel": "Hủy",
+    "payWithVNPay": "Thanh toán qua VNPay",
+    "currency": "VND"
   }
 }

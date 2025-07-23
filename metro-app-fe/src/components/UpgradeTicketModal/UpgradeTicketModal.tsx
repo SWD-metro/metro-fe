@@ -1,9 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, Select, Button, Typography, Space, Divider, Alert, Spin } from 'antd';
-import { ArrowUp, MapPin, DollarSign } from 'lucide-react';
-import { TicketResponse } from 'src/types/tickets.type';
-import { useGetStationsForUpdate, useGetUpgradeAmount } from 'src/queries/useTicket';
-import { useCreateVNPayUpgradeMutation } from 'src/queries/usePayment';
+import React, { useState, useEffect } from "react";
+import {
+  Modal,
+  Select,
+  Button,
+  Typography,
+  Space,
+  Divider,
+  Alert,
+  Spin,
+} from "antd";
+import { ArrowUp, MapPin, DollarSign } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { TicketResponse } from "src/types/tickets.type";
+import {
+  useGetStationsForUpdate,
+  useGetUpgradeAmount,
+} from "src/queries/useTicket";
+import { useCreateVNPayUpgradeMutation } from "src/queries/usePayment";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -21,16 +34,21 @@ const UpgradeTicketModal: React.FC<UpgradeTicketModalProps> = ({
   orderId,
   ticket,
 }) => {
-  const [selectedEndStationId, setSelectedEndStationId] = useState<number | null>(null);
-  
-  const { data: stationsData, isLoading: stationsLoading } = useGetStationsForUpdate({
-    ticketId: ticket.id,
-  });
+  const { t } = useTranslation();
+  const [selectedEndStationId, setSelectedEndStationId] = useState<
+    number | null
+  >(null);
 
-  const { data: upgradeAmountData, isLoading: amountLoading } = useGetUpgradeAmount({
-    ticketId: ticket.id,
-    endStationId: selectedEndStationId || 0,
-  });
+  const { data: stationsData, isLoading: stationsLoading } =
+    useGetStationsForUpdate({
+      ticketId: ticket.id,
+    });
+
+  const { data: upgradeAmountData, isLoading: amountLoading } =
+    useGetUpgradeAmount({
+      ticketId: ticket.id,
+      endStationId: selectedEndStationId || 0,
+    });
 
   const createUpgradePaymentMutation = useCreateVNPayUpgradeMutation();
 
@@ -57,7 +75,7 @@ const UpgradeTicketModal: React.FC<UpgradeTicketModalProps> = ({
         window.location.href = response.data.data.paymentUrl;
       }
     } catch (error) {
-      console.error('Error creating upgrade payment:', error);
+      console.error("Error creating upgrade payment:", error);
     }
   };
 
@@ -66,7 +84,7 @@ const UpgradeTicketModal: React.FC<UpgradeTicketModalProps> = ({
       title={
         <Space>
           <ArrowUp className="text-blue-500" size={24} />
-          <span className="text-xl font-bold">Nâng cấp vé</span>
+          <span className="text-xl font-bold">{t("upgradeTicket.title")}</span>
         </Space>
       }
       open={visible}
@@ -78,20 +96,23 @@ const UpgradeTicketModal: React.FC<UpgradeTicketModalProps> = ({
       <div className="space-y-6">
         {/* Current Ticket Info */}
         <div className="bg-gray-50 p-4 rounded-lg">
-          <Title level={5} className="!mb-2">Thông tin vé hiện tại</Title>
+          <Title level={5} className="!mb-2">
+            {t("upgradeTicket.currentTicketInfo")}
+          </Title>
           <Space direction="vertical" size="small" className="w-full">
             <div className="flex justify-between">
-              <Text strong>Mã vé:</Text>
+              <Text strong>{t("upgradeTicket.ticketCode")}</Text>
               <Text className="font-mono">#{ticket.ticketCode}</Text>
             </div>
             <div className="flex justify-between">
-              <Text strong>Tên vé:</Text>
+              <Text strong>{t("upgradeTicket.ticketName")}</Text>
               <Text>{ticket.name}</Text>
             </div>
             <div className="flex justify-between">
-              <Text strong>Giá hiện tại:</Text>
+              <Text strong>{t("upgradeTicket.currentPrice")}</Text>
               <Text className="text-green-600 font-semibold">
-                {ticket.actualPrice.toLocaleString()} VND
+                {ticket.actualPrice.toLocaleString()}{" "}
+                {t("upgradeTicket.currency")}
               </Text>
             </div>
           </Space>
@@ -103,29 +124,35 @@ const UpgradeTicketModal: React.FC<UpgradeTicketModalProps> = ({
         <div>
           <Title level={5} className="!mb-3">
             <MapPin className="inline mr-2" size={20} />
-            Chọn ga đích mới
+            {t("upgradeTicket.selectNewDestination")}
           </Title>
-          
+
           {stationsLoading ? (
             <div className="text-center py-4">
               <Spin size="large" />
-              <div className="mt-2">Đang tải danh sách ga...</div>
+              <div className="mt-2">{t("upgradeTicket.loadingStations")}</div>
             </div>
           ) : (
             <Select
-              placeholder="Chọn ga đích mới"
-              style={{ width: '100%' }}
+              placeholder={t("upgradeTicket.selectDestinationPlaceholder")}
+              style={{ width: "100%" }}
               size="large"
               value={selectedEndStationId}
               onChange={setSelectedEndStationId}
               showSearch
               filterOption={(input, option) =>
-                (option?.label as string)?.toLowerCase().includes(input.toLowerCase())
+                (option?.label as string)
+                  ?.toLowerCase()
+                  .includes(input.toLowerCase())
               }
             >
               {stations.map((station) => (
-                <Option key={station.id} value={station.stationsResponse.stationId}>
-                  {station.stationsResponse.name} - {station.stationsResponse.address}
+                <Option
+                  key={station.id}
+                  value={station.stationsResponse.stationId}
+                >
+                  {station.stationsResponse.name} -{" "}
+                  {station.stationsResponse.address}
                 </Option>
               ))}
             </Select>
@@ -137,31 +164,36 @@ const UpgradeTicketModal: React.FC<UpgradeTicketModalProps> = ({
           <div className="bg-blue-50 p-4 rounded-lg">
             <Title level={5} className="!mb-3">
               <DollarSign className="inline mr-2" size={20} />
-              Chi phí nâng cấp
+              {t("upgradeTicket.upgradeCost")}
             </Title>
-            
+
             {amountLoading ? (
               <div className="text-center py-2">
                 <Spin />
-                <span className="ml-2">Đang tính toán...</span>
+                <span className="ml-2">{t("upgradeTicket.calculating")}</span>
               </div>
             ) : (
               <Space direction="vertical" size="small" className="w-full">
                 <div className="flex justify-between">
-                  <Text>Phí nâng cấp vé:</Text>
+                  <Text>{t("upgradeTicket.upgradeTicketFee")}</Text>
                   <Text className="font-semibold">
-                    {upgradeAmount.toLocaleString()} VND
+                    {upgradeAmount.toLocaleString()}{" "}
+                    {t("upgradeTicket.currency")}
                   </Text>
                 </div>
                 <div className="flex justify-between">
-                  <Text>Phí dịch vụ:</Text>
-                  <Text className="font-semibold">10,000 VND</Text>
+                  <Text>{t("upgradeTicket.serviceFee")}</Text>
+                  <Text className="font-semibold">
+                    10,000 {t("upgradeTicket.currency")}
+                  </Text>
                 </div>
                 <Divider className="!my-2" />
                 <div className="flex justify-between">
-                  <Text strong className="text-lg">Tổng cộng:</Text>
+                  <Text strong className="text-lg">
+                    {t("upgradeTicket.total")}
+                  </Text>
                   <Text strong className="text-lg text-red-600">
-                    {totalAmount.toLocaleString()} VND
+                    {totalAmount.toLocaleString()} {t("upgradeTicket.currency")}
                   </Text>
                 </div>
               </Space>
@@ -171,8 +203,8 @@ const UpgradeTicketModal: React.FC<UpgradeTicketModalProps> = ({
 
         {/* Warning */}
         <Alert
-          message="Lưu ý"
-          description="Sau khi nâng cấp thành công, vé của bạn sẽ được cập nhật với ga đích mới. Quá trình này không thể hoàn tác."
+          message={t("upgradeTicket.noteTitle")}
+          description={t("upgradeTicket.noteDescription")}
           type="warning"
           showIcon
         />
@@ -180,7 +212,7 @@ const UpgradeTicketModal: React.FC<UpgradeTicketModalProps> = ({
         {/* Action Buttons */}
         <div className="flex justify-end space-x-3">
           <Button size="large" onClick={onCancel}>
-            Hủy
+            {t("upgradeTicket.cancel")}
           </Button>
           <Button
             type="primary"
@@ -190,7 +222,7 @@ const UpgradeTicketModal: React.FC<UpgradeTicketModalProps> = ({
             loading={createUpgradePaymentMutation.isPending}
             className="bg-blue-500 hover:bg-blue-600"
           >
-            Thanh toán qua VNPay
+            {t("upgradeTicket.payWithVNPay")}
           </Button>
         </div>
       </div>

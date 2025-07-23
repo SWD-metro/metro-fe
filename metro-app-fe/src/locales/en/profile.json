@@ -57,6 +57,7 @@
   },
   "feedback": {
     "title": "Feedback & Suggestions",
+    "content": "Content",
     "sendFeedback": "Send Feedback",
     "stats": {
       "pending": "Awaiting Reply",
