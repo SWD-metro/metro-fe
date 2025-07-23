@@ -41,9 +41,10 @@ export const useDeleteScheduleMutation = () => {
   });
 };
 
-export const useGetScheduleByStationId = ({ id }: { id: number }) => {
+export const useGetScheduleByStationId = (stationId: number | undefined) => {
   return useQuery({
-    queryKey: ["schedules", id],
-    queryFn: () => schedulesApiRequests.getScheduleByStationId(id),
+    queryKey: ["schedules", stationId],
+    queryFn: () => schedulesApiRequests.getScheduleByStationId(stationId!),
+    enabled: !!stationId,
   });
 };

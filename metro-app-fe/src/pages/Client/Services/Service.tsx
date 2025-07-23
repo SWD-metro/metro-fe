@@ -11,6 +11,8 @@ import {
 import statsBackground from "src/assets/stats_section.jpg";
 import metromb from "src/assets/app-metro-mb.jpg";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import path from "src/constants/path";
 
 type StepsListProps = {
   steps: string[];
@@ -19,6 +21,7 @@ type StepsListProps = {
 
 const ServicePage: React.FC = () => {
   const { t } = useTranslation("home");
+  const navigate = useNavigate();
   return (
     <div>
       <section
@@ -84,10 +87,15 @@ const ServicePage: React.FC = () => {
                       type="primary"
                       size="large"
                       icon={<CreditCardOutlined />}
+                      onClick={() => navigate(path.buyTicket)}
                     >
                       {t("services.methods.website.buttons.buy")}
                     </Button>
-                    <Button size="large" icon={<QrcodeOutlined />}>
+                    <Button
+                      size="large"
+                      icon={<QrcodeOutlined />}
+                      onClick={() => navigate(path.myTicket)}
+                    >
                       {t("services.methods.website.buttons.myTickets")}
                     </Button>
                   </div>
