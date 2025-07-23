@@ -18,29 +18,36 @@ import {
   Ticket,
 } from "lucide-react";
 
-import { useGetVNPayCallback, useGetVNPayUpgradeCallback } from "src/queries/usePayment";
+import {
+  useGetVNPayCallback,
+  useGetVNPayUpgradeCallback,
+} from "src/queries/usePayment";
 import { useGetTicketById, useGetTicketQRCode } from "src/queries/useTicket";
 import { useLocation, useNavigate } from "react-router-dom";
 import path from "src/constants/path";
 import background from "src/assets/feature_section.png";
 import { formatDDMMYY, formatPrice } from "src/utils/utils";
+import { useTranslation } from "react-i18next";
+
 const { Title, Text } = Typography;
 
 const PaymentResult: React.FC = () => {
+  const { t } = useTranslation("ticket");
   const navigate = useNavigate();
   const { search } = useLocation();
 
-  // Check if this is an upgrade payment callback by examining the vnp_OrderInfo parameter
   const urlParams = new URLSearchParams(search);
-  const orderInfo = urlParams.get('vnp_OrderInfo') || '';
-  const isUpgradePayment = orderInfo.includes('~upgrade');
-  
-  // Use appropriate callback hook based on payment type
-  const upgradeResult = useGetVNPayUpgradeCallback(isUpgradePayment ? search : '');
-  const normalResult = useGetVNPayCallback(isUpgradePayment ? '' : search);
-  // Extract data and loading state from the active hook
-  const { data: vnpayRes, isLoading } = isUpgradePayment ? upgradeResult : normalResult;
-  
+  const orderInfo = urlParams.get("vnp_OrderInfo") || "";
+  const isUpgradePayment = orderInfo.includes("~upgrade");
+
+  const upgradeResult = useGetVNPayUpgradeCallback(
+    isUpgradePayment ? search : ""
+  );
+  const normalResult = useGetVNPayCallback(isUpgradePayment ? "" : search);
+  const { data: vnpayRes, isLoading } = isUpgradePayment
+    ? upgradeResult
+    : normalResult;
+
   const payment = vnpayRes?.data.data;
   const ticketId = payment?.ticketId;
 
@@ -72,8 +79,8 @@ const PaymentResult: React.FC = () => {
     return (
       <Result
         status="error"
-        title="Thanh toán thất bại"
-        subTitle="Có lỗi xảy ra trong quá trình xử lý thanh toán. Vui lòng thử lại."
+        title={t("paymentResult.paymentFailed")}
+        subTitle={t("paymentResult.paymentFailedDesc")}
       />
     );
   }
@@ -82,10 +89,10 @@ const PaymentResult: React.FC = () => {
     return (
       <Result
         status="warning"
-        title="Giao dịch không hợp lệ"
+        title={t("paymentResult.invalidTransaction")}
         extra={
           <Button type="primary" onClick={() => navigate(path.home)}>
-            Quay về trang chủ
+            {t("paymentResult.backToHome")}
           </Button>
         }
       />
@@ -103,7 +110,9 @@ const PaymentResult: React.FC = () => {
             <CheckCircle className="w-12 h-12 !text-green-500 drop-shadow-lg" />
           </div>
           <h1 className="text-5xl font-bold text-white mb-4 drop-shadow-lg">
-            {isUpgradePayment ? 'Nâng cấp vé thành công!' : 'Thanh toán thành công!'}
+            {isUpgradePayment
+              ? t("paymentResult.upgradeSuccess")
+              : t("paymentResult.paymentSuccess")}
           </h1>
           <p className="text-blue-100 text-xl font-medium">
             {payment?.message}
@@ -120,7 +129,7 @@ const PaymentResult: React.FC = () => {
                 <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
                   <CreditCard className="w-5 h-5 text-blue-600" />
                 </div>
-                Chi tiết giao dịch
+                {t("paymentResult.transactionDetails")}
               </Title>
 
               <div className="bg-gradient-to-br from-gray-50 to-blue-50/50 rounded-2xl p-8 border-2 border-blue-200/50">
@@ -129,7 +138,7 @@ const PaymentResult: React.FC = () => {
                     <div className="space-y-4">
                       <div className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm border border-gray-100">
                         <Text className="text-gray-600 font-medium">
-                          Mã giao dịch:
+                          {t("paymentResult.transactionId")}
                         </Text>
                         <div className="flex items-center space-x-2">
                           <Text className="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg font-mono text-sm font-semibold border border-blue-200">
@@ -143,7 +152,7 @@ const PaymentResult: React.FC = () => {
                     <div className="space-y-4">
                       <div className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm border border-gray-100">
                         <Text className="text-gray-600 font-medium">
-                          Số tiền đã thanh toán :
+                          {t("paymentResult.paidAmount")}
                         </Text>
                         <div className="flex items-center space-x-2">
                           <Text className="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg font-mono text-sm font-semibold border border-blue-200">
@@ -168,7 +177,7 @@ const PaymentResult: React.FC = () => {
                   <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
                     <Gift className="w-5 h-5 text-blue-600" />
                   </div>
-                  Thông tin vé
+                  {t("paymentResult.ticketInfo")}
                 </Title>
 
                 <div className="bg-gradient-to-br from-blue-50 via-sky-50 to-indigo-50 rounded-2xl p-8 border-2 border-blue-200/50">
@@ -177,7 +186,7 @@ const PaymentResult: React.FC = () => {
                       <div className="space-y-6">
                         <div className="bg-white/70 backdrop-blur-sm rounded-xl p-6 border border-blue-200/50">
                           <Text className="text-gray-600 text-sm font-medium block mb-2">
-                            Vé:
+                            {t("paymentResult.ticket")}
                           </Text>
                           <Title
                             level={4}
@@ -189,7 +198,7 @@ const PaymentResult: React.FC = () => {
 
                         <div className="bg-white/70 backdrop-blur-sm rounded-xl p-6 border border-blue-200/50">
                           <Text className="text-gray-600 text-sm font-medium block mb-3">
-                            Mã vé:
+                            {t("paymentResult.ticketCode")}
                           </Text>
                           <div className="flex items-center space-x-3">
                             <Text className="bg-white px-4 py-3 rounded-lg border-2 border-blue-300 text-blue-700 font-mono text-lg font-bold shadow-sm">
@@ -227,7 +236,7 @@ const PaymentResult: React.FC = () => {
 
                   <div className="mt-8 pt-6 border-t-2 border-blue-200/50">
                     <Text className="text-gray-600 text-sm font-medium block mb-3">
-                      Hiệu lực
+                      {t("paymentResult.validityPeriod")}
                     </Text>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="bg-white/70 backdrop-blur-sm p-4 rounded-xl border border-blue-200/50">
@@ -253,7 +262,7 @@ const PaymentResult: React.FC = () => {
               icon={<Ticket className="w-5 h-5" />}
               onClick={() => navigate(path.myTicket)}
             >
-              Vé của tôi
+              {t("paymentResult.myTickets")}
             </Button>
             <Button
               type="primary"
@@ -262,7 +271,7 @@ const PaymentResult: React.FC = () => {
               icon={<Home className="w-5 h-5" />}
               onClick={() => navigate(path.home)}
             >
-              Quay về trang chủ
+              {t("paymentResult.backToHome")}
             </Button>
           </div>
         </Card>

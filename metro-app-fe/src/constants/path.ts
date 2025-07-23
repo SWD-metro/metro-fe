@@ -21,5 +21,6 @@ const path = {
   oauth2: "/login",
 
   admin: "/admin",
+  dashboard: "/admin/dashboard",
 } as const;
 export default path;

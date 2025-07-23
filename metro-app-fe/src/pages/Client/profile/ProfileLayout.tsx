@@ -3,6 +3,7 @@ import { Layout } from "antd";
 import { Outlet } from "react-router-dom";
 import ProfileSidebar from "src/components/ProfileComponent/SideBar";
 import background from "src/assets/stats_section.jpg";
+
 const { Sider, Content } = Layout;
 
 const ProfileLayout: React.FC = () => {

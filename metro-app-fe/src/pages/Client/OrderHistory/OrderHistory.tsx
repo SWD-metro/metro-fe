@@ -12,15 +12,18 @@ import {
   Tag,
 } from "antd";
 import { ShoppingCartOutlined, CheckCircleOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 import { AppContext } from "src/contexts/app.context";
 import { useGetOrderByUserId } from "src/queries/useOrder";
 import { OrderResponse, OrderStatus } from "src/types/orders.type";
 import { formatDate, formatPrice } from "src/utils/utils";
 import { useCreateVNPayMutation } from "src/queries/usePayment";
 import toast from "react-hot-toast";
+
 const { Title, Text } = Typography;
 
 const OrderHistory: React.FC = () => {
+  const { t } = useTranslation("profile");
   const { profile } = useContext(AppContext);
   const userId = profile?.userId;
 
@@ -43,7 +46,7 @@ const OrderHistory: React.FC = () => {
     if (redirectUrl) {
       window.location.href = redirectUrl;
     } else {
-      toast.error("Không nhận được URL thanh toán.");
+      toast.error(t("orderHistory.paymentError"));
     }
   };
 
@@ -62,7 +65,7 @@ const OrderHistory: React.FC = () => {
 
   const columns = [
     {
-      title: "Mã giao dịch",
+      title: t("orderHistory.transactionCode"),
       dataIndex: "orderId",
       key: "orderId",
       render: (text: string) => (
@@ -72,7 +75,7 @@ const OrderHistory: React.FC = () => {
       ),
     },
     {
-      title: "Số tiền",
+      title: t("orderHistory.amount"),
       dataIndex: "amount",
       key: "amount",
       render: (amount: number) => (
@@ -82,7 +85,7 @@ const OrderHistory: React.FC = () => {
       ),
     },
     {
-      title: "Ngày đặt",
+      title: t("orderHistory.orderDate"),
       dataIndex: "createdAt",
       key: "createdAt",
       render: (date: string) => (
@@ -90,16 +93,16 @@ const OrderHistory: React.FC = () => {
       ),
     },
     {
-      title: "Phương thức thanh toán",
+      title: t("orderHistory.paymentMethod"),
       key: "paymentMethod",
       render: (record: OrderResponse) => (
         <Tag color="blue" className="px-3 py-1 rounded-full font-medium">
-          {record.transaction?.paymentMethodName || "Không rõ"}
+          {record.transaction?.paymentMethodName || t("orderHistory.unknown")}
         </Tag>
       ),
     },
     {
-      title: "Trạng thái",
+      title: t("orderHistory.status"),
       dataIndex: "status",
       key: "status",
       render: (status: string) => (
@@ -112,7 +115,7 @@ const OrderHistory: React.FC = () => {
       ),
     },
     {
-      title: "Hành động",
+      title: t("orderHistory.action"),
       key: "actions",
       render: (_: any, record: OrderResponse) =>
         record.status === OrderStatus.PENDING ? (
@@ -122,7 +125,7 @@ const OrderHistory: React.FC = () => {
               className="!rounded-lg !bg-blue-500 hover:!bg-blue-600"
               onClick={() => handlePayment(record.orderId)}
             >
-              Thanh toán
+              {t("orderHistory.payment")}
             </Button>
           </>
         ) : (
@@ -130,23 +133,24 @@ const OrderHistory: React.FC = () => {
         ),
     },
   ];
+
   return (
     <>
       <div className="p-8 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 min-h-screen">
         <div className="mb-8">
           <Title level={2} className="!mb-2 !text-gray-800 !font-bold">
             <ShoppingCartOutlined className="mr-3 text-blue-500" />
-            Lịch sử giao dịch
+            {t("orderHistory.title")}
           </Title>
         </div>
 
         <Row gutter={[16, 16]} className="mb-8">
           <Col xs={24} sm={8}>
-            <Card className="text-center  hover:shadow-xl transition-all duration-300">
+            <Card className="text-center hover:shadow-xl transition-all duration-300">
               <Statistic
                 title={
                   <span className="text-blue-500 font-semibold">
-                    Tổng số đơn
+                    {t("orderHistory.stats.totalOrders")}
                   </span>
                 }
                 value={orders.length}
@@ -164,7 +168,7 @@ const OrderHistory: React.FC = () => {
               <Statistic
                 title={
                   <span className="text-green-500 font-semibold">
-                    Đã hoàn thành
+                    {t("orderHistory.stats.completed")}
                   </span>
                 }
                 value={completedOrders}
@@ -182,7 +186,7 @@ const OrderHistory: React.FC = () => {
               <Statistic
                 title={
                   <span className="text-purple-500 font-semibold">
-                    Tổng chi tiêu
+                    {t("orderHistory.stats.totalSpent")}
                   </span>
                 }
                 value={totalAmount}
@@ -208,7 +212,7 @@ const OrderHistory: React.FC = () => {
               emptyText: (
                 <Empty
                   image={Empty.PRESENTED_IMAGE_SIMPLE}
-                  description="Không có giao dịch nào"
+                  description={t("orderHistory.emptyMessage")}
                   className="!my-8 text-center"
                 />
               ),
@@ -219,4 +223,5 @@ const OrderHistory: React.FC = () => {
     </>
   );
 };
+
 export default OrderHistory;

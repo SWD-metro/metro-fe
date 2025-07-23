@@ -1,7 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Card, Empty, Table, Typography, Tabs, Badge, Space, Button } from "antd";
+import {
+  Card,
+  Empty,
+  Table,
+  Typography,
+  Tabs,
+  Badge,
+  Space,
+  Button,
+} from "antd";
 import { TicketIcon, CheckCircle, XCircle, Clock, ArrowUp } from "lucide-react";
 import React, { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import QRModal from "src/components/QrCodeModal";
 import UpgradeTicketModal from "src/components/UpgradeTicketModal";
 import { useGetTicketByUser } from "src/queries/useTicket";
@@ -11,9 +21,11 @@ import { TicketStatus } from "src/types/tickets.type";
 const { Title } = Typography;
 
 const MyTicket: React.FC = () => {
+  const { t } = useTranslation("profile");
   const { data: ticketsData, isLoading } = useGetTicketByUser();
   const [upgradeModalVisible, setUpgradeModalVisible] = useState(false);
-  const [selectedTicketForUpgrade, setSelectedTicketForUpgrade] = useState<OrderDetailResponse | null>(null);
+  const [selectedTicketForUpgrade, setSelectedTicketForUpgrade] =
+    useState<OrderDetailResponse | null>(null);
 
   const categorizedTickets = useMemo(() => {
     const allTickets = ticketsData?.data?.data || [];
@@ -43,18 +55,7 @@ const MyTicket: React.FC = () => {
 
   const getColumns = (showAction: boolean = true) => [
     {
-      title: "Mã vé",
-      dataIndex: ["ticket", "id"],
-      key: "ticketId",
-      width: 120,
-      render: (id: string) => (
-        <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded">
-          #{id}
-        </span>
-      ),
-    },
-    {
-      title: "Tên vé",
+      title: t("myTicket.ticketName"),
       dataIndex: ["ticket", "name"],
       key: "name",
       ellipsis: true,
@@ -63,7 +64,7 @@ const MyTicket: React.FC = () => {
       ),
     },
     {
-      title: "Mã code",
+      title: t("myTicket.ticketCode"),
       dataIndex: ["ticket", "ticketCode"],
       key: "ticketCode",
       width: 250,
@@ -76,7 +77,7 @@ const MyTicket: React.FC = () => {
     ...(showAction
       ? [
           {
-            title: "Hành động",
+            title: t("myTicket.action"),
             key: "action",
             width: 300,
             render: (_: any, record: OrderDetailResponse) => (
@@ -87,11 +88,9 @@ const MyTicket: React.FC = () => {
                   icon={<ArrowUp size={16} />}
                   onClick={() => handleUpgradeClick(record)}
                   className="!bg-gradient-to-r !from-cyan-500 !to-blue-600 hover:!from-cyan-600 hover:!to-blue-700 !border-0 !shadow-md !hover:shadow-lg !transition-all !transform hover:!scale-105 active:!scale-95 !duration-200"
-                  
                 >
-                  Nâng cấp
+                  {t("myTicket.upgrade")}
                 </Button>
-             
               </Space>
             ),
           },
@@ -105,7 +104,7 @@ const MyTicket: React.FC = () => {
       label: (
         <Space>
           <XCircle size={20} className="text-blue-500" />
-          <span>Chưa sử dụng</span>
+          <span>{t("myTicket.tabs.notUsed")}</span>
           <Badge
             count={categorizedTickets.notUsed.length}
             style={{ backgroundColor: "blue" }}
@@ -128,7 +127,7 @@ const MyTicket: React.FC = () => {
                 description={null}
               >
                 <span className="font-mono text-lg bg-blue-50 text-blue-700 px-2 py-1 rounded">
-                  Tất cả vé của bạn đã được sử dụng hoặc hết hạn
+                  {t("myTicket.emptyMessages.notUsed")}
                 </span>
               </Empty>
             ),
@@ -141,7 +140,7 @@ const MyTicket: React.FC = () => {
       label: (
         <Space>
           <CheckCircle size={20} className="text-green-500" />
-          <span>Đã sử dụng</span>
+          <span>{t("myTicket.tabs.used")}</span>
           <Badge
             count={categorizedTickets.used.length}
             style={{ backgroundColor: "#52c41a" }}
@@ -164,7 +163,7 @@ const MyTicket: React.FC = () => {
                 description={null}
               >
                 <span className="font-mono text-lg bg-blue-50 text-blue-700 px-2 py-1 rounded">
-                  Bạn chưa sử dụng vé nào
+                  {t("myTicket.emptyMessages.used")}
                 </span>
               </Empty>
             ),
@@ -177,7 +176,7 @@ const MyTicket: React.FC = () => {
       label: (
         <Space>
           <Clock size={20} className="text-red-500" />
-          <span>Hết hạn</span>
+          <span>{t("myTicket.tabs.expired")}</span>
           <Badge
             count={categorizedTickets.expired.length}
             style={{ backgroundColor: "#ff4d4f" }}
@@ -200,7 +199,7 @@ const MyTicket: React.FC = () => {
                 description={null}
               >
                 <span className="font-mono text-lg bg-blue-50 text-blue-700 px-2 py-1 rounded">
-                  Không có vé nào hết hạn
+                  {t("myTicket.emptyMessages.expired")}
                 </span>
               </Empty>
             ),
@@ -215,11 +214,9 @@ const MyTicket: React.FC = () => {
       <div className="mb-8">
         <Title level={2} className="flex !mb-2 !text-gray-800 !font-bold">
           <TicketIcon size={42} className="mr-3 text-blue-500" />
-          Vé của tôi
+          {t("myTicket.title")}
         </Title>
-        <p className="text-gray-600 mt-2">
-          Quản lý và theo dõi tất cả vé của bạn tại đây
-        </p>
+        <p className="text-gray-600 mt-2">{t("myTicket.description")}</p>
       </div>
 
       <Card
@@ -238,7 +235,6 @@ const MyTicket: React.FC = () => {
         />
       </Card>
 
-      {/* Upgrade Ticket Modal */}
       {selectedTicketForUpgrade && (
         <UpgradeTicketModal
           orderId={selectedTicketForUpgrade.orderId}

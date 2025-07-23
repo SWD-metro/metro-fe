@@ -125,12 +125,6 @@ const LoginPage: React.FC = () => {
             <Checkbox className="text-sm text-gray-600 hover:text-cyan-600 transition-colors">
               {t("login.rememberMe")}
             </Checkbox>
-            <RouterLink
-              to={path.forgotPassword}
-              className="text-sm text-cyan-600 hover:text-cyan-700 font-medium transition-colors duration-200 no-underline"
-            >
-              {t("login.forgotPassword")}
-            </RouterLink>
           </div>
         </Form.Item>
 

@@ -13,11 +13,16 @@ import {
 import { Menu, App as AntdApp, Avatar, Divider } from "antd";
 import logo from "src/assets/HCMC_Metro_Logo.png";
 import Sider from "antd/es/layout/Sider";
-import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useLogoutMutation } from "src/queries/useAuth";
 import { AppContext } from "src/contexts/app.context";
-import { FormInputIcon, MapPinHouseIcon, MapPlusIcon, MessageCircleIcon } from "lucide-react";
+import {
+  FormInputIcon,
+  MapPinHouseIcon,
+  MapPlusIcon,
+  MessageCircleIcon,
+} from "lucide-react";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -27,7 +32,7 @@ const Sidebar = () => {
   const { reset } = useContext(AppContext);
 
   const getSelectedKey = (pathname: string): string | undefined => {
-    if (pathname.startsWith("/admin/dashboard")) {
+    if (pathname.startsWith("/admin")) {
       return "1";
     }
     if (pathname.startsWith("/admin/user")) {
@@ -91,23 +96,19 @@ const Sidebar = () => {
     <Sider width={250} className="!bg-white shadow-sm ">
       <div className="p-4">
         <div className="text-center flex flex-col items-center">
-          <NavLink to="/">
-            <img src={logo} alt="Logo" className="w-[120px]" />
-          </NavLink>
+          <img src={logo} alt="Logo" className="w-[120px]" />
         </div>
         <Divider className="my-2" />
         <div className="px-4 py-2 flex flex-col items-center gap-2">
-          <NavLink to="/">
-            <Avatar
-              size={64}
-              icon={<CrownOutlined />}
-              className="!bg-amber-400 text-white"
-            />
-            <div className="text-center">
-              <p className="font-semibold text-base">Administrator</p>
-              <p className="text-xs text-gray-500">Bảng điều khiển</p>
-            </div>
-          </NavLink>
+          <Avatar
+            size={64}
+            icon={<CrownOutlined />}
+            className="!bg-amber-400 text-white"
+          />
+          <div className="text-center">
+            <p className="font-semibold text-base">Administrator</p>
+            <p className="text-xs text-gray-500">Bảng điều khiển</p>
+          </div>
         </div>
         <Divider className="my-2" />
       </div>
@@ -119,7 +120,7 @@ const Sidebar = () => {
           {
             key: "1",
             icon: <DashboardOutlined />,
-            label: <Link to="/admin/dashboard">Dashboard</Link>,
+            label: <Link to="/admin">Dashboard</Link>,
           },
           {
             key: "2",
@@ -143,6 +144,16 @@ const Sidebar = () => {
           },
           {
             key: "6",
+            icon: <MapPlusIcon />,
+            label: <Link to="/admin/station-route">Các ga trên tuyến</Link>,
+          },
+          {
+            key: "7",
+            icon: <MapPinHouseIcon />,
+            label: <Link to="/admin/stations">Ga</Link>,
+          },
+          {
+            key: "8",
             icon: <FormInputIcon />,
             label: (
               <Link to="/admin/verify-student-request">
@@ -151,19 +162,9 @@ const Sidebar = () => {
             ),
           },
           {
-            key: "7",
+            key: "9",
             icon: <MessageCircleIcon />,
             label: <Link to="/admin/feedbacks">Đánh giá</Link>,
-          },
-          {
-            key: "9",
-            icon: <MapPlusIcon />,
-            label: <Link to="/admin/station-route">Các ga trên tuyến</Link>,
-          },
-          {
-            key: "10",
-            icon: <MapPinHouseIcon />,
-            label: <Link to="/admin/stations">Ga</Link>,
           },
           {
             key: "auth",
@@ -171,7 +172,7 @@ const Sidebar = () => {
             type: "group",
             children: [
               {
-                key: "8",
+                key: "10",
                 icon: <LogoutOutlined />,
                 label: (
                   <span

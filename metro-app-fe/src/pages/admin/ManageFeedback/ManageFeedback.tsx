@@ -29,12 +29,14 @@ import {
   User,
   Calendar,
   Search,
+  MessageCircleIcon,
 } from "lucide-react";
 import {
   useFeedbackReplyMutation,
   useGetFeedbacksList,
 } from "src/queries/useUser";
 import { Feedback } from "src/types/user.type";
+import { formatDDMMYY } from "src/utils/utils";
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -105,36 +107,6 @@ const ManageFeedbackPage: React.FC = () => {
     }
   };
 
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case "App Issue":
-        return "red";
-      case "Suggestion":
-        return "blue";
-      case "Other":
-        return "orange";
-      case "General":
-        return "green";
-      default:
-        return "default";
-    }
-  };
-
-  const getCategoryName = (category: string) => {
-    switch (category) {
-      case "App Issue":
-        return "Lỗi ứng dụng";
-      case "Suggestion":
-        return "Góp ý";
-      case "Other":
-        return "Khác";
-      case "General":
-        return "Chung";
-      default:
-        return category;
-    }
-  };
-
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("vi-VN", {
       year: "numeric",
@@ -157,11 +129,7 @@ const ManageFeedbackPage: React.FC = () => {
       title: "Danh mục",
       dataIndex: "category",
       key: "category",
-      render: (category: string) => (
-        <Tag color={getCategoryColor(category)}>
-          {getCategoryName(category)}
-        </Tag>
-      ),
+      render: (category: string) => <Tag color="blue">{category}</Tag>,
       filters: [
         { text: "Lỗi ứng dụng", value: "App Issue" },
         { text: "Góp ý", value: "Suggestion" },
@@ -233,16 +201,23 @@ const ManageFeedbackPage: React.FC = () => {
   ];
 
   return (
-    <Layout>
-      <Content className="bg-gray-50">
-        <div className="p-6">
-          <div className="mb-6">
-            <Title level={2} className="mb-2">
-              Quản lý phản hồi
-            </Title>
-            <Text type="secondary">
-              Xem, phản hồi và quản lý phản hồi từ người dùng
-            </Text>
+    <Layout className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+      <Content className="w-full max-w-7xl mx-auto p-2">
+        <div className="">
+          <div className="mb-8">
+            <div className="flex items-center space-x-3 mb-2 mt-4">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <MessageCircleIcon />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">
+                  Quản lý phản hồi
+                </h1>
+                <p className="text-gray-600">
+                  Xem, phản hồi và quản lý phản hồi từ người dùng
+                </p>
+              </div>
+            </div>
           </div>
 
           <Row gutter={16} className="mb-6">
@@ -250,7 +225,7 @@ const ManageFeedbackPage: React.FC = () => {
               <Card className="text-center">
                 <div className="flex items-center justify-center mb-2">
                   <MessageCircle className="text-blue-500 mr-2" size={24} />
-                  <Title level={3} className="mb-0 text-blue-600">
+                  <Title level={3} className="!mt-2.5 !text-blue-600">
                     {feedbacks.length}
                   </Title>
                 </div>
@@ -261,7 +236,7 @@ const ManageFeedbackPage: React.FC = () => {
               <Card className="text-center">
                 <div className="flex items-center justify-center mb-2">
                   <Clock className="text-orange-500 mr-2" size={24} />
-                  <Title level={3} className="mb-0 text-orange-600">
+                  <Title level={3} className="!mt-2.5 !text-orange-600">
                     {pendingCount}
                   </Title>
                 </div>
@@ -272,7 +247,7 @@ const ManageFeedbackPage: React.FC = () => {
               <Card className="text-center">
                 <div className="flex items-center justify-center mb-2">
                   <CheckCircle className="text-green-500 mr-2" size={24} />
-                  <Title level={3} className="mb-0 text-green-600">
+                  <Title level={3} className="!mt-2.5 !text-green-600">
                     {repliedCount}
                   </Title>
                 </div>
@@ -337,29 +312,27 @@ const ManageFeedbackPage: React.FC = () => {
               <div className="space-y-4">
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center space-x-2">
-                      <Avatar icon={<User />} />
+                    <div className="flex items-center space-x-3">
+                      <Avatar size={48} icon={<User />} className="!mr-2" />
                       <div>
                         <Text strong>
                           ID người dùng: {selectedFeedback.userId}
                         </Text>
                         <br />
                         <Text type="secondary" className="text-sm">
-                          <Calendar size={14} className="inline mr-1" />
-                          {formatDate(selectedFeedback.createdAt)}
+                          <Calendar size={16} className="inline mr-1" />
+                          {selectedFeedback.createdAt}
                         </Text>
                       </div>
                     </div>
-                    <Tag color={getCategoryColor(selectedFeedback.category)}>
-                      {getCategoryName(selectedFeedback.category)}
-                    </Tag>
+                    <Tag color="blue">{selectedFeedback.category}</Tag>
                   </div>
 
                   <div className="mb-4">
                     <Text strong className="block mb-2">
                       Nội dung phản hồi:
                     </Text>
-                    <div className="p-3 bg-gray-50 rounded-lg">
+                    <div className="p-3 bg-blue-200 rounded-lg">
                       <Text>{selectedFeedback.content}</Text>
                     </div>
                   </div>
@@ -393,19 +366,25 @@ const ManageFeedbackPage: React.FC = () => {
                         disabled={!!selectedFeedback.reply}
                       />
                       {!selectedFeedback.reply && (
-                        <Space>
-                          <Button
-                            type="primary"
-                            onClick={handleReplySubmit}
-                            loading={isSubmitting}
-                            icon={<Reply size={16} />}
-                          >
-                            Gửi phản hồi
-                          </Button>
-                          <Button onClick={() => setIsModalVisible(false)}>
-                            Hủy
-                          </Button>
-                        </Space>
+                        <div className="text-right">
+                          <Space>
+                            <Button
+                              type="primary"
+                              onClick={handleReplySubmit}
+                              loading={isSubmitting}
+                              icon={<Reply size={16} />}
+                              className="!mt-3"
+                            >
+                              Gửi phản hồi
+                            </Button>
+                            <Button
+                              onClick={() => setIsModalVisible(false)}
+                              className="!mt-3"
+                            >
+                              Hủy
+                            </Button>
+                          </Space>
+                        </div>
                       )}
                     </div>
                   </div>
