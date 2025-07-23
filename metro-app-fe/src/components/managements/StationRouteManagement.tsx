@@ -17,7 +17,7 @@ import { Content } from 'antd/es/layout/layout';
 
 const ROUTE_COLORS = ['#1890ff', '#52c41a', '#fa8c16', '#eb2f96', '#722ed1', '#f5222d'];
 
-const StationManagement = () => {
+const StationRouteManagement = () => {
   const { data: routesApiResponse, isLoading: isLoadingRoutes, isError: isErrorRoutes, error: routeError } = useGetRouteList();
   const { data: stationsData, isLoading: isLoadingStations, isError: isErrorStations, error: stationError } = useGetStationList();
 
@@ -239,4 +239,4 @@ const StationManagement = () => {
 };
 
 
-export default StationManagement;
+export default StationRouteManagement;
