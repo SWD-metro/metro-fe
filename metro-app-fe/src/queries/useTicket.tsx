@@ -135,3 +135,29 @@ export const useGetTicketByUser = () => {
     queryFn: ticketsApiRequests.ticketByUser,
   });
 };
+
+export const useGetUpgradeAmount = ({
+  ticketId,
+  endStationId,
+}: {
+  ticketId: number;
+  endStationId: number;
+}) => {
+  return useQuery({
+    queryKey: ["upgrade-amount", ticketId, endStationId],
+    queryFn: () => ticketsApiRequests.getUpgradeAmount(ticketId, endStationId),
+    enabled: !!ticketId && !!endStationId,
+  });
+}
+
+export const useGetStationsForUpdate = ({
+  ticketId,
+}: {
+  ticketId: number;
+}) => {
+  return useQuery({
+    queryKey: ["stations-for-update", ticketId],
+    queryFn: () => ticketsApiRequests.getStationsForUpdate(ticketId),
+    enabled: !!ticketId,
+  });
+}

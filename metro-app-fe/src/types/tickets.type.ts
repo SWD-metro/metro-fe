@@ -8,6 +8,14 @@ export enum TicketStatus {
   CANCELLED = "CANCELLED",
 }
 
+export interface TicketTypeStatistic {
+  id: number;
+  ticketType: string;
+  usageDate: string;
+  usageCount: number;
+  createdAt: string;
+}
+
 export interface TicketQrData {
   ticketId: number;
   ticketTypeName: string;

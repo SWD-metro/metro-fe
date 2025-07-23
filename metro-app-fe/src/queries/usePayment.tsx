@@ -25,3 +25,22 @@ export const useGetPaymentMethodList = () => {
     queryFn: paymentApiRequests.paymentMethodList,
   });
 };
+
+export const useCreateVNPayUpgradeMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ ticketId, endStationId }: { ticketId: number, endStationId: number }) => 
+      paymentApiRequests.createVnPayPaymentForUpgrade(ticketId, endStationId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["vnpay-upgrade"] });
+    },
+  });
+};
+
+export const useGetVNPayUpgradeCallback = (search: string) => {
+  return useQuery({
+    queryKey: ["vnpay-upgrade", search],
+    queryFn: () => paymentApiRequests.paymentUpgradeCallBack(search),
+    enabled: !!search,
+  });
+};

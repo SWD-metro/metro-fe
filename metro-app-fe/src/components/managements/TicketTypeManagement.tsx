@@ -4,7 +4,7 @@ import {
     Modal,
     Form,
     Input,
-    Select,
+    // Bỏ Select vì người dùng tự nhập
     Button,
     Space,
     Tag,
@@ -13,7 +13,7 @@ import {
     Row,
     Col,
     Card,
-    InputNumber,
+    InputNumber, // Sẽ dùng InputNumber cho validityDuration
     Switch,
 } from 'antd';
 import type { TableProps } from 'antd';
@@ -27,12 +27,16 @@ import {
 import { TicketTypeRequest, TicketTypeResponse } from 'src/types/tickets.type';
 import toast from 'react-hot-toast';
 
-const VALIDITY_DURATIONS = [
-    { value: 'SINGLE', label: 'Vé đơn' },
-    { value: 'ONE_DAY', label: 'Vé 1 ngày' },
-    { value: 'THREE_DAYS', label: 'Vé 3 ngày' },
-    { value: 'ONE_WEEK', label: 'Vé tuần' },
-    { value: 'ONE_MONTH', label: 'Vé tháng' },
+// KHÔNG CẦN VALIDITY_DURATIONS NẾU NGƯỜI DÙNG TỰ NHẬP HOÀN TOÀN
+// Tuy nhiên, nếu bạn vẫn muốn gợi ý, bạn có thể giữ nó và dùng cho placeholder hoặc hướng dẫn.
+// Nếu bạn muốn người dùng CHỌN và KHÔNG TỰ NHẬP, thì phải dùng Select và giữ lại VALIDITY_DURATIONS.
+// Tôi sẽ giữ nó để minh họa cho hàm render trong bảng.
+const VALIDITY_DURATIONS_LABELS = [
+    { value: 0, label: 'Vé đơn' },
+    { value: 1, label: 'Vé 1 ngày' },
+    { value: 3, label: 'Vé 3 ngày' },
+    { value: 7, label: 'Vé tuần (7 ngày)' },
+    { value: 30, label: 'Vé tháng (30 ngày)' },
 ];
 
 const TicketTypeManagement = () => {
@@ -55,7 +59,8 @@ const TicketTypeManagement = () => {
         form.setFieldsValue({
             isActive: true,
             price: 0,
-            validityDuration: 'ONE_DAY',
+            validityDuration: 1, // Giá trị mặc định là số nguyên (ví dụ: 1 ngày)
+            description: '', // Đảm bảo có giá trị mặc định cho description
         });
         setIsModalOpen(true);
     };
@@ -64,21 +69,23 @@ const TicketTypeManagement = () => {
         setIsModalOpen(false);
         form.resetFields();
     };
+
     const onFinish = (values: any) => {
         const payload: TicketTypeRequest = {
             name: values.name,
-            description: values.description || '', 
+            description: values.description || '',
             price: values.price,
             isActive: values.isActive,
-            validityDuration: values.validityDuration,
+            validityDuration: values.validityDuration, // Đây sẽ là số nguyên từ InputNumber
         };
 
-        console.log('Submitting payload:', payload); 
+        console.log('Submitting payload:', payload);
 
         createTicketTypeMutation.mutate(payload, {
             onSuccess: () => {
                 toast.success('Thêm loại vé thành công!');
                 handleCancel();
+                // Invalidate queries here if using react-query to refetch list
             },
             onError: (error: any) => {
                 const errorMessage = error?.response?.data?.message || error.message || 'Lỗi không xác định';
@@ -103,6 +110,7 @@ const TicketTypeManagement = () => {
                 deleteTicketTypeMutation.mutate(ticketTypeId, {
                     onSuccess: () => {
                         toast.success('Xóa loại vé thành công!');
+                        // Invalidate queries here if using react-query
                     },
                     onError: (error: any) => {
                         const errorMessage = error?.response?.data?.message || error.message || 'Lỗi không xác định';
@@ -119,75 +127,84 @@ const TicketTypeManagement = () => {
         </Tag>
     );
 
-    const renderValidityDuration = (duration: string) => {
-        const found = VALIDITY_DURATIONS.find(d => d.value === duration);
-        return found ? found.label : duration;
+    // Hàm để hiển thị thời hạn sử dụng trong bảng
+    const renderValidityDuration = (durationValue: number) => {
+        const found = VALIDITY_DURATIONS_LABELS.find(d => d.value === durationValue);
+        return found ? found.label : `${durationValue} ngày`;
     };
 
     const columns: TableProps<TicketTypeResponse>['columns'] = [
-    {
-        title: 'Tên Loại Vé',
-        dataIndex: 'name',
-        key: 'name',
-        width: 200,
-        render: (text) => <span className="font-medium text-slate-800">{text}</span>,
-    },
-    {
-        title: 'Mô tả',
-        dataIndex: 'description',
-        key: 'description',
-        width: 250,
-        ellipsis: true,
-        render: (text) => <span className="text-slate-600">{text}</span>,
-    },
-    {
-        title: 'Giá (VNĐ)',
-        dataIndex: 'price',
-        key: 'price',
-        width: 120,
-        align: 'right',
-        render: (price) => <span className="text-slate-600">{price.toLocaleString('vi-VN')}</span>,
-    },
-    {
-        title: 'Trạng thái',
-        dataIndex: 'isActive',
-        key: 'isActive',
-        width: 150, // Tăng độ rộng
-        align: 'center',
-        render: (isActive: boolean) => (
-            <Tag color={isActive ? 'green' : 'red'}>
-                {isActive ? 'Đang hoạt động' : 'Ngưng hoạt động'}
-            </Tag>
-        ),
-    },
-    {
-        title: 'Hành động',
-        key: 'action',
-        align: 'right',
-        width: 180, 
-        render: (_, record) => (
-            <Space size="middle">
-                <Button
-                    type="link"
-                    icon={<EditOutlined />}
-                    // onClick={() => handleOpenModal(record)}
-                    className="text-indigo-600"
-                >
-                    Sửa
-                </Button>
-                <Button
-                    type="link"
-                    danger
-                    icon={<DeleteOutlined />}
-                    onClick={() => handleDelete(record.id, record.name)}
-                >
-                    Xóa
-                </Button>
-            </Space>
-        ),
-    },
-];
-
+        {
+            title: 'Tên Loại Vé',
+            dataIndex: 'name',
+            key: 'name',
+            width: 200,
+            render: (text) => <span className="font-medium text-slate-800">{text}</span>,
+        },
+        {
+            title: 'Mô tả',
+            dataIndex: 'description',
+            key: 'description',
+            width: 250,
+            ellipsis: true,
+            render: (text) => <span className="text-slate-600">{text}</span>,
+        },
+        {
+            title: 'Giá (VNĐ)',
+            dataIndex: 'price',
+            key: 'price',
+            width: 120,
+            align: 'right',
+            render: (price) => <span className="text-slate-600">{price.toLocaleString('vi-VN')}</span>,
+        },
+        {
+            title: 'Thời hạn', // Hiển thị thời hạn trong bảng
+            dataIndex: 'validityDuration',
+            key: 'validityDuration',
+            width: 120,
+            align: 'center',
+            render: (duration: number) => renderValidityDuration(duration),
+        },
+        {
+            title: 'Trạng thái',
+            dataIndex: 'isActive',
+            key: 'isActive',
+            width: 150,
+            align: 'center',
+            render: (isActive: boolean) => (
+                <Tag color={isActive ? 'green' : 'red'}>
+                    {isActive ? 'Đang hoạt động' : 'Ngưng hoạt động'}
+                </Tag>
+            ),
+        },
+        {
+            title: 'Hành động',
+            key: 'action',
+            align: 'right',
+            width: 180,
+            render: (_, record) => (
+                <Space size="middle">
+                    <Button
+                        type="link"
+                        icon={<EditOutlined />}
+                        // TODO: Implement showEditModal logic later
+                        // onClick={() => handleOpenModal(record)}
+                        className="text-indigo-600"
+                    >
+                        Sửa
+                    </Button>
+                    <Button
+                        type="link"
+                        danger
+                        icon={<DeleteOutlined />}
+                        onClick={() => handleDelete(record.id, record.name)}
+                    >
+                        Xóa
+                    </Button>
+                </Space>
+            ),
+        },
+    ];
 
     if (isLoadingTicketTypes) {
         return (
@@ -287,6 +304,11 @@ const TicketTypeManagement = () => {
                     layout="vertical"
                     onFinish={onFinish}
                     className="mt-6"
+                    initialValues={{
+                        isActive: true, // Giá trị mặc định cho Switch
+                        price: 0, // Giá trị mặc định cho InputNumber
+                        validityDuration: 1 // Giá trị mặc định cho InputNumber - ví dụ
+                    }}
                 >
                     <Form.Item
                         name="name"
@@ -299,6 +321,8 @@ const TicketTypeManagement = () => {
                     <Form.Item
                         name="description"
                         label={<span className="font-semibold text-slate-700">Mô tả</span>}
+                        // description không có @NotNull ở backend, nhưng @Size có thể yêu cầu không rỗng
+                        // Nếu bạn muốn mô tả là bắt buộc, thêm rules: [{ required: true, message: 'Vui lòng nhập mô tả!' }]
                     >
                         <Input.TextArea
                             rows={2}
@@ -326,10 +350,21 @@ const TicketTypeManagement = () => {
                         <Col span={12}>
                             <Form.Item
                                 name="validityDuration"
-                                label={<span className="font-semibold text-slate-700">Thời hạn sử dụng</span>}
-                                rules={[{ required: true, message: 'Vui lòng nhập thời hạn sử dụng!' }]}
+                                label={<span className="font-semibold text-slate-700">Thời hạn sử dụng (ngày)</span>}
+                                // Rules cho số nguyên: phải là số, không được rỗng, min/max theo backend
+                                rules={[
+                                    { required: true, message: 'Vui lòng nhập thời hạn sử dụng!' },
+                                    { type: 'number', min: 0, message: 'Thời hạn phải là số không âm!' },
+                                    { type: 'number', max: 365, message: 'Thời hạn không quá 365 ngày!' } // Giả định theo backend DTO
+                                ]}
                             >
-                                <Input placeholder="VD: ONE_DAY, TWO_WEEKS, MONTHLY..." />
+                                {/* ĐÃ SỬA: Sử dụng InputNumber để người dùng tự nhập số */}
+                                <InputNumber<number>
+                                    className="w-full"
+                                    min={0} // Theo @PositiveOrZero của backend
+                                    max={365} // Theo @Max của backend
+                                    placeholder="VD: 1, 3, 7, 30..."
+                                />
                             </Form.Item>
                         </Col>
                     </Row>
