@@ -17,7 +17,7 @@ import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useLogoutMutation } from "src/queries/useAuth";
 import { AppContext } from "src/contexts/app.context";
-import { FormInputIcon, MessageCircleIcon } from "lucide-react";
+import { FormInputIcon, MapPinHouseIcon, MapPlusIcon, MessageCircleIcon } from "lucide-react";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -44,6 +44,12 @@ const Sidebar = () => {
     }
     if (pathname.startsWith("/admin/verify-student-request")) {
       return "6";
+    }
+    if (pathname.startsWith("/admin/station-route")) {
+      return "9";
+    }
+    if (pathname.startsWith("/admin/stations")) {
+      return "10";
     }
     return undefined;
   };
@@ -148,6 +154,16 @@ const Sidebar = () => {
             key: "7",
             icon: <MessageCircleIcon />,
             label: <Link to="/admin/feedbacks">Đánh giá</Link>,
+          },
+          {
+            key: "9",
+            icon: <MapPlusIcon />,
+            label: <Link to="/admin/station-route">Các ga trên tuyến</Link>,
+          },
+          {
+            key: "10",
+            icon: <MapPinHouseIcon />,
+            label: <Link to="/admin/stations">Ga</Link>,
           },
           {
             key: "auth",

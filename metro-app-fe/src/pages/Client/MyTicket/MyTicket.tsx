@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Card, Empty, Table, Typography, Tabs, Badge, Space } from "antd";
-import { TicketIcon, CheckCircle, XCircle, Clock } from "lucide-react";
-import React, { useMemo } from "react";
+import { Card, Empty, Table, Typography, Tabs, Badge, Space, Button } from "antd";
+import { TicketIcon, CheckCircle, XCircle, Clock, ArrowUp } from "lucide-react";
+import React, { useMemo, useState } from "react";
 import QRModal from "src/components/QrCodeModal";
+import UpgradeTicketModal from "src/components/UpgradeTicketModal";
 import { useGetTicketByUser } from "src/queries/useTicket";
 import { OrderDetailResponse } from "src/types/orders.type";
 import { TicketStatus } from "src/types/tickets.type";
@@ -11,6 +12,8 @@ const { Title } = Typography;
 
 const MyTicket: React.FC = () => {
   const { data: ticketsData, isLoading } = useGetTicketByUser();
+  const [upgradeModalVisible, setUpgradeModalVisible] = useState(false);
+  const [selectedTicketForUpgrade, setSelectedTicketForUpgrade] = useState<OrderDetailResponse | null>(null);
 
   const categorizedTickets = useMemo(() => {
     const allTickets = ticketsData?.data?.data || [];
@@ -27,6 +30,16 @@ const MyTicket: React.FC = () => {
       ),
     };
   }, [ticketsData]);
+
+  const handleUpgradeClick = (record: OrderDetailResponse) => {
+    setSelectedTicketForUpgrade(record);
+    setUpgradeModalVisible(true);
+  };
+
+  const handleUpgradeModalClose = () => {
+    setUpgradeModalVisible(false);
+    setSelectedTicketForUpgrade(null);
+  };
 
   const getColumns = (showAction: boolean = true) => [
     {
@@ -63,10 +76,23 @@ const MyTicket: React.FC = () => {
     ...(showAction
       ? [
           {
+            title: "Hành động",
             key: "action",
-            width: 120,
+            width: 300,
             render: (_: any, record: OrderDetailResponse) => (
-              <QRModal ticket={record.ticket} />
+              <Space>
+                <QRModal ticket={record.ticket} />
+                <Button
+                  type="primary"
+                  icon={<ArrowUp size={16} />}
+                  onClick={() => handleUpgradeClick(record)}
+                  className="!bg-gradient-to-r !from-cyan-500 !to-blue-600 hover:!from-cyan-600 hover:!to-blue-700 !border-0 !shadow-md !hover:shadow-lg !transition-all !transform hover:!scale-105 active:!scale-95 !duration-200"
+                  
+                >
+                  Nâng cấp
+                </Button>
+             
+              </Space>
             ),
           },
         ]
@@ -211,6 +237,16 @@ const MyTicket: React.FC = () => {
           }}
         />
       </Card>
+
+      {/* Upgrade Ticket Modal */}
+      {selectedTicketForUpgrade && (
+        <UpgradeTicketModal
+          orderId={selectedTicketForUpgrade.orderId}
+          visible={upgradeModalVisible}
+          onCancel={handleUpgradeModalClose}
+          ticket={selectedTicketForUpgrade.ticket}
+        />
+      )}
     </div>
   );
 };

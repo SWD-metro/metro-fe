@@ -26,3 +26,8 @@ export interface FareMatrixUpdateRequest {
   name: string;
   isActive: boolean;
 }
+
+export interface FareRequest {
+  startStationId: number;
+  endStationId: number;
+}

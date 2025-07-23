@@ -24,12 +24,15 @@ import MainContent from "src/components/ProfileComponent/MainContent";
 import MyTicket from "src/pages/Client/MyTicket";
 import OrderHistory from "src/pages/Client/OrderHistory/OrderHistory";
 import UserManagement from "src/components/managements/UserManagement";
-import StationManagement from "src/components/managements/StationManagement";
 import ScheduleManagement from "src/components/managements/ScheduleManagement";
 import StudentRequestPage from "src/pages/Client/StudentRequest";
 import VerifyStudentRequest from "src/pages/admin/VerityStudentRequest";
 import FeedbackPage from "src/pages/Client/Feedback";
 import ManageFeedbackPage from "src/pages/admin/ManageFeedback";
+import RouteManagement from "src/pages/admin/RouteManagement";
+import StationRouteManagement from "src/components/managements/StationRouteManagement";
+import StationManagement from "src/pages/admin/StationManagement";
+import ManageTicketPage from "src/pages/admin/TicketManagement";
 
 const RouteElements: React.FC = () => {
   const routeElements = useRoutes([
@@ -144,10 +147,18 @@ const RouteElements: React.FC = () => {
             },
             {
               path: "ticket",
-              element: <Manage />,
+              element: <ManageTicketPage />,
             },
             {
               path: "routes",
+              element: <RouteManagement />,
+            },
+            {
+              path: "station-route",
+              element: <StationRouteManagement />,
+            },
+            {
+              path: "stations",
               element: <StationManagement />,
             },
             {
