@@ -59,6 +59,21 @@ export const useDeleteStationMutation = () => {
   });
 };
 
+export const useUpdateStationStatusMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ stationId, status }: { stationId: number; status: string }) => 
+      stationApiRequests.updateStationStatus(stationId, status),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["stations"] });
+      console.log("Station status updated successfully!");
+    },
+    onError: (error) => {
+      console.error("Error updating station status:", error);
+    },
+  });
+};
+
 export const useGetStationRoutesById = (routeId: number | undefined) => {
   return useQuery({
     queryKey: ["stations", routeId],

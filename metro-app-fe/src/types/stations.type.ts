@@ -1,11 +1,9 @@
 export interface StationsRequest {
-  routeId: number;
   stationCode: string;
   name: string;
   address: string;
   latitude: number;
   longitude: number;
-  sequenceOrder: number;
 }
 
 export interface StationUsageStatistic {
@@ -64,6 +62,12 @@ export interface StationRouteResponse {
   isDeleted: boolean;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface StationRouteRequest {
+    routeId: number,
+    stationId: number,
+    sequenceOrder: number,
 }
 
 export type Status = "active" | "decommissioned" | "maintenance";

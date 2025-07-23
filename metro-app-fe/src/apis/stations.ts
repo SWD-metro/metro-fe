@@ -21,6 +21,9 @@ const stationApiRequests = {
   deleteStation: (stationId: number) =>
     http.delete<ApiResponse<void>>(`stations/${stationId}`),
 
+  updateStationStatus: (stationId: number, status: string) =>
+    http.post<ApiResponse<void>>(`stations/${stationId}/status`, { status }),
+
   stationRoutesById: (routeId: number) =>
     http.get<ApiResponse<StationRouteResponse[]>>(
       `station-routes/route/${routeId}`

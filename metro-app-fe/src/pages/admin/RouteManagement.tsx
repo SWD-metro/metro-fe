@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { apiCreateRoute, apiDeleteRoute, apiGetRoutes, apiSearchRoute, apiUpdateRoute } from "src/apis/route.api";
+import ConfirmModal from "src/components/ConfirmModal";
 import { RoutesRequest, RoutesResponse } from "src/types/routes.type";
 
 export default function RouteManagement() {
@@ -22,6 +23,10 @@ export default function RouteManagement() {
   const [editingRoute, setEditingRoute] = useState<RoutesResponse | null>(null);
   const [showDescriptionModal, setShowDescriptionModal] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState<RoutesResponse | null>(null);
+  
+  // Delete modal states
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteModalData, setDeleteModalData] = useState<RoutesResponse | null>(null);
 
   useEffect(() => {
     fetchRoutes();
@@ -117,33 +122,33 @@ export default function RouteManagement() {
   };
 
   const handleDelete = (route: RoutesResponse) => {
-    Modal.confirm({
-      title: "Delete Route",
-      content: (
-        <div>
-          <p>Bạn có chắc chắn muốn xóa tuyến đường này không?</p>
-          <div className="mt-3 p-3 bg-gray-50 rounded">
-            <p><strong>Tên tuyến đường:</strong> {route.routeName}</p>
-            <p><strong>Mã lộ trình:</strong> {route.routeCode}</p>
-            <p><strong>Khoảng cách:</strong> {route.distanceInKm} km</p>
-          </div>
-          <p className="mt-2 text-red-600 text-sm">Không thể hoàn tác hành động này.</p>
-        </div>
-      ),
-      okText: "Xóa",
-      okType: "danger",
-      cancelText: "Hủy",
-      onOk: async () => {
-        try {
-          await apiDeleteRoute(route.routeId);
-          setRoutes(routes.filter((r) => r.routeId !== route.routeId));
-          message.success("Route deleted successfully!");
-        } catch (error) {
-          console.error("Error deleting route:", error);
-          message.error("Failed to delete route");
-        }
-      },
-    });
+    setDeleteModalData(route);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteModalData) return;
+
+    try {
+      // Optimistic update
+      setRoutes(routes.filter((r) => r.routeId !== deleteModalData.routeId));
+      
+      await apiDeleteRoute(deleteModalData.routeId);
+      message.success("Tuyến đường đã được xóa thành công!");
+    } catch (error) {
+      console.error("Error deleting route:", error);
+      // Revert optimistic update on error
+      fetchRoutes();
+      message.error("Không thể xóa tuyến đường");
+    } finally {
+      setShowDeleteModal(false);
+      setDeleteModalData(null);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setShowDeleteModal(false);
+    setDeleteModalData(null);
   };
 
   return (
@@ -407,6 +412,42 @@ export default function RouteManagement() {
           </div>
         )}
       </Modal>
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        onClose={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+        title="Xóa tuyến đường"
+        confirmText="Xóa"
+        cancelText="Hủy"
+        confirmButtonClass="bg-red-600 hover:bg-red-700"
+      >
+        {deleteModalData && (
+          <div>
+            <p className="mb-4">Bạn có chắc chắn muốn xóa tuyến đường này không?</p>
+            <div className="bg-gray-50 p-4 rounded-lg mb-4">
+              <div className="space-y-2">
+                <div>
+                  <span className="font-medium text-gray-700">Tên tuyến đường:</span>
+                  <p className="text-gray-900">{deleteModalData.routeName}</p>
+                </div>
+                <div>
+                  <span className="font-medium text-gray-700">Mã lộ trình:</span>
+                  <p className="text-gray-900">{deleteModalData.routeCode}</p>
+                </div>
+                <div>
+                  <span className="font-medium text-gray-700">Khoảng cách:</span>
+                  <p className="text-gray-900">{deleteModalData.distanceInKm} km</p>
+                </div>
+              </div>
+            </div>
+            <p className="text-red-600 text-sm">
+              ⚠️ Không thể hoàn tác hành động này.
+            </p>
+          </div>
+        )}
+      </ConfirmModal>
     </div>
   );
 }
