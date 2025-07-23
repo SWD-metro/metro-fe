@@ -18,7 +18,7 @@ import {
   Home,
 } from "lucide-react";
 
-import { useGetVNPayCallback } from "src/queries/usePayment";
+import { useGetVNPayCallback, useGetVNPayUpgradeCallback } from "src/queries/usePayment";
 import { useGetTicketById, useGetTicketQRCode } from "src/queries/useTicket";
 import { useLocation, useNavigate } from "react-router-dom";
 import path from "src/constants/path";
@@ -30,7 +30,17 @@ const PaymentResult: React.FC = () => {
   const navigate = useNavigate();
   const { search } = useLocation();
 
-  const { data: vnpayRes, isLoading } = useGetVNPayCallback(search);
+  // Check if this is an upgrade payment callback by examining the vnp_OrderInfo parameter
+  const urlParams = new URLSearchParams(search);
+  const orderInfo = urlParams.get('vnp_OrderInfo') || '';
+  const isUpgradePayment = orderInfo.includes('~upgrade');
+  
+  // Use appropriate callback hook based on payment type
+  const upgradeResult = useGetVNPayUpgradeCallback(isUpgradePayment ? search : '');
+  const normalResult = useGetVNPayCallback(isUpgradePayment ? '' : search);
+  // Extract data and loading state from the active hook
+  const { data: vnpayRes, isLoading } = isUpgradePayment ? upgradeResult : normalResult;
+  
   const payment = vnpayRes?.data.data;
   const ticketId = payment?.ticketId;
 
@@ -93,7 +103,7 @@ const PaymentResult: React.FC = () => {
             <CheckCircle className="w-12 h-12 !text-green-500 drop-shadow-lg" />
           </div>
           <h1 className="text-5xl font-bold text-white mb-4 drop-shadow-lg">
-            Thanh toán thành công!
+            {isUpgradePayment ? 'Nâng cấp vé thành công!' : 'Thanh toán thành công!'}
           </h1>
           <p className="text-blue-100 text-xl font-medium">
             {payment?.message}

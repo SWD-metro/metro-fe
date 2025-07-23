@@ -104,9 +104,7 @@ const BuyTicketPage: React.FC = () => {
       if (selectedTicketType === "single") {
         const fareMatrix = fareMatricesList.find(
           (p) =>
-            (p.startStationId === fromStation &&
-              p.endStationId === toStation) ||
-            (p.startStationId === toStation && p.endStationId === fromStation)
+            p.startStationId === fromStation && p.endStationId === toStation
         );
 
         const fareMatrixId = fareMatrix?.fareMatrixId;

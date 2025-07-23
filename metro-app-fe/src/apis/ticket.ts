@@ -1,6 +1,7 @@
 import { ApiResponse } from "src/types/api.type";
 import { FareMatrixRequest, FareMatrixResponse } from "src/types/fares.type";
 import { OrderDetailResponse } from "src/types/orders.type";
+import { StationRouteResponse } from "src/types/stations.type";
 import {
   TicketResponse,
   TicketTypeRequest,
@@ -43,6 +44,12 @@ const ticketsApiRequests = {
 
   ticketByUser: () =>
     http.get<ApiResponse<OrderDetailResponse[]>>("orders/user/details"),
+
+  getStationsForUpdate: (ticketId: number) =>
+    http.get<ApiResponse<StationRouteResponse[]>>(`ts/tickets/stations/upgrade/${ticketId}`),
+
+  getUpgradeAmount: (ticketId: number, endStationId: number) =>
+    http.get<ApiResponse<number>>(`ts/tickets/amount/${ticketId}/${endStationId}`),
 };
 
 export default ticketsApiRequests;

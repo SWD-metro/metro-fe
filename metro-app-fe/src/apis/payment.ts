@@ -17,6 +17,13 @@ const paymentApiRequests = {
     ),
   vnPayCallBack: (query: string) =>
     http.get<ApiResponse<PaymentCallbackResponse>>(`payment/callback${query}`),
+
+  createVnPayPaymentForUpgrade: (ticketId: number, endStationId: number) =>
+    http.post<ApiResponse<PaymentResponse>>("payment/upgrade", null, {
+      params: { ticketId: ticketId, endStationId: endStationId },
+    }),
+  paymentUpgradeCallBack: (query: string) =>
+    http.get<ApiResponse<PaymentCallbackResponse>>(`payment/callback/upgrade${query}`),
 };
 
 export default paymentApiRequests;
