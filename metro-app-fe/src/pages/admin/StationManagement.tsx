@@ -1,4 +1,4 @@
-import { Button, Form, Input, InputNumber, message, Modal } from "antd";
+import { Button, Form, Input, InputNumber, Modal } from "antd";
 import {
   CheckCircle,
   Clock,
@@ -13,14 +13,11 @@ import {
   XCircle,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import {
-  apiCreateStation,
-  apiDeleteStation,
-  apiGetStationByName,
-  apiGetStations,
-  apiUpdateStation,
-  apiUpdateStationStatus,
-} from "src/apis/station.api";
+import toast from "react-hot-toast";
+import { apiCreateStation, apiDeleteStation, apiGetStationByName, apiGetStations, apiUpdateStation } from "src/apis/station.api";
+import ConfirmModal from "src/components/ConfirmModal";
+import { useUpdateStationStatusMutation } from "src/queries/useStation";
+
 import { Station, StationsRequest, Status } from "src/types/stations.type";
 
 export default function StationManagement() {
@@ -32,6 +29,20 @@ export default function StationManagement() {
   const [showDescriptionModal, setShowDescriptionModal] = useState(false);
   const [selectedStation, setSelectedStation] = useState<Station | null>(null);
   const [form] = Form.useForm();
+
+  // Status modal state
+  const [showStatusModal, setShowStatusModal] = useState(false);
+  const [statusModalData, setStatusModalData] = useState<{
+    station: Station;
+    nextStatus: Status;
+  } | null>(null);
+
+  // Delete modal state
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteModalData, setDeleteModalData] = useState<Station | null>(null);
+
+  // React Query mutation hook
+  const updateStationStatusMutation = useUpdateStationStatusMutation();
 
   useEffect(() => {
     fetchStations();
@@ -81,10 +92,10 @@ export default function StationManagement() {
           latitude: values.latitude,
           longitude: values.longitude,
         };
-        const response = await apiUpdateStation(
-          updateData,
-          editingStation.stationId
-        );
+        const response = await apiUpdateStation({
+          ...editingStation,
+          ...updateData
+        }, editingStation.stationId);
         if (response?.data) {
           setStations(
             stations.map((s) =>
@@ -93,21 +104,21 @@ export default function StationManagement() {
                 : s
             )
           );
-          message.success("Station updated successfully!");
+          toast.success("Cập nhật trạm thành công!");
         }
       } else {
         // Create new station
         const response = await apiCreateStation(values);
         if (response?.data) {
           setStations([...stations, response.data]);
-          message.success("Station created successfully!");
+          toast.success("Tạo trạm thành công!");
         }
       }
 
       handleCloseModal();
     } catch (error) {
       console.error("Error saving station:", error);
-      message.error("Failed to save station. Please try again.");
+      toast.error("Lưu trạm thất bại. Vui lòng thử lại.");
     }
   };
 
@@ -140,98 +151,111 @@ export default function StationManagement() {
     setShowDescriptionModal(true);
   };
 
-  const handleDelete = async (station: Station) => {
-    Modal.confirm({
-      title: "Xóa trạm",
-      content: (
-        <div>
-          <p>Bạn có chắc chắn muốn xóa đài này không?</p>
-          <div className="mt-2 p-3 bg-gray-50 rounded">
-            <p>
-              <strong>Ga tàu:</strong> {station.name}
-            </p>
-            <p>
-              <strong>Mã số:</strong> {station.stationCode}
-            </p>
-            <p>
-              <strong>Địa chỉ:</strong> {station.address}
-            </p>
-          </div>
-          <p className="mt-2 text-red-600 text-sm">
-            Hành động này không thể hoàn tác.
-          </p>
-        </div>
-      ),
-      okText: "Xóa",
-      okType: "danger",
-      cancelText: "Hủy",
-      onOk: async () => {
-        try {
-          await apiDeleteStation(station.stationId);
-          setStations(
-            stations.filter((s) => s.stationId !== station.stationId)
-          );
-          message.success("Station deleted successfully!");
-        } catch (error) {
-          console.error("Error deleting station:", error);
-          message.error("Failed to delete station. Please try again.");
-        }
-      },
-    });
+  const handleDelete = (station: Station) => {
+    setDeleteModalData(station);
+    setShowDeleteModal(true);
   };
 
-  const handleStatusToggle = async (station: Station) => {
+  const handleDeleteConfirm = async () => {
+    if (!deleteModalData) return;
+
+    try {
+      await apiDeleteStation(deleteModalData.stationId);
+      setStations(stations.filter((s) => s.stationId !== deleteModalData.stationId));
+      toast.success("Xóa trạm thành công!");
+    } catch (error) {
+      console.error("Error deleting station:", error);
+      toast.error("Xóa trạm thất bại. Vui lòng thử lại.");
+    } finally {
+      setShowDeleteModal(false);
+      setDeleteModalData(null);
+    }
+
+  };
+
+  const handleDeleteCancel = () => {
+    setShowDeleteModal(false);
+    setDeleteModalData(null);
+  };
+
+  const handleStatusToggle = (station: Station) => {
     // Cycle through status values: active -> maintenance -> decommissioned -> active
     const statusCycle: Status[] = ["active", "maintenance", "decommissioned"];
     const currentIndex = statusCycle.indexOf(station.status as Status);
     const nextStatus = statusCycle[(currentIndex + 1) % statusCycle.length];
 
-    Modal.confirm({
-      title: "Cập nhật trạng thái trạm",
-      content: (
-        <div>
-          <p>Bạn có chắc chắn muốn thay đổi trạng thái của đài không?</p>
-          <div className="mt-2 p-3 bg-gray-50 rounded">
-            <p>
-              <strong>Ga tàu:</strong> {station.name}
-            </p>
-            <p>
-              <strong>Trạng thái hiện tại:</strong> {station.status}
-            </p>
-            <p>
-              <strong>Trạng thái mới:</strong> {nextStatus}
-            </p>
-          </div>
-        </div>
-      ),
-      okText: "Cập nhật",
-      okType: "primary",
-      cancelText: "Hủy",
-      onOk: async () => {
-        try {
-          const response = await apiUpdateStationStatus(
-            station.stationId,
-            nextStatus
-          );
-          if (response?.data) {
-            setStations(
-              stations.map((s) =>
-                s.stationId === station.stationId
-                  ? { ...s, status: nextStatus }
-                  : s
-              )
-            );
-            message.success(`Station status updated to ${nextStatus}!`);
-          }
-        } catch (error) {
-          console.error("Error updating station status:", error);
-          message.error("Failed to update station status. Please try again.");
-        }
-      },
-    });
+
+    // Set modal data and show modal
+    setStatusModalData({ station, nextStatus });
+    setShowStatusModal(true);
+
   };
 
-  const getStatusBadge = (status: string) => {
+  const handleStatusConfirm = async () => {
+    if (!statusModalData) return;
+
+    const { station, nextStatus } = statusModalData;
+    
+    try {
+      console.log(`Updating station ${station.stationId} status to ${nextStatus}`);
+      
+      // Optimistically update the local state
+      setStations(prev => 
+        prev.map(s => 
+          s.stationId === station.stationId 
+            ? { ...s, status: nextStatus }
+            : s
+        )
+      );
+
+      // Call the mutation
+      await updateStationStatusMutation.mutateAsync({
+        stationId: station.stationId,
+        status: nextStatus
+      });
+
+      toast.success(`Cập nhật trạng thái trạm thành ${nextStatus}!`);
+      
+    } catch (error) {
+      console.error("Error updating station status:", error);
+      
+      // Revert the optimistic update on error
+      setStations(prev => 
+        prev.map(s => 
+          s.stationId === station.stationId 
+            ? { ...s, status: station.status }
+            : s
+        )
+      );
+      
+      toast.error("Cập nhật trạng thái trạm thất bại. Vui lòng thử lại.");
+    } finally {
+      // Close modal and reset data
+      setShowStatusModal(false);
+      setStatusModalData(null);
+    }
+  };
+
+  const handleStatusCancel = () => {
+    setShowStatusModal(false);
+    setStatusModalData(null);
+  };
+
+  // Helper function to get status text in Vietnamese
+  const getStatusText = (status: Status): string => {
+    switch (status) {
+      case "active":
+        return "hoạt động";
+      case "maintenance":
+        return "bảo trì";
+      case "decommissioned":
+        return "ngừng hoạt động";
+      default:
+        return status;
+    }
+  };
+
+  const getStatusBadge = (status: Status) => {
     const isActive = status === "active";
     const isDecommissioned = status === "decommissioned";
     const isMaintenance = status === "maintenance";
@@ -651,6 +675,86 @@ export default function StationManagement() {
           </div>
         )}
       </Modal>
+
+      {/* Status Confirmation Modal */}
+      <ConfirmModal
+        isOpen={showStatusModal}
+        onClose={handleStatusCancel}
+        onConfirm={handleStatusConfirm}
+        title="Xác nhận thay đổi trạng thái"
+        confirmText="Xác nhận"
+        cancelText="Hủy"
+        confirmButtonClass="bg-blue-600 hover:bg-blue-700"
+      >
+        {statusModalData && (
+          <div className="space-y-4">
+            <p className="text-gray-700">
+              Bạn có chắc chắn muốn thay đổi trạng thái của trạm này không?
+            </p>
+            
+            <div className="bg-gray-50 p-4 rounded-lg space-y-3">
+              <div>
+                <span className="font-medium text-gray-700">Tên trạm:</span>
+                <p className="text-gray-900">{statusModalData.station.name}</p>
+              </div>
+              
+              <div>
+                <span className="font-medium text-gray-700">Trạng thái hiện tại:</span>
+                <div className="mt-1">
+                  {getStatusBadge(statusModalData.station.status)}
+                </div>
+              </div>
+              
+              <div>
+                <span className="font-medium text-gray-700">Trạng thái mới:</span>
+                <div className="mt-1">
+                  {getStatusBadge(statusModalData.nextStatus)}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </ConfirmModal>
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        onClose={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+        title="Xóa trạm"
+        confirmText="Xóa"
+        cancelText="Hủy"
+        confirmButtonClass="bg-red-600 hover:bg-red-700"
+      >
+        {deleteModalData && (
+          <div className="space-y-4">
+            <p className="text-gray-700">
+              Bạn có chắc chắn muốn xóa trạm này không?
+            </p>
+            
+            <div className="bg-gray-50 p-4 rounded-lg space-y-3">
+              <div>
+                <span className="font-medium text-gray-700">Tên trạm:</span>
+                <p className="text-gray-900">{deleteModalData.name}</p>
+              </div>
+              
+              <div>
+                <span className="font-medium text-gray-700">Mã trạm:</span>
+                <p className="text-gray-900 font-mono">{deleteModalData.stationCode}</p>
+              </div>
+              
+              <div>
+                <span className="font-medium text-gray-700">Địa chỉ:</span>
+                <p className="text-gray-900">{deleteModalData.address}</p>
+              </div>
+            </div>
+            
+            <p className="text-red-600 text-sm font-medium">
+              ⚠️ Hành động này không thể hoàn tác.
+            </p>
+          </div>
+        )}
+      </ConfirmModal>
     </div>
   );
 }
