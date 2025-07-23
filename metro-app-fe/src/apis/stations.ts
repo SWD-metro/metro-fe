@@ -22,7 +22,7 @@ const stationApiRequests = {
     http.delete<ApiResponse<void>>(`stations/${stationId}`),
 
   updateStationStatus: (stationId: number, status: string) =>
-    http.post<ApiResponse<void>>(`stations/${stationId}/status`, { status }),
+    http.post<ApiResponse<StationsResponse>>(`stations/status/${stationId}?status=${status}`),
 
   stationRoutesById: (routeId: number) =>
     http.get<ApiResponse<StationRouteResponse[]>>(
