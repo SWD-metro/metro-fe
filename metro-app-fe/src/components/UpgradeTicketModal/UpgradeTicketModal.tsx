@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Select, Button, Typography, Space, Divider, Alert, Spin } from 'antd';
 import { ArrowUp, MapPin, DollarSign } from 'lucide-react';
 import { TicketResponse } from 'src/types/tickets.type';
-import { StationRouteResponse } from 'src/types/stations.type';
 import { useGetStationsForUpdate, useGetUpgradeAmount } from 'src/queries/useTicket';
 import { useCreateVNPayUpgradeMutation } from 'src/queries/usePayment';
 
@@ -121,7 +120,7 @@ const UpgradeTicketModal: React.FC<UpgradeTicketModalProps> = ({
               onChange={setSelectedEndStationId}
               showSearch
               filterOption={(input, option) =>
-                (option?.children as string)?.toLowerCase().includes(input.toLowerCase())
+                (option?.label as string)?.toLowerCase().includes(input.toLowerCase())
               }
             >
               {stations.map((station) => (
