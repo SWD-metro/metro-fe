@@ -1,15 +1,5 @@
 import React, { useContext, useState } from "react";
-import {
-  Card,
-  Button,
-  Select,
-  Tabs,
-  Row,
-  Col,
-  InputNumber,
-  Radio,
-  Divider,
-} from "antd";
+import { Card, Button, Select, Tabs, Row, Col, Radio, Divider } from "antd";
 import {
   CalendarOutlined,
   EnvironmentOutlined,
@@ -31,6 +21,8 @@ import { useNavigate } from "react-router-dom";
 import slugify from "slugify";
 import { useGetRouteList } from "src/queries/useRoute";
 import { AppContext } from "src/contexts/app.context";
+import { GraduationCap } from "lucide-react";
+import path from "src/constants/path";
 
 type TicketType = "single" | "days";
 
@@ -43,7 +35,6 @@ const BuyTicketPage: React.FC = () => {
     useState<TicketType>("single");
   const [fromStation, setFromStation] = useState<number | null>(null);
   const [toStation, setToStation] = useState<number | null>(null);
-  const [quantity, setQuantity] = useState<number>(1);
   const [selectedTicketInfo, setSelectedTicketInfo] =
     useState<TicketTypeResponse | null>(null);
   const [selectedRouteId, setSelectedRouteId] = useState<number | undefined>();
@@ -82,7 +73,7 @@ const BuyTicketPage: React.FC = () => {
       if (!fromStation || !toStation) return 0;
 
       const singlePrice = getSingleTicketPrice(fromStation, toStation);
-      return singlePrice * quantity;
+      return singlePrice * 1;
     } else if (selectedTicketInfo) {
       return selectedTicketInfo.price;
     }
@@ -125,6 +116,7 @@ const BuyTicketPage: React.FC = () => {
           stationRoutesList.find(
             (s) => s.stationsResponse.stationId === toStation
           )?.stationsResponse.name || "";
+
         const slug = slugify(`${fromName}-to-${toName}`, {
           lower: true,
           locale: "vi",
@@ -135,7 +127,7 @@ const BuyTicketPage: React.FC = () => {
           state: {
             type: "single",
             fareMatrixId,
-            quantity,
+            quantity: 1,
           },
         });
       } else {
@@ -193,6 +185,34 @@ const BuyTicketPage: React.FC = () => {
         backgroundImage: `url(${background2})`,
       }}
     >
+      {!profile?.isStudent && (
+        <>
+          <div className="bg-gradient-to-r from-blue-100 to-purple-100 border border-blue-300 rounded-2xl p-6 shadow-lg flex items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="bg-blue-500 text-white p-3 rounded-full">
+                <GraduationCap className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-800">
+                  Xác nhận sinh viên để được giảm giá vé!
+                </h3>
+                <p className="text-gray-600 text-sm mt-1">
+                  Bạn chưa xác nhận là sinh viên. Hãy gửi yêu cầu để được hưởng
+                  ưu đãi dành riêng cho sinh viên.
+                </p>
+              </div>
+            </div>
+            <Button
+              type="primary"
+              size="large"
+              className="bg-blue-600 hover:bg-blue-700 rounded-xl font-semibold shadow"
+              onClick={() => navigate(path.studentRequest)}
+            >
+              Gửi yêu cầu sinh viên
+            </Button>
+          </div>
+        </>
+      )}
       <div className="max-w-7xl mx-auto px-4 py-8">
         <Row gutter={[24, 24]}>
           <Col sm={24} lg={15}>
@@ -251,6 +271,7 @@ const BuyTicketPage: React.FC = () => {
                           <EnvironmentOutlined className="mr-1 text-blue-500" />
                           Ga đi
                         </label>
+
                         <Select
                           placeholder="Chọn ga đi"
                           value={fromStation}
@@ -258,14 +279,58 @@ const BuyTicketPage: React.FC = () => {
                           className="w-full"
                           size="large"
                         >
-                          {stationRoutesList.map((station) => (
-                            <Option
-                              key={station.stationsResponse.stationId}
-                              value={station.stationsResponse.stationId}
-                            >
-                              {station.stationsResponse.name}
-                            </Option>
-                          ))}
+                          {stationRoutesList.map((station) => {
+                            const stationInfo = station.stationsResponse;
+                            const isInactive = station.status !== "active";
+                            const isDisabled = isInactive;
+
+                            return (
+                              <Option
+                                key={stationInfo.stationId}
+                                value={stationInfo.stationId}
+                                disabled={isDisabled}
+                                style={{
+                                  opacity: isInactive ? 0.5 : 1,
+                                  color: isInactive ? "#9ca3af" : "inherit",
+                                }}
+                              >
+                                <div style={{ padding: "0.5rem 0" }}>
+                                  <div
+                                    style={{
+                                      fontWeight: 600,
+                                      color: "#1f2937",
+                                    }}
+                                  >
+                                    {stationInfo.name} (
+                                    {stationInfo.stationCode})
+                                    {isInactive && " (Không khả dụng)"}
+                                  </div>
+                                  <div
+                                    style={{
+                                      fontSize: "0.875rem",
+                                      color: "#6b7280",
+                                      marginTop: "2px",
+                                    }}
+                                  >
+                                    {stationInfo.address}
+                                  </div>
+                                  <div
+                                    style={{
+                                      fontSize: "0.75rem",
+                                      color:
+                                        station.status === "active"
+                                          ? "#059669"
+                                          : "#dc2626",
+                                      marginTop: "1px",
+                                      fontWeight: "500",
+                                    }}
+                                  >
+                                    ● {station.status.toUpperCase()}
+                                  </div>
+                                </div>
+                              </Option>
+                            );
+                          })}
                         </Select>
                       </div>
 
@@ -287,30 +352,60 @@ const BuyTicketPage: React.FC = () => {
                                 station.stationsResponse.stationId !==
                                 fromStation
                             )
-                            .map((station) => (
-                              <Option
-                                key={station.stationsResponse.stationId}
-                                value={station.stationsResponse.stationId}
-                              >
-                                {station.stationsResponse.name}
-                              </Option>
-                            ))}
+                            .map((station) => {
+                              const stationInfo = station.stationsResponse;
+                              const isInactive = station.status !== "active";
+                              const isDisabled = isInactive;
+
+                              return (
+                                <Option
+                                  key={stationInfo.stationId}
+                                  value={stationInfo.stationId}
+                                  disabled={isDisabled}
+                                  style={{
+                                    opacity: isInactive ? 0.5 : 1,
+                                    color: isInactive ? "#9ca3af" : "inherit",
+                                  }}
+                                >
+                                  <div style={{ padding: "0.5rem 0" }}>
+                                    <div
+                                      style={{
+                                        fontWeight: 600,
+                                        color: "#1f2937",
+                                      }}
+                                    >
+                                      {stationInfo.name} (
+                                      {stationInfo.stationCode})
+                                      {isInactive && " (Không khả dụng)"}
+                                    </div>
+                                    <div
+                                      style={{
+                                        fontSize: "0.875rem",
+                                        color: "#6b7280",
+                                        marginTop: "2px",
+                                      }}
+                                    >
+                                      {stationInfo.address}
+                                    </div>
+                                    <div
+                                      style={{
+                                        fontSize: "0.75rem",
+                                        color:
+                                          station.status === "active"
+                                            ? "#059669"
+                                            : "#dc2626",
+                                        marginTop: "1px",
+                                        fontWeight: "500",
+                                      }}
+                                    >
+                                      ● {station.status.toUpperCase()}
+                                    </div>
+                                  </div>
+                                </Option>
+                              );
+                            })}
                         </Select>
                       </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Số lượng vé
-                      </label>
-                      <InputNumber
-                        disabled
-                        min={1}
-                        value={quantity}
-                        onChange={(value) => setQuantity(value || 1)}
-                        className="w-full"
-                        size="large"
-                      />
                     </div>
                     <div className="text-xs text-gray-500 mt-2 pt-2 border-t">
                       *Giá vé khác nhau tùy theo cặp ga. Chọn ga để xem giá
@@ -449,10 +544,6 @@ const BuyTicketPage: React.FC = () => {
                             getSingleTicketPrice(fromStation, toStation)
                           )}
                         </span>
-                      </div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm text-cyan-800">Số lượng:</span>
-                        <span className="font-medium">{quantity}</span>
                       </div>
                     </div>
                   )}

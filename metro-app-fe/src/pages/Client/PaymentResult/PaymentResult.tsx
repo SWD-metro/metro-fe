@@ -14,8 +14,8 @@ import {
   CreditCard,
   Gift,
   Copy,
-  Download,
   Home,
+  Ticket,
 } from "lucide-react";
 
 import { useGetVNPayCallback } from "src/queries/usePayment";
@@ -240,9 +240,10 @@ const PaymentResult: React.FC = () => {
             <Button
               size="large"
               className="!bg-white !text-blue-600 !border-black hover:!bg-gray-50 !h-12 !px-8 !rounded-xl !font-semibold"
-              icon={<Download className="w-5 h-5" />}
+              icon={<Ticket className="w-5 h-5" />}
+              onClick={() => navigate(path.myTicket)}
             >
-              Tải vé
+              Vé của tôi
             </Button>
             <Button
               type="primary"
