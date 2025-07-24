@@ -12,6 +12,8 @@ import http from "src/utils/http";
 
 const userApiRequests = {
   me: () => http.get<ApiResponse<User>>("users/me"),
+  userList: () => http.get<ApiResponse<User[]>>("users"),
+
   userByUserId: (value: number) =>
     http.get<ApiResponse<User>>(`users/${value}`),
   request: (body: RequestCreationRequest) =>

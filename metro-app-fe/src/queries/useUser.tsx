@@ -8,6 +8,13 @@ export const useAccountMe = () => {
   });
 };
 
+export const useGetUserList = () => {
+  return useQuery({
+    queryKey: ["accounts"],
+    queryFn: userApiRequests.userList,
+  });
+};
+
 export const useGetUserByUserId = ({
   id,
   enabled,
