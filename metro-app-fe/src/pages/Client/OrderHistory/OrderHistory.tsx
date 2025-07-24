@@ -13,8 +13,8 @@ import {
 } from "antd";
 import { ShoppingCartOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
-import { useGetOrderByUserId } from "src/queries/useOrder";
-import { OrderResponse, OrderStatus } from "src/types/orders.type";
+import { useGetOrderDetailByUserId } from "src/queries/useOrder";
+import { OrderDetailResponse, OrderStatus } from "src/types/orders.type";
 import { formatDate, formatPrice } from "src/utils/utils";
 import { useCreateVNPayMutation } from "src/queries/usePayment";
 import toast from "react-hot-toast";
@@ -24,7 +24,7 @@ const { Title, Text } = Typography;
 const OrderHistory: React.FC = () => {
   const { t } = useTranslation("profile");
 
-  const { data: ordersData, isLoading } = useGetOrderByUserId();
+  const { data: ordersData, isLoading } = useGetOrderDetailByUserId();
 
   const orders = ordersData?.data.data || [];
   const totalAmount = orders.reduce((sum, order) => sum + order.amount, 0);
@@ -59,11 +59,22 @@ const OrderHistory: React.FC = () => {
 
   const columns = [
     {
-      title: "STT",
-      key: "index",
-      render: (_: any, __: any, index: number) => (
-        <Text strong className="text-blue-600 !text-lg">
-          {index + 1}
+      title: "Code",
+      dataIndex: ["ticket", "ticketCode"],
+      key: "ticketCode",
+      render: (_: any, record: any) => (
+        <Text strong className="!text-blue-500 !text-sm">
+          {record?.ticket.ticketCode}
+        </Text>
+      ),
+    },
+    {
+      title: t("orderHistory.ticketName"),
+      dataIndex: ["ticket", "name"],
+      key: "ticketName",
+      render: (_: any, record: any) => (
+        <Text strong className="!text-blue-500 !text-sm">
+          {record?.ticket?.name || "-"}
         </Text>
       ),
     },
@@ -72,26 +83,17 @@ const OrderHistory: React.FC = () => {
       dataIndex: "amount",
       key: "amount",
       render: (amount: number) => (
-        <Text strong className="!text-blue-500 !text-lg">
+        <Text strong className="!text-blue-500 !text-sm">
           {formatPrice(amount)}
         </Text>
       ),
     },
     {
       title: t("orderHistory.orderDate"),
-      dataIndex: "createdAt",
+      dataIndex: ["ticket", "createdAt"],
       key: "createdAt",
       render: (date: string) => (
         <Text className="text-gray-600">{formatDate(date)}</Text>
-      ),
-    },
-    {
-      title: t("orderHistory.paymentMethod"),
-      key: "paymentMethod",
-      render: (record: OrderResponse) => (
-        <Tag color="blue" className="px-3 py-1 rounded-full font-medium">
-          {record.transaction?.paymentMethodName || t("orderHistory.unknown")}
-        </Tag>
       ),
     },
     {
@@ -110,7 +112,7 @@ const OrderHistory: React.FC = () => {
     {
       title: t("orderHistory.action"),
       key: "actions",
-      render: (_: any, record: OrderResponse) =>
+      render: (_: any, record: OrderDetailResponse) =>
         record.status === OrderStatus.PENDING ? (
           <>
             <Button

@@ -27,3 +27,10 @@ export const useGetOrderByUserId = () => {
     queryFn: orderApiRequests.orderByUser,
   });
 };
+
+export const useGetOrderDetailByUserId = () => {
+  return useQuery({
+    queryKey: ["orders"],
+    queryFn: orderApiRequests.orderDetailByUser,
+  });
+};

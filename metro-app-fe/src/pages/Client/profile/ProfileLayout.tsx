@@ -15,7 +15,7 @@ const ProfileLayout: React.FC = () => {
       >
         <Layout
           className="!min-h-screen mx-auto !bg-transparent rounded-3xl overflow-hidden"
-          style={{ width: "80%", margin: "0 auto" }}
+          style={{ width: "85%", margin: "0 auto" }}
         >
           <Sider
             width={320}

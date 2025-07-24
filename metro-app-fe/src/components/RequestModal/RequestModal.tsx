@@ -32,7 +32,6 @@ import {
   formatDDMMYY,
 } from "src/utils/utils";
 
-const { TextArea } = Input;
 const { Dragger } = Upload;
 const { Text } = Typography;
 
@@ -178,6 +177,9 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
         form={form}
         layout="vertical"
         onFinish={handleSubmit}
+        initialValues={{
+          content: "Xin xác nhận sinh viên",
+        }}
         className="space-y-6"
       >
         <Form.Item
@@ -185,11 +187,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({
           label={t("request.fields.content.label")}
           required
         >
-          <TextArea
-            rows={3}
-            placeholder={t("request.fields.content.placeholder")}
-            className="!rounded-lg"
-          />
+          <Input className="!rounded-lg" disabled />
         </Form.Item>
 
         <Form.Item

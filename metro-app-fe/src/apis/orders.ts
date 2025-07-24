@@ -1,5 +1,6 @@
 import { ApiResponse } from "src/types/api.type";
 import {
+  OrderDetailResponse,
   OrderResponse,
   OrderTicketDaysRequest,
   OrderTicketSingleRequest,
@@ -16,6 +17,9 @@ const orderApiRequests = {
   orderByUser: () => {
     return http.get<ApiResponse<OrderResponse[]>>(`orders/user`);
   },
+
+  orderDetailByUser: () =>
+    http.get<ApiResponse<OrderDetailResponse[]>>("orders/user/details"),
 };
 
 export default orderApiRequests;

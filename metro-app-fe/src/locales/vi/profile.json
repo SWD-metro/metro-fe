@@ -22,6 +22,7 @@
     "title": "Lịch sử giao dịch",
     "transactionCode": "Mã giao dịch",
     "amount": "Số tiền",
+    "ticketName": "Vé",
     "orderDate": "Ngày đặt",
     "paymentMethod": "Phương thức thanh toán",
     "status": "Trạng thái",

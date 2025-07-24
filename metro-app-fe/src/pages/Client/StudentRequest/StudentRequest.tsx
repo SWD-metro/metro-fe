@@ -117,15 +117,20 @@ const StudentRequestPage: React.FC = () => {
                 {t("studentRequest.title")}
               </Title>
             </div>
-            <Button
-              type="primary"
-              size="large"
-              icon={<Plus className="w-5 h-5" />}
-              onClick={() => setIsModalVisible(true)}
-              className="!bg-gradient-to-r !from-blue-600 !to-indigo-600 !border-none !h-12 !rounded-xl !shadow-lg hover:!shadow-xl !transition-all !duration-300"
-            >
-              {t("studentRequest.newRequest")}
-            </Button>
+            {!profile?.isStudent && (
+              <>
+                {" "}
+                <Button
+                  type="primary"
+                  size="large"
+                  icon={<Plus className="w-5 h-5" />}
+                  onClick={() => setIsModalVisible(true)}
+                  className="!bg-gradient-to-r !from-blue-600 !to-indigo-600 !border-none !h-12 !rounded-xl !shadow-lg hover:!shadow-xl !transition-all !duration-300"
+                >
+                  {t("studentRequest.newRequest")}
+                </Button>
+              </>
+            )}
           </div>
         </div>
 

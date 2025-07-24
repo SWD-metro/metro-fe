@@ -106,6 +106,14 @@ const QRModal = ({ ticket }: { ticket: TicketResponse }) => {
                       alt="QR Code"
                       className="w-84 h-84 rounded-xl animate-fade-in"
                     />
+                    {countdown === 0 && (
+                      <div className="flex items-center justify-center rounded-xl z-10">
+                        <span className="text-red-600 text-lg font-semibold">
+                          QR đã hết hạn
+                        </span>
+                      </div>
+                    )}
+
                     <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center shadow-lg">
                       <CheckCircle className="text-white" size={16} />
                     </div>

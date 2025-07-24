@@ -105,9 +105,12 @@ const FeedbackPage = () => {
                     <div className="flex-1 pr-4">
                       <div className="mb-2">
                         <Tag color="blue">{fb.category}</Tag>
-                        <p className="text-gray-800 text-lg mt-2">
-                          {t("feedback.content")}: {fb.content}
+                      </div>
+                      <div className="mt-3 p-2 border-l-4 rounded-lg bg-blue-50 border-blue-400 pl-3">
+                        <p className="text-blue-700 font-medium">
+                          {t("feedback.content")}:
                         </p>
+                        <Text>{fb.content}</Text>
                       </div>
                       {fb.image && (
                         <img
